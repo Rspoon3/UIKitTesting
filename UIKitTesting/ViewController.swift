@@ -6,14 +6,30 @@
 //
 
 import UIKit
+import FontAwesome
+
 
 class ViewController: UIViewController {
+    let imageView = UIImageView()
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.image = UIImage.fontAwesomeIcon(name: .github,
+                                                  style: .regular,
+                                                  textColor: .systemPurple,
+                                                  size: .init(width: 300, height: 300))
+        
+        
+        view.addSubview(imageView)
+                
+        NSLayoutConstraint.activate([
+            imageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            imageView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            imageView.widthAnchor.constraint(equalToConstant: 400),
+            imageView.heightAnchor.constraint(equalToConstant: 400),
+        ])
     }
-
-
 }
 

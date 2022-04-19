@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A6BE5CD4280E5AFE009B96D6 /* FontAwesome in Frameworks */ = {isa = PBXBuildFile; productRef = A6BE5CD3280E5AFE009B96D6 /* FontAwesome */; };
 		A6D826FD27CE8CDD001244D0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D826FC27CE8CDD001244D0 /* AppDelegate.swift */; };
 		A6D826FF27CE8CDD001244D0 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D826FE27CE8CDD001244D0 /* SceneDelegate.swift */; };
 		A6D8270127CE8CDD001244D0 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D8270027CE8CDD001244D0 /* ViewController.swift */; };
@@ -31,6 +32,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A6BE5CD4280E5AFE009B96D6 /* FontAwesome in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -83,6 +85,9 @@
 			dependencies = (
 			);
 			name = UIKitTesting;
+			packageProductDependencies = (
+				A6BE5CD3280E5AFE009B96D6 /* FontAwesome */,
+			);
 			productName = UIKitTesting;
 			productReference = A6D826F927CE8CDD001244D0 /* UIKitTesting.app */;
 			productType = "com.apple.product-type.application";
@@ -111,6 +116,9 @@
 				Base,
 			);
 			mainGroup = A6D826F027CE8CDD001244D0;
+			packageReferences = (
+				A6BE5CD2280E5AFE009B96D6 /* XCRemoteSwiftPackageReference "FontAwesome.swift" */,
+			);
 			productRefGroup = A6D826FA27CE8CDD001244D0 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -360,6 +368,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		A6BE5CD2280E5AFE009B96D6 /* XCRemoteSwiftPackageReference "FontAwesome.swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/thii/FontAwesome.swift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		A6BE5CD3280E5AFE009B96D6 /* FontAwesome */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A6BE5CD2280E5AFE009B96D6 /* XCRemoteSwiftPackageReference "FontAwesome.swift" */;
+			productName = FontAwesome;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = A6D826F127CE8CDD001244D0 /* Project object */;
 }

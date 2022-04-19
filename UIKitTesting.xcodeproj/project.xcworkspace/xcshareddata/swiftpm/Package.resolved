@@ -1,0 +1,14 @@
+{
+  "pins" : [
+    {
+      "identity" : "fontawesome.swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/thii/FontAwesome.swift.git",
+      "state" : {
+        "revision" : "07883a32d49dfc7bdedbeea115067b53dfbeeb43",
+        "version" : "1.9.1"
+      }
+    }
+  ],
+  "version" : 2
+}
