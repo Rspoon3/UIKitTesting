@@ -14,6 +14,9 @@
 		A6D8270427CE8CDD001244D0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A6D8270227CE8CDD001244D0 /* Main.storyboard */; };
 		A6D8270627CE8CDD001244D0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A6D8270527CE8CDD001244D0 /* Assets.xcassets */; };
 		A6D8270927CE8CDD001244D0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A6D8270727CE8CDD001244D0 /* LaunchScreen.storyboard */; };
+		A6DFB59B281C42E0001CC0B8 /* Font Awesome 5 Free-Regular-400.otf in Resources */ = {isa = PBXBuildFile; fileRef = A6DFB598281C429E001CC0B8 /* Font Awesome 5 Free-Regular-400.otf */; };
+		A6DFB59C281C42E0001CC0B8 /* Font Awesome 5 Free-Solid-900.otf in Resources */ = {isa = PBXBuildFile; fileRef = A6DFB59A281C429E001CC0B8 /* Font Awesome 5 Free-Solid-900.otf */; };
+		A6DFB59D281C42E0001CC0B8 /* Font Awesome 5 Brands-Regular-400.otf in Resources */ = {isa = PBXBuildFile; fileRef = A6DFB599281C429E001CC0B8 /* Font Awesome 5 Brands-Regular-400.otf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -25,6 +28,9 @@
 		A6D8270527CE8CDD001244D0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A6D8270827CE8CDD001244D0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A6D8270A27CE8CDD001244D0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A6DFB598281C429E001CC0B8 /* Font Awesome 5 Free-Regular-400.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Font Awesome 5 Free-Regular-400.otf"; sourceTree = "<group>"; };
+		A6DFB599281C429E001CC0B8 /* Font Awesome 5 Brands-Regular-400.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Font Awesome 5 Brands-Regular-400.otf"; sourceTree = "<group>"; };
+		A6DFB59A281C429E001CC0B8 /* Font Awesome 5 Free-Solid-900.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Font Awesome 5 Free-Solid-900.otf"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,6 +67,9 @@
 				A6D826FC27CE8CDD001244D0 /* AppDelegate.swift */,
 				A6D826FE27CE8CDD001244D0 /* SceneDelegate.swift */,
 				A6D8270027CE8CDD001244D0 /* ViewController.swift */,
+				A6DFB599281C429E001CC0B8 /* Font Awesome 5 Brands-Regular-400.otf */,
+				A6DFB598281C429E001CC0B8 /* Font Awesome 5 Free-Regular-400.otf */,
+				A6DFB59A281C429E001CC0B8 /* Font Awesome 5 Free-Solid-900.otf */,
 				A6D8270227CE8CDD001244D0 /* Main.storyboard */,
 				A6D8270527CE8CDD001244D0 /* Assets.xcassets */,
 				A6D8270727CE8CDD001244D0 /* LaunchScreen.storyboard */,
@@ -134,8 +143,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				A6D8270927CE8CDD001244D0 /* LaunchScreen.storyboard in Resources */,
+				A6DFB59D281C42E0001CC0B8 /* Font Awesome 5 Brands-Regular-400.otf in Resources */,
+				A6DFB59B281C42E0001CC0B8 /* Font Awesome 5 Free-Regular-400.otf in Resources */,
 				A6D8270627CE8CDD001244D0 /* Assets.xcassets in Resources */,
 				A6D8270427CE8CDD001244D0 /* Main.storyboard in Resources */,
+				A6DFB59C281C42E0001CC0B8 /* Font Awesome 5 Free-Solid-900.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
