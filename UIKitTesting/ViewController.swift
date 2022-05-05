@@ -14,7 +14,7 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Books - Stack"
-        view.backgroundColor = UIColor.white
+        view.backgroundColor = .systemGroupedBackground
         configureScrollView()
         configureStackView()
         loadData()
@@ -22,6 +22,7 @@ class ViewController: UIViewController {
     
     private func configureScrollView(){
         scrollView = UIScrollView(frame: view.bounds)
+        scrollView.backgroundColor = .orange
         scrollView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         view.addSubview(scrollView)
     }
@@ -30,7 +31,7 @@ class ViewController: UIViewController {
         stackView = UIStackView(frame: scrollView.bounds)
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .vertical
-        stackView.spacing = 8
+//        stackView.spacing = 8
         stackView.distribution = .equalSpacing
         scrollView.addSubview(stackView)
         
@@ -48,6 +49,7 @@ class ViewController: UIViewController {
             config.text = section
             
             var cv = UIListContentView(configuration: config)
+            cv.backgroundColor = .red
             stackView.addArrangedSubview(cv)
             
             for book in Book.booksFor(section: index) {
@@ -57,7 +59,11 @@ class ViewController: UIViewController {
                 config.secondaryText = book.author
                 
                 cv = UIListContentView(configuration: config)
+                cv.layer.cornerRadius = 10
+                cv.backgroundColor = .white
+                
                 stackView.addArrangedSubview(cv)
+                stackView.backgroundColor = .systemBlue
             }
         }
     }
