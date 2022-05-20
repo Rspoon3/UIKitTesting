@@ -43,7 +43,7 @@ struct Node<Value>: Identifiable {
     }
     
     var recursiveChildren: [Node] {
-        return children + children.flatMap { $0.recursiveChildren }
+        return [self] + children.flatMap { $0.recursiveChildren }
     }
     
     func depthFirstTraversal(visit: (Node) -> Void) {
