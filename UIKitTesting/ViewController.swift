@@ -9,9 +9,9 @@ import UIKit
 
 class ViewController: UIViewController {
     private var collectionView: UICollectionView! = nil
-    var dataSource: UICollectionViewDiffableDataSource<Section, Node<String>>! = nil
-    enum Section { case main }
-    var indentDictionary: [UUID: Int] = [:]
+    private var dataSource: UICollectionViewDiffableDataSource<Section, Node<String>>! = nil
+    private enum Section { case main }
+    private var indentDictionary: [UUID: Int] = [:]
     
     let root = Node("Terry") {
         Node("Paul") {
@@ -97,7 +97,9 @@ class ViewController: UIViewController {
             else { return }
             
             
-            cell.configure(text: node.value, indentLevel: indentValue, color: node.children.isEmpty ? .label : .red)
+            cell.configure(text: node.value,
+                           indentLevel: indentValue,
+                           color: node.children?.isEmpty ?? true ? .label : .red)
         }
     }
     
@@ -108,76 +110,17 @@ class ViewController: UIViewController {
         snapshot.appendItems(root.recursiveChildren)
         dataSource.apply(snapshot, animatingDifferences: false)
         
-        bedTimeOld(node: root)
+        getIndentationValue(for: root)
     }
     
-    func bedTimeOld(node: Node<String>, value: Int = 0) {
+    private func getIndentationValue(for node: Node<String>, value: Int = 0) {
+        guard let children = node.children else { return }
+        
         indentDictionary[node.id] = value
         
-        if value == 0 {
-            print(node.value)
-        }
-        
-        for child in node.children {
-            let spacing = Array(0...value).map{_ in "   "}.joined()
+        for child in children {
             indentDictionary[child.id] = value
-            print(spacing, child.value)
-            bedTimeOld(node: child, value: value + 1)
+            getIndentationValue(for: child, value: value + 1)
         }
-    }
-}
-
-
-
-class IndentCell: UICollectionViewCell{
-    private let textLabel = UILabel()
-    private let container = UIView()
-    private let padding: CGFloat = 15
-    private let spacing: CGFloat = 40
-    private var leadingConstraint: NSLayoutConstraint! = nil
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        
-        addViews()
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    func configure(text: String, indentLevel: Int, color: UIColor) {
-        textLabel.text = text
-        textLabel.textColor = color
-        
-        leadingConstraint.isActive = false
-        leadingConstraint = container.leadingAnchor.constraint(equalTo: contentView.leadingAnchor,
-                                                               constant: CGFloat(indentLevel) * spacing + padding)
-        leadingConstraint.isActive = true
-    }
-    
-    private func addViews(){
-        textLabel.translatesAutoresizingMaskIntoConstraints = false
-        textLabel.font = .preferredFont(forTextStyle: .headline)
-        
-        container.backgroundColor = .systemGray6
-        container.translatesAutoresizingMaskIntoConstraints = false
-        
-        container.addSubview(textLabel)
-        contentView.addSubview(container)
-        
-        leadingConstraint = container.leadingAnchor.constraint(equalTo: contentView.leadingAnchor)
-
-        NSLayoutConstraint.activate([
-            container.topAnchor.constraint(equalTo: contentView.topAnchor),
-            container.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-            leadingConstraint,
-            container.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -padding),
-            
-            textLabel.topAnchor.constraint(equalTo: container.topAnchor, constant: padding),
-            textLabel.bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: -padding),
-            textLabel.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: padding),
-            textLabel.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: -padding),
-        ])
     }
 }

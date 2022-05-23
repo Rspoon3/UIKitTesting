@@ -16,21 +16,19 @@ struct NodeBuilder {
 
 struct Node<Value>: Identifiable {
     var value: Value
-    private(set) var children: [Node]
+    private(set) var children: [Node]?
     var id = UUID()
     
     mutating func add(child: Node) {
-        children.append(child)
+        children?.append(child)
     }
     
     init(_ value: Value) {
         self.value = value
-        children = []
     }
 
     init(_ value: Value, children: [Node]) {
         self.value = value
-        self.children = children
     }
     
     init(_ value: Value, @NodeBuilder builder: () -> [Node]) {
@@ -39,27 +37,11 @@ struct Node<Value>: Identifiable {
     }
     
     var count: Int {
-        1 + children.reduce(0) { $0 + $1.count }
+        1 + (children?.reduce(0) { $0 + $1.count } ?? 0)
     }
     
     var recursiveChildren: [Node] {
-        return [self] + children.flatMap { $0.recursiveChildren }
-    }
-    
-    func depthFirstTraversal(visit: (Node) -> Void) {
-        visit(self)
-        children.forEach {
-            $0.depthFirstTraversal(visit: visit)
-        }
-    }
-    
-}
-
-extension Node where Value == String {
-    func getHierarchy() -> [(Node<String>, Node<String>)] {
-        children.map{ node in
-            (self, node)
-        } + children.flatMap{ $0.getHierarchy() }
+        return [self] + (children?.flatMap { $0.recursiveChildren } ?? [])
     }
 }
 
