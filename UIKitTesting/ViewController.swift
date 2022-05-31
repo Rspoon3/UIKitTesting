@@ -7,15 +7,6 @@
 
 import UIKit
 
-
-
-extension UIScrollView {
-    fileprivate var isInteracting: Bool {
-        isDragging || isDecelerating
-    }
-}
-
-
 final class ContentOffsetSynchronizer : ObservableObject {
     private var observations: [NSKeyValueObservation] = []
     private let registrations = NSHashTable<UIScrollView>.weakObjects()
@@ -23,7 +14,7 @@ final class ContentOffsetSynchronizer : ObservableObject {
     private var contentOffset: CGPoint = .zero {
         didSet {
             // Sync all scrollviews with to the new content offset
-            for scrollView in registrations.allObjects where scrollView.isInteracting == false {
+            for scrollView in registrations.allObjects where (scrollView.isDragging || scrollView.isDecelerating) == false {
                 scrollView.contentOffset.x = contentOffset.x
             }
         }
@@ -41,7 +32,7 @@ final class ContentOffsetSynchronizer : ObservableObject {
         // When a user is interacting with the scrollView, we store its contentOffset
         observations.append(
             scrollView.observe(\.contentOffset, options: [.initial, .new]) { [weak self] scrollView, change in
-                guard let newValue = change.newValue, scrollView.isInteracting else {
+                guard let newValue = change.newValue, (scrollView.isDragging || scrollView.isDecelerating) else {
                     return
                 }
                 self?.contentOffset = newValue
@@ -134,24 +125,23 @@ class ViewController: UIViewController, UICollectionViewDelegate, UIScrollViewDe
         view.addSubview(collectionView)
         
         
-        DispatchQueue.main.async{
-            for subView in self.collectionView.subviews {
-                if let scrollview = subView as? UIScrollView {
-                    self.contentOffsetSynchronizer.register(scrollview)
-                    print("HERE")
-                }
-            }
-        }
+//        DispatchQueue.main.async{
+//            for subView in self.collectionView.subviews {
+//                if let scrollview = subView as? UIScrollView {
+//                    self.contentOffsetSynchronizer.register(scrollview)
+//                }
+//            }
+//        }
     }
     
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        for subView in self.collectionView.subviews {
-            if let scrollview = subView as? UIScrollView {
-                self.contentOffsetSynchronizer.register(scrollview)
-                print("HERE")
-            }
-        }
-    }
+//    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+//        for subView in self.collectionView.subviews {
+//            if let scrollview = subView as? UIScrollView {
+//                self.contentOffsetSynchronizer.register(scrollview)
+//                print("HERE")
+//            }
+//        }
+//    }
     
     var dictText: [IndexPath: String] = [:]
     
