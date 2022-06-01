@@ -33,8 +33,11 @@ class ViewController: UIViewController, UICollectionViewDelegate, UIScrollViewDe
             
             leadingItem.contentInsets = .init(top: 0, leading: padding / 2, bottom: 0, trailing: padding / 2)
             
+//            let dSection = self.dataSource.snapshot().sectionIdentifiers[sectionIndex]
+            let itemsCount = self.dataSource.snapshot().numberOfItems(inSection: sectionIndex)
+            
             let minWidth: Double = 150
-            var desiredItems: Double = 4
+            var desiredItems: Double = Double(itemsCount)
             let frameWidth = self.view.frame.width
             
             
@@ -79,15 +82,15 @@ class ViewController: UIViewController, UICollectionViewDelegate, UIScrollViewDe
         
         
         DispatchQueue.main.async {
-            let scrollViews = self.collectionView.subviews.compactMap({$0 as? UIScrollView})
-
-            for scrollView in scrollViews {
-                self.contentOffsetSynchronizer.register(scrollView)
-            }
+            self.registerScrollViewsForHorizontalScrollSyncing()
         }
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        registerScrollViewsForHorizontalScrollSyncing()
+    }
+    
+    private func registerScrollViewsForHorizontalScrollSyncing() {
         let scrollViews = collectionView.subviews.compactMap({$0 as? UIScrollView})
         
         for scrollView in scrollViews {
@@ -112,7 +115,7 @@ class ViewController: UIViewController, UICollectionViewDelegate, UIScrollViewDe
         // initial data
         var snapshot = NSDiffableDataSourceSnapshot<Int, Int>()
         var identifierOffset = 0
-        let itemsPerSection = 6
+        let itemsPerSection = 18
         for section in 0..<13 {
             snapshot.appendSections([section])
             let maxIdentifier = identifierOffset + itemsPerSection
