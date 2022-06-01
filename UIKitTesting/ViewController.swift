@@ -13,6 +13,7 @@ class ViewController: UIViewController, UICollectionViewDelegate, UIScrollViewDe
     var dataSource: UICollectionViewDiffableDataSource<Int, Int>! = nil
     var collectionView: UICollectionView! = nil
     let contentOffsetSynchronizer = ContentOffsetSynchronizer()
+    var dictText: [IndexPath: String] = [:]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,7 +33,7 @@ class ViewController: UIViewController, UICollectionViewDelegate, UIScrollViewDe
             
             leadingItem.contentInsets = .init(top: 0, leading: padding / 2, bottom: 0, trailing: padding / 2)
             
-            let minWidth: Double = 200
+            let minWidth: Double = 150
             var desiredItems: Double = 4
             let frameWidth = self.view.frame.width
             
@@ -93,10 +94,6 @@ class ViewController: UIViewController, UICollectionViewDelegate, UIScrollViewDe
             self.contentOffsetSynchronizer.register(scrollView)
         }
     }
-    
-    
-    
-    var dictText: [IndexPath: String] = [:]
     
     func configureDataSource() {
         let cellRegistration = UICollectionView.CellRegistration<TableCell, Int> { (cell, indexPath, identifier) in
