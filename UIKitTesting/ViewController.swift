@@ -34,23 +34,20 @@ class ViewController: UIViewController {
     
     /// - Tag: TwoColumn
     func createLayout() -> UICollectionViewLayout {
-        let spacing = CGFloat(10)
-
-        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
-                                              heightDimension: .estimated(1))
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.2),
+                                             heightDimension: .estimated(22))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        
-        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
-                                               heightDimension: .estimated(1))
-        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitem: item, count: 3)
-        group.interItemSpacing = .fixed(spacing)
-        
-        let section = NSCollectionLayoutSection(group: group)
-        section.interGroupSpacing = spacing
-        section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10)
 
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
+                                              heightDimension: .estimated(22))
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize,subitem: item, count: 1)
+        let section = NSCollectionLayoutSection(group: group)
+
+        section.interGroupSpacing = 10
         
-        let layout = MyUICollectionViewCompositionalLayout(section: section)
+        let layout = UICollectionViewCompositionalLayout(section: section)
+        let config = UICollectionViewCompositionalLayoutConfiguration()
+        layout.configuration = config
         return layout
     }
     
@@ -62,12 +59,9 @@ class ViewController: UIViewController {
     }
     
     func configureDataSource() {
-        let cellRegistration = UICollectionView.CellRegistration<TextCell, String> { [weak self] (cell, indexPath, string) in
+        let cellRegistration = UICollectionView.CellRegistration<ColumnsCell, String> { [weak self] (cell, indexPath, string) in
             // Populate the cell with our item description.
-            cell.label.text = string
-            let size = cell.label.sizeThatFits(.init(width: cell.frame.width, height: .infinity))
-            print("Size ", size)
-            cell.collectionView = self?.collectionView
+//            cell.configure(count: Int.random(in: 2..<5))
         }
         
         dataSource = UICollectionViewDiffableDataSource<Section, String>(collectionView: collectionView) {
@@ -81,39 +75,5 @@ class ViewController: UIViewController {
         snapshot.appendSections([.main])
         snapshot.appendItems(sentences)
         dataSource.apply(snapshot, animatingDifferences: false)
-    }
-}
-
-class MyUICollectionViewCompositionalLayout: UICollectionViewCompositionalLayout{
-    var largestDict: [Int: CGFloat] = [:]
-    let columns = 3
-
-    override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
-        let attributes = super.layoutAttributesForElements(in: rect)
-        print("MyUICollectionViewCompositionalLayout 1", largestDict)
-
-        if let attributes = attributes {
-            for attribute in attributes {
-                let height = attribute.frame.height
-                let row = attribute.indexPath.row / columns
-                
-                print(height)
-                
-                
-                if height > 1 {
-                    self.largestDict[row] = max(height, largestDict[row] ?? 0)
-                }
-            }
-        }
-        
-        print("MyUICollectionViewCompositionalLayout 2", largestDict)
-        
-        return attributes
-    }
-    
-    override func invalidateLayout() {
-        super.invalidateLayout()
-        print("Invalidating")
-        largestDict.removeAll()
     }
 }
