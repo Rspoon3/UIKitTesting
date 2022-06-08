@@ -27,9 +27,8 @@ class ColumnsCell: UICollectionViewCell, UIScrollViewDelegate {
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         scrollView.delegate = self
         scrollView.contentSize = .init(width: 2000, height: 0)
+        scrollView.showsHorizontalScrollIndicator = false
         contentView.addSubview(scrollView)
-        
-        
         
         NSLayoutConstraint.activate([
             scrollView.topAnchor.constraint(equalTo: contentView.topAnchor),
@@ -38,15 +37,13 @@ class ColumnsCell: UICollectionViewCell, UIScrollViewDelegate {
             scrollView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
         ])
         
-      
-        
         for _ in 0..<count{
             let m = CGFloat(1) / CGFloat(count)
 
             let label = UILabel()
             label.numberOfLines = 0
             label.font = .preferredFont(forTextStyle: .title1)
-            label.text = Lorem.sentences(10)
+            label.text = Lorem.sentences(3)
             label.translatesAutoresizingMaskIntoConstraints = false
             label.backgroundColor = .random()
             scrollView.addSubview(label)
