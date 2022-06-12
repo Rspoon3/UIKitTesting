@@ -5,47 +5,64 @@
 //  Created by Richard Witherspoon on 3/1/22.
 //
 
+//
+//  ViewController.swift
+//  Feedback
+//
+//  Created by Richard Witherspoon on 6/8/22.
+//
+
 import UIKit
 import LoremSwiftum
 //https://stackoverflow.com/questions/71918534/make-nscollectionlayoutitem-heights-as-tall-as-the-nscollectionlayoutgroup-when
 
 class ViewController: UIViewController {
-    let syncer = ContentOffsetSynchronizer()
-    let sentences = [
-        "This is a short sentence for a short string",
-        "This week is WWDC and Im hoping that I can get some help with this long sentence so that it resizes properly. Maybe this should just be its own api? Idk I just need a long sentence for this to resize properly. Please be long enough now.",
-        "I was able to mock this expected behavior by changing the NSCollectionLayoutSize to be an absolute value of 500. This is not what I want."
-    ]
+    let sentences = Array(0..<33).map{_ in Lorem.sentences(1..<4)}
+//    let sentences = [
+//        "This is a short sentence for a short string",
+//        "This week is WWDC and Im hoping that I can get some help with this long sentence so that it resizes properly. Maybe this should just be its own api? Idk I just need a long sentence for this to resize properly. Please be long enough now.",
+//        "I was able to mock this expected behavior by changing the NSCollectionLayoutSize to be an absolute value of 500. This is not what I want.",
+//
+//
+//        "We’ll start by reviewing how to build a grid with a flow layout, and then show you how to achieve the same design using a compositional layout while exploring the new APIs.",
+//        "Who you taking shots at?",
+//        "In addition to supplementary items, we can customize our section layout with decoration items. This will allow us to easily add backgrounds to our sections. The background view we’ll create is quite simple (a gray rectangle with a corner radius), so we’ll do it in code.",
+//
+//        "Third row"
+//    ]
     
     enum Section {
-        case main, table
+        case main
     }
     
-    var dataSource: UICollectionViewDiffableDataSource<Section, AnyHashable>! = nil
+    var dataSource: UICollectionViewDiffableDataSource<Section, String>! = nil
     var collectionView: UICollectionView! = nil
-    let sectionBackgroundDecorationElementKind = "section-background-element-kind"
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationItem.title = "Two-Column Grid"
         configureHierarchy()
         configureDataSource()
+        applyInitialSnapshot()
     }
     
-    /// - Tag: TwoColumn
     func createLayout() -> UICollectionViewLayout {
-        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.2),
-                                             heightDimension: .estimated(22))
-        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        let columns = 3
+        let spacing = CGFloat(10)
 
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
+                                              heightDimension: .estimated(100))
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        
         let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
-                                              heightDimension: .estimated(22))
-        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize,subitem: item, count: 1)
-        let section = NSCollectionLayoutSection(group: group)        
-        let layout = UICollectionViewCompositionalLayout(section: section)
-        let config = UICollectionViewCompositionalLayoutConfiguration()
-        layout.configuration = config
-        return layout
+                                               heightDimension: .estimated(100))
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitem: item, count: columns)
+        group.interItemSpacing = .fixed(spacing)
+        
+        let section = NSCollectionLayoutSection(group: group)
+        section.interGroupSpacing = spacing
+        section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10)
+
+        return EqualHeightsUICollectionViewCompositionalLayout(section: section, columns: columns)
     }
     
     func configureHierarchy() {
@@ -56,85 +73,21 @@ class ViewController: UIViewController {
     }
     
     func configureDataSource() {
-        let cellRegistration = UICollectionView.CellRegistration<ColumnsCell, String> { [weak self] (cell, indexPath, string) in
-            // Populate the cell with our item description.
-//            cell.configure(count: Int.random(in: 2..<5))
-            self?.syncer.register(cell.scrollView)
-            
+        let cellRegistration = UICollectionView.CellRegistration<TextCell, String> { [weak self] (cell, indexPath, string) in
+            cell.label.text = string
+            cell.collectionView = self?.collectionView
         }
         
-        let intRegistration = UICollectionView.CellRegistration<UICollectionViewListCell, Int> { [weak self] (cell, indexPath, int) in
-            var content = cell.defaultContentConfiguration()
-            content.text = int.description
-            cell.contentConfiguration = content
+        dataSource = UICollectionViewDiffableDataSource<Section, String>(collectionView: collectionView) {
+            (collectionView: UICollectionView, indexPath: IndexPath, string: String) -> UICollectionViewCell? in
+            return collectionView.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: string)
         }
-        
-        dataSource = UICollectionViewDiffableDataSource<Section, AnyHashable>(collectionView: collectionView) {
-            (collectionView: UICollectionView, indexPath: IndexPath, item: AnyHashable) -> UICollectionViewCell? in
-            if let string = item as? String{
-                return collectionView.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: string)
-            } else if let int = item as? Int{
-                return collectionView.dequeueConfiguredReusableCell(using: intRegistration, for: indexPath, item: int)
-            } else {
-                fatalError()
-            }
-        }
-        
-        // initial data
-        var snapshot = NSDiffableDataSourceSnapshot<Section, AnyHashable>()
-        snapshot.appendSections([.main])
-        snapshot.appendItems(Array(0..<10))
-        snapshot.appendItems(sentences)
-        snapshot.appendItems(Array(10..<20))
-        dataSource.apply(snapshot, animatingDifferences: false)
-    }
-}
-
-
-final class ContentOffsetSynchronizer : ObservableObject {
-    private var observations: [NSKeyValueObservation] = []
-    let registrations = NSHashTable<UIScrollView>.weakObjects()
-
-    private var contentOffset: CGPoint = .zero {
-        didSet {
-            // Sync all scrollviews with to the new content offset
-            for scrollView in registrations.allObjects where (scrollView.isDragging || scrollView.isDecelerating) == false {
-                scrollView.contentOffset.x = contentOffset.x
-            }
-        }
-    }
-
-    func register(_ scrollView: UIScrollView) {
-        scrollView.clipsToBounds = false
-
-        guard registrations.contains(scrollView) == false else {
-            return
-        }
-
-        registrations.add(scrollView)
-
-        // When a user is interacting with the scrollView, we store its contentOffset
-        observations.append(
-            scrollView.observe(\.contentOffset, options: [.initial, .new]) { [weak self] scrollView, change in
-                guard let newValue = change.newValue, (scrollView.isDragging || scrollView.isDecelerating) else {
-                    return
-                }
-                self?.contentOffset = newValue
-            }
-        )
-        
-        // If a contentSize changes, we need to re-sync it with the current contentOffset
-        observations.append(
-            scrollView.observe(\.contentSize, options: [.initial, .new]) { [weak self] scrollView, change in
-                guard let contentOffset = self?.contentOffset else {
-                    return
-                }
-                scrollView.contentOffset.x = contentOffset.x
-            }
-        )
     }
     
-    deinit {
-        observations.forEach { $0.invalidate() }
+    func applyInitialSnapshot(){
+        var snapshot = NSDiffableDataSourceSnapshot<Section, String>()
+        snapshot.appendSections([.main])
+        snapshot.appendItems(sentences)
+        dataSource.apply(snapshot, animatingDifferences: false)
     }
 }
