@@ -8,9 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		A62EC2D5284658CE0013F5B1 /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A62EC2D4284658CE0013F5B1 /* UIColor+Extension.swift */; };
-		A62EC2DF2846D36A0013F5B1 /* SectionBackgroundDecorationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A62EC2DE2846D36A0013F5B1 /* SectionBackgroundDecorationView.swift */; };
 		A62EC2E12846D3760013F5B1 /* TableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A62EC2E02846D3760013F5B1 /* TableCell.swift */; };
-		A62EC2E32846D3810013F5B1 /* ContentOffsetSynchronizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A62EC2E22846D3810013F5B1 /* ContentOffsetSynchronizer.swift */; };
 		A6D826FD27CE8CDD001244D0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D826FC27CE8CDD001244D0 /* AppDelegate.swift */; };
 		A6D826FF27CE8CDD001244D0 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D826FE27CE8CDD001244D0 /* SceneDelegate.swift */; };
 		A6D8270127CE8CDD001244D0 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D8270027CE8CDD001244D0 /* ViewController.swift */; };
@@ -21,9 +19,7 @@
 
 /* Begin PBXFileReference section */
 		A62EC2D4284658CE0013F5B1 /* UIColor+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
-		A62EC2DE2846D36A0013F5B1 /* SectionBackgroundDecorationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionBackgroundDecorationView.swift; sourceTree = "<group>"; };
 		A62EC2E02846D3760013F5B1 /* TableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableCell.swift; sourceTree = "<group>"; };
-		A62EC2E22846D3810013F5B1 /* ContentOffsetSynchronizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentOffsetSynchronizer.swift; sourceTree = "<group>"; };
 		A6D826F927CE8CDD001244D0 /* UIKitTesting.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UIKitTesting.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A6D826FC27CE8CDD001244D0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A6D826FE27CE8CDD001244D0 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -67,9 +63,7 @@
 				A6D826FC27CE8CDD001244D0 /* AppDelegate.swift */,
 				A6D826FE27CE8CDD001244D0 /* SceneDelegate.swift */,
 				A6D8270027CE8CDD001244D0 /* ViewController.swift */,
-				A62EC2E22846D3810013F5B1 /* ContentOffsetSynchronizer.swift */,
 				A62EC2E02846D3760013F5B1 /* TableCell.swift */,
-				A62EC2DE2846D36A0013F5B1 /* SectionBackgroundDecorationView.swift */,
 				A62EC2D4284658CE0013F5B1 /* UIColor+Extension.swift */,
 				A6D8270227CE8CDD001244D0 /* Main.storyboard */,
 				A6D8270527CE8CDD001244D0 /* Assets.xcassets */,
@@ -154,8 +148,6 @@
 				A6D8270127CE8CDD001244D0 /* ViewController.swift in Sources */,
 				A6D826FD27CE8CDD001244D0 /* AppDelegate.swift in Sources */,
 				A6D826FF27CE8CDD001244D0 /* SceneDelegate.swift in Sources */,
-				A62EC2E32846D3810013F5B1 /* ContentOffsetSynchronizer.swift in Sources */,
-				A62EC2DF2846D36A0013F5B1 /* SectionBackgroundDecorationView.swift in Sources */,
 				A62EC2D5284658CE0013F5B1 /* UIColor+Extension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

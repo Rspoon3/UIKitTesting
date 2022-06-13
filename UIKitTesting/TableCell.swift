@@ -10,16 +10,17 @@ import UIKit
 
 
 class TableCell: UICollectionViewCell, UITextViewDelegate {
-    private let textLabel = UILabel()
     private let textField = UITextField()
     private let textView = UITextView()
-    private let divider = UIView()
-    private var topConstraint: NSLayoutConstraint!
     private var textViewTextDidChange: ((String)->Void)?
     private let placeholder = "Testing"
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        backgroundColor = .systemBackground
+        layer.borderWidth = 1
+        layer.borderColor = UIColor.black.cgColor
+
         addViews()
     }
     
@@ -27,21 +28,9 @@ class TableCell: UICollectionViewCell, UITextViewDelegate {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configure(headerText: String?, text: String?, textViewTextDidChange: @escaping (String)->Void) {
+    func configure(text: String?, textViewTextDidChange: @escaping (String)->Void) {
         self.textViewTextDidChange = textViewTextDidChange
-        
-        topConstraint.isActive = false
-
-        if let text = headerText {
-            textLabel.text = text
-            topConstraint = textView.topAnchor.constraint(equalTo: divider.bottomAnchor)
-        } else {
-            topConstraint = textView.topAnchor.constraint(equalTo: contentView.topAnchor)
-            textLabel.text = nil
-        }
-        
-        topConstraint.isActive = true
-        
+                
         if let text = text {
             textView.text = text
             textField.placeholder = nil
@@ -52,12 +41,6 @@ class TableCell: UICollectionViewCell, UITextViewDelegate {
     }
     
     private func addViews() {
-        textLabel.translatesAutoresizingMaskIntoConstraints = false
-        textLabel.textAlignment = .center
-        textLabel.backgroundColor = .systemMint
-        
-        divider.translatesAutoresizingMaskIntoConstraints = false
-        
         textView.translatesAutoresizingMaskIntoConstraints = false
         textView.font = .preferredFont(forTextStyle: .body)
         textView.delegate = self
@@ -67,31 +50,18 @@ class TableCell: UICollectionViewCell, UITextViewDelegate {
         textField.font = .preferredFont(forTextStyle: .body)
         textField.isUserInteractionEnabled = false
         
-        contentView.addSubview(textLabel)
-        contentView.addSubview(divider)
         contentView.addSubview(textView)
         contentView.addSubview(textField)
         
-        topConstraint = textView.topAnchor.constraint(equalTo: divider.bottomAnchor)
-
-        
+        let padding: CGFloat = 10
         NSLayoutConstraint.activate([
-            textLabel.topAnchor.constraint(equalTo: contentView.topAnchor),
-            textLabel.heightAnchor.constraint(equalTo: contentView.heightAnchor, multiplier: 0.25),
-            textLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            textLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-
-            divider.topAnchor.constraint(equalTo: textLabel.bottomAnchor),
-            divider.heightAnchor.constraint(equalToConstant: 2),
-            divider.leadingAnchor.constraint(equalTo: textLabel.leadingAnchor),
-            divider.trailingAnchor.constraint(equalTo: textLabel.trailingAnchor),
-
-            topConstraint,
-            textView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-            textView.leadingAnchor.constraint(equalTo: textLabel.leadingAnchor),
-            textView.trailingAnchor.constraint(equalTo: textLabel.trailingAnchor),
+            textField.topAnchor.constraint(equalTo: contentView.topAnchor, constant: padding),
+            textView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -padding),
+            textView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: padding),
+            textView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -padding),
             
             textField.topAnchor.constraint(equalTo: textView.topAnchor, constant: 7),
+            textView.bottomAnchor.constraint(equalTo: textView.bottomAnchor),
             textField.leadingAnchor.constraint(equalTo: textView.leadingAnchor, constant: 6),
             textField.trailingAnchor.constraint(equalTo: textView.trailingAnchor),
         ])
@@ -106,4 +76,3 @@ class TableCell: UICollectionViewCell, UITextViewDelegate {
         textViewTextDidChange?(text)
     }
 }
-
