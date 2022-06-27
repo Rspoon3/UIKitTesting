@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, SpreadsheetCollectionViewLayoutInvalidationDelegate {
     enum Section: String {
         case main
     }
@@ -23,6 +23,10 @@ class ViewController: UIViewController {
         configureDataSource()
     }
     
+    func hasFinishedInvalidating() {
+        collectionView.collectionViewLayout.invalidateLayout()
+    }
+    
     private func createLayout() -> UICollectionViewLayout {
         let config = UICollectionLayoutListConfiguration(appearance: .insetGrouped)
         return UICollectionViewCompositionalLayout.list(using: config)
@@ -34,6 +38,17 @@ class ViewController: UIViewController {
         view.addSubview(collectionView)
     }
     
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        
+        coordinator.animate { _ in
+            
+        } completion: { _ in
+            NotificationCenter.default.post(name: .init(rawValue: "GridViewChanged"), object: nil)
+        }
+    }
+    
+    
     private func configureDataSource() {
         let cellRegistration = UICollectionView.CellRegistration<UICollectionViewListCell, String> { (cell, indexPath, item) in
             var content = cell.defaultContentConfiguration()
@@ -41,9 +56,10 @@ class ViewController: UIViewController {
             cell.contentConfiguration = content
         }
         
-        let gridCellRegistration = UICollectionView.CellRegistration<GridControllerCell, Int> { (cell, indexPath, item) in
-            cell.applySnapshot()
-            cell.shouldInvalidate = { [weak self] in
+        let gridCellRegistration = UICollectionView.CellRegistration<GridControllerCell, Int> { [weak self] (cell, indexPath, item) in
+            cell.layout.invalidationDelegate = self
+            DispatchQueue.main.async {
+                cell.collectionView.collectionViewLayout.invalidateLayout()
                 self?.collectionView.collectionViewLayout.invalidateLayout()
             }
         }
