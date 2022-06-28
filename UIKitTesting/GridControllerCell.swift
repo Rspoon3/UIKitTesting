@@ -8,11 +8,17 @@
 import UIKit
 import LoremSwiftum
 
+
+protocol GridControllerCellDelegate: AnyObject {
+    func scrollToBottom()
+}
+
 class GridControllerCell: UICollectionViewCell, UICollectionViewDelegate, UICollectionViewDataSource, SpreadsheetCollectionViewLayoutDelegate, UITextViewDelegate {
     var numberOfSections = 2
     let layout = SpreadsheetCollectionViewLayout()
     var collectionView: SelfSizingCollectionView!
     weak var invalidationDelegate: SpreadsheetCollectionViewLayoutInvalidationDelegate?
+    weak var delegate: GridControllerCellDelegate?
     let sentences = Array(0..<3).map{ _ in
         Lorem.sentences(1..<3)
     }
@@ -81,6 +87,10 @@ class GridControllerCell: UICollectionViewCell, UICollectionViewDelegate, UIColl
             cell.buttonAction = { [weak self] in
                 self?.numberOfSections += 1
                 self?.collectionView.reloadData()
+                
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                    self?.delegate?.scrollToBottom()
+                }
             }
 
             return cell

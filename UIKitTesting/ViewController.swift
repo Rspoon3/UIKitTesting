@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ViewController: UIViewController, SpreadsheetCollectionViewLayoutInvalidationDelegate {
+class ViewController: UIViewController, SpreadsheetCollectionViewLayoutInvalidationDelegate, GridControllerCellDelegate {
     enum Section: String {
         case main
     }
@@ -19,8 +19,38 @@ class ViewController: UIViewController, SpreadsheetCollectionViewLayoutInvalidat
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.title = "List"
+        
         configureHierarchy()
         configureDataSource()
+
+        NotificationCenter.default.addObserver(self, selector: #selector(ViewController.keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(ViewController.keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
+    @objc func keyboardWillShow(notification: NSNotification) {
+        guard let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue
+        else {
+            // if keyboard size is not available for some reason, dont do anything
+            return
+        }
+        
+        let contentInsets = UIEdgeInsets(top: 0.0, left: 0.0, bottom: keyboardSize.height , right: 0.0)
+        
+        collectionView.contentInset = contentInsets
+        collectionView.scrollIndicatorInsets = contentInsets
+        
+//        let activeRect = collectionView.convert(collectionView.bounds, to: collectionView)
+//        collectionView.scrollRectToVisible(activeRect, animated: true)
+        
+//        collectionView.setContentOffset(.init(x: 0, y: -(collectionView.frame.origin.y - keyboardSize.height)), animated: true)
+    }
+    
+    
+    @objc func keyboardWillHide(notification: NSNotification) {
+        let contentInsets = UIEdgeInsets(top: 0.0, left: 0.0, bottom: 0.0, right: 0.0)
+        
+        collectionView.contentInset = contentInsets
+        collectionView.scrollIndicatorInsets = contentInsets
     }
     
     func hasFinishedInvalidating() {
@@ -34,8 +64,16 @@ class ViewController: UIViewController, SpreadsheetCollectionViewLayoutInvalidat
     
     private func configureHierarchy() {
         collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: createLayout())
-        collectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+
         view.addSubview(collectionView)
+
+        NSLayoutConstraint.activate([
+            collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            collectionView.trailingAnchor.constraint(equalTo:  view.trailingAnchor),
+        ])
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -48,6 +86,10 @@ class ViewController: UIViewController, SpreadsheetCollectionViewLayoutInvalidat
         }
     }
     
+    func scrollToBottom() {
+        let ip = dataSource.snapshot().itemIdentifiers.count
+        collectionView.scrollToItem(at: IndexPath(item: ip - 1, section: 0), at: .bottom, animated: true)
+    }
     
     private func configureDataSource() {
         let cellRegistration = UICollectionView.CellRegistration<UICollectionViewListCell, String> { (cell, indexPath, item) in
@@ -58,6 +100,7 @@ class ViewController: UIViewController, SpreadsheetCollectionViewLayoutInvalidat
         
         let gridCellRegistration = UICollectionView.CellRegistration<GridControllerCell, Int> { [weak self] (cell, indexPath, item) in
             cell.layout.invalidationDelegate = self
+            cell.delegate = self
             DispatchQueue.main.async {
                 cell.collectionView.collectionViewLayout.invalidateLayout()
                 self?.collectionView.collectionViewLayout.invalidateLayout()
