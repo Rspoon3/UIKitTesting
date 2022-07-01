@@ -9,7 +9,7 @@ import UIKit
 
 protocol SpreadsheetCollectionViewLayoutDelegate: UICollectionViewDelegate {
     func width(forColumn column: Int, collectionView: UICollectionView) -> CGFloat
-    func height(forItemAt: IndexPath, width: Double) -> CGFloat
+    func height(forItemAt indexPath: IndexPath, width: Double) -> CGFloat
 }
 
 protocol SpreadsheetCollectionViewLayoutInvalidationDelegate: UICollectionViewDelegate {
@@ -96,6 +96,7 @@ final class SpreadsheetCollectionViewLayout: UICollectionViewLayout {
         }
         
         invalidationDelegate?.hasFinishedInvalidating()
+        
         return visibleLayoutAttributes
     }
     
@@ -104,5 +105,17 @@ final class SpreadsheetCollectionViewLayout: UICollectionViewLayout {
         cache.removeAll(keepingCapacity: true)
         contentHeight = 0
         contentWidth = 0
+    }
+    
+    override func layoutAttributesForSupplementaryView(ofKind elementKind: String, at indexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
+        fatalError()
+    }
+    
+    override func initialLayoutAttributesForAppearingSupplementaryElement(ofKind elementKind: String, at elementIndexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
+        fatalError()
+    }
+    
+    override func finalLayoutAttributesForDisappearingSupplementaryElement(ofKind elementKind: String, at elementIndexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
+        fatalError()
     }
 }

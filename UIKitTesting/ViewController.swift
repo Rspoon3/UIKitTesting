@@ -7,14 +7,14 @@
 
 import UIKit
 
-class ViewController: UIViewController, SpreadsheetCollectionViewLayoutInvalidationDelegate, GridControllerCellDelegate {
+class ViewController: UIViewController {
     enum Section: String {
         case main
+        case table
     }
-    
     var dataSource: UICollectionViewDiffableDataSource<Section, AnyHashable>! = nil
     var collectionView: UICollectionView! = nil
-    var items = Array(0..<10).map{"This is item \($0)"}
+    var items = Array(0..<8).map{"This is item \($0)"}
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,43 +22,11 @@ class ViewController: UIViewController, SpreadsheetCollectionViewLayoutInvalidat
         
         configureHierarchy()
         configureDataSource()
-
-        NotificationCenter.default.addObserver(self, selector: #selector(ViewController.keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(ViewController.keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
-    }
-    
-    @objc func keyboardWillShow(notification: NSNotification) {
-        guard let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue
-        else {
-            // if keyboard size is not available for some reason, dont do anything
-            return
-        }
-        
-        let contentInsets = UIEdgeInsets(top: 0.0, left: 0.0, bottom: keyboardSize.height , right: 0.0)
-        
-        collectionView.contentInset = contentInsets
-        collectionView.scrollIndicatorInsets = contentInsets
-        
-//        let activeRect = collectionView.convert(collectionView.bounds, to: collectionView)
-//        collectionView.scrollRectToVisible(activeRect, animated: true)
-        
-//        collectionView.setContentOffset(.init(x: 0, y: -(collectionView.frame.origin.y - keyboardSize.height)), animated: true)
-    }
-    
-    
-    @objc func keyboardWillHide(notification: NSNotification) {
-        let contentInsets = UIEdgeInsets(top: 0.0, left: 0.0, bottom: 0.0, right: 0.0)
-        
-        collectionView.contentInset = contentInsets
-        collectionView.scrollIndicatorInsets = contentInsets
-    }
-    
-    func hasFinishedInvalidating() {
-        collectionView.collectionViewLayout.invalidateLayout()
     }
     
     private func createLayout() -> UICollectionViewLayout {
-        let config = UICollectionLayoutListConfiguration(appearance: .insetGrouped)
+        var config = UICollectionLayoutListConfiguration(appearance: .insetGrouped)
+        config.showsSeparators = true
         return UICollectionViewCompositionalLayout.list(using: config)
     }
     
@@ -79,16 +47,12 @@ class ViewController: UIViewController, SpreadsheetCollectionViewLayoutInvalidat
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         
-        coordinator.animate { _ in
-            
-        } completion: { _ in
-            NotificationCenter.default.post(name: .init(rawValue: "GridViewChanged"), object: nil)
+        coordinator.animate { [weak self] _ in
+            guard let self = self else { return }
+            var snapshot = self.dataSource.snapshot()
+            snapshot.reconfigureItems(snapshot.itemIdentifiers(inSection: .table))
+            self.dataSource.apply(snapshot)
         }
-    }
-    
-    func scrollToBottom() {
-        let ip = dataSource.snapshot().itemIdentifiers.count
-        collectionView.scrollToItem(at: IndexPath(item: ip - 1, section: 0), at: .bottom, animated: true)
     }
     
     private func configureDataSource() {
@@ -98,12 +62,18 @@ class ViewController: UIViewController, SpreadsheetCollectionViewLayoutInvalidat
             cell.contentConfiguration = content
         }
         
-        let gridCellRegistration = UICollectionView.CellRegistration<GridControllerCell, Int> { [weak self] (cell, indexPath, item) in
-            cell.layout.invalidationDelegate = self
-            cell.delegate = self
+        let gridCellRegistration = UICollectionView.CellRegistration<VoteResultsCollectionViewCell, Int> { [weak self] (cell, indexPath, item) in
+            guard
+                let self = self,
+                let layout = cell.collectionView.collectionViewLayout as? SpreadsheetCollectionViewLayout
+            else {
+                return
+            }
+            
+            layout.invalidationDelegate = self
+            
             DispatchQueue.main.async {
                 cell.collectionView.collectionViewLayout.invalidateLayout()
-                self?.collectionView.collectionViewLayout.invalidateLayout()
             }
         }
         
@@ -121,9 +91,10 @@ class ViewController: UIViewController, SpreadsheetCollectionViewLayoutInvalidat
         
         // initial data
         var snapshot = NSDiffableDataSourceSnapshot<Section, AnyHashable>()
-        snapshot.appendSections([.main])
-        snapshot.appendItems(items)
-        snapshot.appendItems([1])
+        snapshot.appendSections([.main, .table])
+        snapshot.appendItems(items, toSection: .main)
+        
+        snapshot.appendItems([1], toSection: .table)
         
         
         dataSource.apply(snapshot, animatingDifferences: false)
@@ -131,5 +102,12 @@ class ViewController: UIViewController, SpreadsheetCollectionViewLayoutInvalidat
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         collectionView.deselectItem(at: indexPath, animated: true)
+    }
+}
+
+
+extension ViewController: SpreadsheetCollectionViewLayoutInvalidationDelegate {
+    func hasFinishedInvalidating() {
+        collectionView.collectionViewLayout.invalidateLayout()
     }
 }
