@@ -7,18 +7,18 @@
 
 import UIKit
 
-protocol SpreadsheetCollectionViewLayoutDelegate: UICollectionViewDelegate {
+protocol TableLayoutDelegate: UICollectionViewDelegate {
     func width(forColumn column: Int, collectionView: UICollectionView) -> CGFloat
     func height(forItemAt indexPath: IndexPath, width: Double) -> CGFloat
 }
 
-protocol SpreadsheetCollectionViewLayoutInvalidationDelegate: UICollectionViewDelegate {
+protocol TableLayoutInvalidationDelegate: UICollectionViewDelegate {
     func hasFinishedInvalidating()
 }
 
-final class SpreadsheetCollectionViewLayout: UICollectionViewLayout {
-    weak var delegate: SpreadsheetCollectionViewLayoutDelegate?
-    weak var invalidationDelegate: SpreadsheetCollectionViewLayoutInvalidationDelegate?
+final class TableLayout: UICollectionViewLayout {
+    weak var delegate: TableLayoutDelegate?
+    weak var invalidationDelegate: TableLayoutInvalidationDelegate?
     private var cache = [UICollectionViewLayoutAttributes]()
     private var contentHeight: CGFloat = 0
     private var contentWidth: CGFloat = 0
@@ -105,17 +105,5 @@ final class SpreadsheetCollectionViewLayout: UICollectionViewLayout {
         cache.removeAll(keepingCapacity: true)
         contentHeight = 0
         contentWidth = 0
-    }
-    
-    override func layoutAttributesForSupplementaryView(ofKind elementKind: String, at indexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
-        fatalError()
-    }
-    
-    override func initialLayoutAttributesForAppearingSupplementaryElement(ofKind elementKind: String, at elementIndexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
-        fatalError()
-    }
-    
-    override func finalLayoutAttributesForDisappearingSupplementaryElement(ofKind elementKind: String, at elementIndexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
-        fatalError()
     }
 }

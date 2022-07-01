@@ -6,24 +6,12 @@
 //
 
 import UIKit
-import LoremSwiftum
 
-struct TextItem: Identifiable, Hashable{
-    let id = UUID()
-    let text: String
-    let bold: Bool
-    
-    init(_ text: String, bold: Bool = false){
-        self.text = text
-        self.bold = bold
-    }
-}
-
-class VoteResultsCollectionViewCell: UICollectionViewCell, UICollectionViewDelegate, SpreadsheetCollectionViewLayoutDelegate {
-    var numberOfSections = 2
-    let layout = SpreadsheetCollectionViewLayout()
+class VoteResultsCollectionViewCell: UICollectionViewCell, UICollectionViewDelegate, TableLayoutDelegate {
+    private let numberOfColumns = 3
     var collectionView: SelfSizingCollectionView!
     var dataSource: UICollectionViewDiffableDataSource<UUID, TextItem>! = nil
+    var label = UILabel()
 
     
     //MARK: - Initializer
@@ -42,45 +30,14 @@ class VoteResultsCollectionViewCell: UICollectionViewCell, UICollectionViewDeleg
     
     //MARK: - Private Helpers
     private func configureDataSource() {
-        let footerRegistration = createFooterRegistration()
         let cellRegistration = UICollectionView.CellRegistration<TextItemCell, TextItem> { (cell, indexPath, item) in
             cell.configure(item: item,
-                           backgroundColor: indexPath.section.isMultiple(of: 2) ? .lightText : .systemBackground)
+                           backgroundColor: indexPath.section.isMultiple(of: 2) ? .systemGroupedBackground.withAlphaComponent(0.5) : .systemBackground)
         }
         
         dataSource = UICollectionViewDiffableDataSource<UUID, TextItem>(collectionView: collectionView) {
             (collectionView: UICollectionView, indexPath: IndexPath, item: TextItem) -> UICollectionViewCell? in
             return collectionView.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: item)
-        }
-        
-        dataSource?.supplementaryViewProvider = { [unowned self] collectionView, kind, indexPath in
-            return self.supplementary(collectionView: collectionView, kind: kind, indexPath: indexPath)
-        }
-        
-//        dataSource?.supplementaryViewProvider = { [weak self] (view, kind, index) in
-//            self?.collectionView.dequeueConfiguredReusableSupplementary(using:footerRegistration, for: index)
-//        }
-    }
-    
-    func supplementary(collectionView: UICollectionView, kind: String, indexPath: IndexPath) -> UICollectionReusableView? {
-        collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionFooter,
-                                                        withReuseIdentifier: VoteCommentFooterReusableView.reuseIdentifier,
-                                                        for: indexPath) as! VoteCommentFooterReusableView
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, willDisplaySupplementaryView view: UICollectionReusableView, forElementKind elementKind: String, at indexPath: IndexPath) {
-        fatalError()
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, didEndDisplayingSupplementaryView view: UICollectionReusableView, forElementOfKind elementKind: String, at indexPath: IndexPath) {
-        fatalError()
-    }
-    
-    private func createFooterRegistration() -> UICollectionView.SupplementaryRegistration<UICollectionViewListCell> {
-        UICollectionView.SupplementaryRegistration <UICollectionViewListCell>(elementKind: UICollectionView.elementKindSectionFooter) { (footerView, elementKind, indexPath) in
-            var configuration = UIListContentConfiguration.plainFooter()
-            configuration.text = "Voting Has Closed"
-            footerView.contentConfiguration = configuration
         }
     }
     
@@ -96,8 +53,10 @@ class VoteResultsCollectionViewCell: UICollectionViewCell, UICollectionViewDeleg
         
         for i in 0..<10 {
             let section = UUID()
+            let numString = (i + 1).formatted()
+            let loreum = "empor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."
             snapshot.appendSections([section])
-            snapshot.appendItems([TextItem("\(i + 1)"),
+            snapshot.appendItems([TextItem(i == 3 ? loreum : numString),
                                   TextItem("33.3%"),
                                   TextItem("\(Int.random(in: 0...9999))")],
                                  toSection: section)
@@ -108,35 +67,36 @@ class VoteResultsCollectionViewCell: UICollectionViewCell, UICollectionViewDeleg
     }
     
     private func addViews() {
+        let layout = TableLayout()
         layout.delegate = self
         collectionView = SelfSizingCollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.delegate = self
         collectionView.translatesAutoresizingMaskIntoConstraints = false
-        collectionView.backgroundColor = .systemGroupedBackground
+        collectionView.backgroundColor = .systemBackground
         collectionView.isDirectionalLockEnabled = true
-        collectionView.bounces = false
         
-        collectionView.register(
-            VoteCommentFooterReusableView.self,
-            forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter,
-            withReuseIdentifier: VoteCommentFooterReusableView.reuseIdentifier
-        )
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = "Total User Voted: 1"
         
         contentView.addSubview(collectionView)
+        contentView.addSubview(label)
         
         let padding: CGFloat = 10
         NSLayoutConstraint.activate([
             collectionView.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor, constant: padding),
-            collectionView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -padding),
             collectionView.leadingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leadingAnchor, constant: padding),
             collectionView.trailingAnchor.constraint(equalTo:  contentView.safeAreaLayoutGuide.trailingAnchor, constant: -padding),
+            
+            label.topAnchor.constraint(equalTo: collectionView.bottomAnchor, constant: padding * 2),
+            label.trailingAnchor.constraint(equalTo: collectionView.trailingAnchor),
+            label.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -padding),
         ])
     }
     
     
-    //MARK: - SpreadsheetCollectionViewLayoutDelegate
+    //MARK: - TableLayoutDelegate
     func width(forColumn column: Int, collectionView: UICollectionView) -> CGFloat {
-        let width = collectionView.frame.width / 3
+        let width = collectionView.frame.width / CGFloat(numberOfColumns)
         let minWidth: CGFloat = 125
         return max(width, minWidth)
     }
@@ -171,27 +131,3 @@ class VoteResultsCollectionViewCell: UICollectionViewCell, UICollectionViewDeleg
         return height
     }
 }
-
-
-
-
-class VoteCommentFooterReusableView: UICollectionReusableView {
-    static var reuseIdentifier: String {
-        return String(describing: VoteCommentFooterReusableView.self)
-      }
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        backgroundColor = .systemBackground
-        addViews()
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError()
-    }
-    
-    private func addViews() {
-        backgroundColor = .red
-    }
-}
-

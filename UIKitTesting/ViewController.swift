@@ -8,20 +8,23 @@
 import UIKit
 
 class ViewController: UIViewController {
+    var dataSource: UICollectionViewDiffableDataSource<Section, AnyHashable>! = nil
+    var collectionView: UICollectionView! = nil
+    var items = Array(0..<8).map{"This is item \($0)"}
     enum Section: String {
         case main
         case table
     }
-    var dataSource: UICollectionViewDiffableDataSource<Section, AnyHashable>! = nil
-    var collectionView: UICollectionView! = nil
-    var items = Array(0..<8).map{"This is item \($0)"}
+
     
+    //MARK: - View
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.title = "List"
         
         configureHierarchy()
         configureDataSource()
+        applySnapshot()
     }
     
     private func createLayout() -> UICollectionViewLayout {
@@ -55,6 +58,8 @@ class ViewController: UIViewController {
         }
     }
     
+    
+    //MARK: - Data Source
     private func configureDataSource() {
         let cellRegistration = UICollectionView.CellRegistration<UICollectionViewListCell, String> { (cell, indexPath, item) in
             var content = cell.defaultContentConfiguration()
@@ -65,7 +70,7 @@ class ViewController: UIViewController {
         let gridCellRegistration = UICollectionView.CellRegistration<VoteResultsCollectionViewCell, Int> { [weak self] (cell, indexPath, item) in
             guard
                 let self = self,
-                let layout = cell.collectionView.collectionViewLayout as? SpreadsheetCollectionViewLayout
+                let layout = cell.collectionView.collectionViewLayout as? TableLayout
             else {
                 return
             }
@@ -88,25 +93,27 @@ class ViewController: UIViewController {
                 fatalError()
             }
         }
-        
-        // initial data
+    }
+    
+    private func applySnapshot() {
         var snapshot = NSDiffableDataSourceSnapshot<Section, AnyHashable>()
         snapshot.appendSections([.main, .table])
         snapshot.appendItems(items, toSection: .main)
-        
         snapshot.appendItems([1], toSection: .table)
-        
         
         dataSource.apply(snapshot, animatingDifferences: false)
     }
     
+    
+    //MARK: - CollectionView Delegate
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         collectionView.deselectItem(at: indexPath, animated: true)
     }
 }
 
 
-extension ViewController: SpreadsheetCollectionViewLayoutInvalidationDelegate {
+//MARK: - TableLayoutInvalidationDelegate
+extension ViewController: TableLayoutInvalidationDelegate {
     func hasFinishedInvalidating() {
         collectionView.collectionViewLayout.invalidateLayout()
     }

@@ -8,11 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		A62EC2D5284658CE0013F5B1 /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A62EC2D4284658CE0013F5B1 /* UIColor+Extension.swift */; };
+		A64E825C286F7B320001E8FC /* TextItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64E825B286F7B320001E8FC /* TextItem.swift */; };
 		A69ADF1D285773D60028B297 /* SelfSizingCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A69ADF1C285773D60028B297 /* SelfSizingCollectionView.swift */; };
 		A69ADF1F285773ED0028B297 /* VoteResultsCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A69ADF1E285773ED0028B297 /* VoteResultsCollectionViewCell.swift */; };
 		A69ADF23285774100028B297 /* TextItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A69ADF22285774100028B297 /* TextItemCell.swift */; };
-		A6AFAF7F286A2596009A6818 /* LoremSwiftum in Frameworks */ = {isa = PBXBuildFile; productRef = A6AFAF7E286A2596009A6818 /* LoremSwiftum */; };
-		A6AFAF81286A26F4009A6818 /* SpreadsheetCollectionViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6AFAF80286A26F4009A6818 /* SpreadsheetCollectionViewLayout.swift */; };
+		A6AFAF81286A26F4009A6818 /* TableLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6AFAF80286A26F4009A6818 /* TableLayout.swift */; };
 		A6D826FD27CE8CDD001244D0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D826FC27CE8CDD001244D0 /* AppDelegate.swift */; };
 		A6D826FF27CE8CDD001244D0 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D826FE27CE8CDD001244D0 /* SceneDelegate.swift */; };
 		A6D8270127CE8CDD001244D0 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D8270027CE8CDD001244D0 /* ViewController.swift */; };
@@ -23,10 +23,11 @@
 
 /* Begin PBXFileReference section */
 		A62EC2D4284658CE0013F5B1 /* UIColor+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
+		A64E825B286F7B320001E8FC /* TextItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextItem.swift; sourceTree = "<group>"; };
 		A69ADF1C285773D60028B297 /* SelfSizingCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelfSizingCollectionView.swift; sourceTree = "<group>"; };
 		A69ADF1E285773ED0028B297 /* VoteResultsCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoteResultsCollectionViewCell.swift; sourceTree = "<group>"; };
 		A69ADF22285774100028B297 /* TextItemCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextItemCell.swift; sourceTree = "<group>"; };
-		A6AFAF80286A26F4009A6818 /* SpreadsheetCollectionViewLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpreadsheetCollectionViewLayout.swift; sourceTree = "<group>"; };
+		A6AFAF80286A26F4009A6818 /* TableLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableLayout.swift; sourceTree = "<group>"; };
 		A6D826F927CE8CDD001244D0 /* UIKitTesting.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UIKitTesting.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A6D826FC27CE8CDD001244D0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A6D826FE27CE8CDD001244D0 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -42,7 +43,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A6AFAF7F286A2596009A6818 /* LoremSwiftum in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -68,7 +68,8 @@
 		A6D826FB27CE8CDD001244D0 /* UIKitTesting */ = {
 			isa = PBXGroup;
 			children = (
-				A6AFAF80286A26F4009A6818 /* SpreadsheetCollectionViewLayout.swift */,
+				A6AFAF80286A26F4009A6818 /* TableLayout.swift */,
+				A64E825B286F7B320001E8FC /* TextItem.swift */,
 				A6D826FC27CE8CDD001244D0 /* AppDelegate.swift */,
 				A6D826FE27CE8CDD001244D0 /* SceneDelegate.swift */,
 				A6D8270027CE8CDD001244D0 /* ViewController.swift */,
@@ -101,7 +102,6 @@
 			);
 			name = UIKitTesting;
 			packageProductDependencies = (
-				A6AFAF7E286A2596009A6818 /* LoremSwiftum */,
 			);
 			productName = UIKitTesting;
 			productReference = A6D826F927CE8CDD001244D0 /* UIKitTesting.app */;
@@ -132,7 +132,6 @@
 			);
 			mainGroup = A6D826F027CE8CDD001244D0;
 			packageReferences = (
-				A6AFAF7D286A2596009A6818 /* XCRemoteSwiftPackageReference "LoremSwiftum" */,
 			);
 			productRefGroup = A6D826FA27CE8CDD001244D0 /* Products */;
 			projectDirPath = "";
@@ -162,13 +161,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				A69ADF23285774100028B297 /* TextItemCell.swift in Sources */,
+				A64E825C286F7B320001E8FC /* TextItem.swift in Sources */,
 				A6D8270127CE8CDD001244D0 /* ViewController.swift in Sources */,
 				A69ADF1D285773D60028B297 /* SelfSizingCollectionView.swift in Sources */,
 				A6D826FD27CE8CDD001244D0 /* AppDelegate.swift in Sources */,
 				A69ADF1F285773ED0028B297 /* VoteResultsCollectionViewCell.swift in Sources */,
 				A6D826FF27CE8CDD001244D0 /* SceneDelegate.swift in Sources */,
 				A62EC2D5284658CE0013F5B1 /* UIColor+Extension.swift in Sources */,
-				A6AFAF81286A26F4009A6818 /* SpreadsheetCollectionViewLayout.swift in Sources */,
+				A6AFAF81286A26F4009A6818 /* TableLayout.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -388,25 +388,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCRemoteSwiftPackageReference section */
-		A6AFAF7D286A2596009A6818 /* XCRemoteSwiftPackageReference "LoremSwiftum" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/lukaskubanek/LoremSwiftum";
-			requirement = {
-				branch = master;
-				kind = branch;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		A6AFAF7E286A2596009A6818 /* LoremSwiftum */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = A6AFAF7D286A2596009A6818 /* XCRemoteSwiftPackageReference "LoremSwiftum" */;
-			productName = LoremSwiftum;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = A6D826F127CE8CDD001244D0 /* Project object */;
 }
