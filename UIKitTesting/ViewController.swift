@@ -10,7 +10,7 @@ import UIKit
 class ViewController: UIViewController {
     var dataSource: UICollectionViewDiffableDataSource<Section, AnyHashable>! = nil
     var collectionView: UICollectionView! = nil
-    var items = Array(0..<8).map{"This is item \($0)"}
+    var items = Array(0..<58).map{"This is item \($0)"}
     enum Section: String {
         case main
         case table
@@ -68,18 +68,7 @@ class ViewController: UIViewController {
         }
         
         let gridCellRegistration = UICollectionView.CellRegistration<VoteResultsCollectionViewCell, Int> { [weak self] (cell, indexPath, item) in
-            guard
-                let self = self,
-                let layout = cell.collectionView.collectionViewLayout as? TableLayout
-            else {
-                return
-            }
-            
-            layout.invalidationDelegate = self
-            
-            DispatchQueue.main.async {
-                cell.collectionView.collectionViewLayout.invalidateLayout()
-            }
+            cell.configure(delegate: self)
         }
         
         dataSource = UICollectionViewDiffableDataSource<Section, AnyHashable>(collectionView: collectionView) {
@@ -115,6 +104,7 @@ class ViewController: UIViewController {
 //MARK: - TableLayoutInvalidationDelegate
 extension ViewController: TableLayoutInvalidationDelegate {
     func hasFinishedInvalidating() {
+        print("hasFinishedInvalidating")
         collectionView.collectionViewLayout.invalidateLayout()
     }
 }

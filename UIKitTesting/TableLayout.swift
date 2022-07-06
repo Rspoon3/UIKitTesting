@@ -36,6 +36,8 @@ final class TableLayout: UICollectionViewLayout {
             return
         }
         
+        print("preparing table layout")
+        
         var previousSectionY = 0.0
         var sectionWidths: [Int: CGFloat] = [:]
         
@@ -84,6 +86,8 @@ final class TableLayout: UICollectionViewLayout {
         }
         
         contentWidth = sectionWidths.values.max() ?? 0
+        
+        invalidationDelegate?.hasFinishedInvalidating()
     }
     
     override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
@@ -94,8 +98,6 @@ final class TableLayout: UICollectionViewLayout {
                 visibleLayoutAttributes.append(attributes)
             }
         }
-        
-        invalidationDelegate?.hasFinishedInvalidating()
         
         return visibleLayoutAttributes
     }

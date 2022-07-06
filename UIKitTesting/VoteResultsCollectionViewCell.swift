@@ -12,6 +12,7 @@ class VoteResultsCollectionViewCell: UICollectionViewCell, UICollectionViewDeleg
     var collectionView: SelfSizingCollectionView!
     var dataSource: UICollectionViewDiffableDataSource<UUID, TextItem>! = nil
     var label = UILabel()
+    var shouldInvalidate = true
 
     
     //MARK: - Initializer
@@ -20,11 +21,27 @@ class VoteResultsCollectionViewCell: UICollectionViewCell, UICollectionViewDeleg
         backgroundColor = .systemBackground
         addViews()
         configureDataSource()
-        applySnapshot()
     }
     
     required init?(coder: NSCoder) {
         fatalError("not implemented")
+    }
+    
+    
+    //MARK: - Helpers
+    func configure(delegate: TableLayoutInvalidationDelegate?) {
+        guard let layout = collectionView.collectionViewLayout as? TableLayout else { return }
+        
+        layout.invalidationDelegate = delegate
+        
+        if shouldInvalidate {
+            shouldInvalidate = false
+            
+            Task {
+                await applySnapshot()
+                layout.invalidateLayout()
+            }
+        }
     }
     
     
@@ -41,7 +58,7 @@ class VoteResultsCollectionViewCell: UICollectionViewCell, UICollectionViewDeleg
         }
     }
     
-    private func applySnapshot() {
+    private func applySnapshot() async {
         var snapshot = NSDiffableDataSourceSnapshot<UUID, TextItem>()
         
         let section1 = UUID()
@@ -61,9 +78,8 @@ class VoteResultsCollectionViewCell: UICollectionViewCell, UICollectionViewDeleg
                                   TextItem("\(Int.random(in: 0...9999))")],
                                  toSection: section)
         }
- 
         
-        dataSource.apply(snapshot, animatingDifferences: false)
+        await dataSource.apply(snapshot, animatingDifferences: false)
     }
     
     private func addViews() {
