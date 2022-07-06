@@ -108,4 +108,9 @@ final class TableLayout: UICollectionViewLayout {
         contentHeight = 0
         contentWidth = 0
     }
+    
+    override func shouldInvalidateLayout(forBoundsChange newBounds: CGRect) -> Bool {
+        print(newBounds)
+        return true
+    }
 }
