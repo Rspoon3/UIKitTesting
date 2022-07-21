@@ -118,17 +118,17 @@ class SimpleListCell: UICollectionViewCell {
         guard !hasAppliedSnapshot else { return }
         hasAppliedSnapshot.toggle()
 
-        let items = Array(1...Int.random(in: 1...910)).map{"This is item \($0)"}
+        let items = Array(1...Int.random(in: 1...100)).map{"This is item \($0)"}
         var snapshot = NSDiffableDataSourceSnapshot<Section, String>()
         snapshot.appendSections([.main])
         
-        if Bool.random() {
+//        if Bool.random() {
             snapshot.appendItems(items)
             numberLabel.text = items.count.description
-        } else {
-            numberLabel.text = "0"
-        }
-        
+//        } else {
+//            numberLabel.text = "0"
+//        }
+//
         contentView.layoutIfNeeded()
 
         dataSource.apply(snapshot, animatingDifferences: false)
