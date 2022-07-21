@@ -103,23 +103,8 @@ class SimpleListCell: UICollectionViewCell {
     }
 
     private func configureDataSource() {
-        let cellRegistration = UICollectionView.CellRegistration<UICollectionViewListCell, String> { (cell, indexPath, item) in
-            var content = cell.defaultContentConfiguration()
-            content.text = item
-            let names = ["star", "pencil", "plus", "minus", "person", "trash", "paperclip"]
-            content.image = UIImage(systemName: names.randomElement()!)
-
-            let button = UIButton()
-            let action1 = UIAction(title: "Test 1"){_ in }
-            let action2 = UIAction(title: "Test 1"){_ in }
-            let action3 = UIAction(title: "Test 1"){_ in }
-            button.menu = .init(title: "", children: [action1, action2, action3])
-            button.showsMenuAsPrimaryAction = true
-            button.setImage(UIImage(systemName: "pencil"), for: .normal)
-
-            let test = UICellAccessory.CustomViewConfiguration(customView: button, placement: .trailing(), tintColor: .secondaryLabel)
-            cell.accessories = [.customView(configuration: test)]
-            cell.contentConfiguration = content
+        let cellRegistration = UICollectionView.CellRegistration<ListCell, String> { (cell, indexPath, text) in
+            cell.configure(text: text)
         }
 
         dataSource = UICollectionViewDiffableDataSource<Section, String>(collectionView: collectionView) {
