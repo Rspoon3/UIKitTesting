@@ -20,6 +20,7 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.title = "List"
+        view.backgroundColor = .systemGroupedBackground
         configureHierarchy()
         configureDataSource()
         applyInitialSnapshot()
@@ -47,6 +48,10 @@ class ViewController: UIViewController {
             let section = NSCollectionLayoutSection(group: group)
             
             section.orthogonalScrollingBehavior = isCompact ? .groupPaging : .continuous
+            section.contentInsets = .init(top: 0,
+                                          leading: isCompact ? 0 : 15,
+                                          bottom: 0,
+                                          trailing: isCompact ? 0 : 15)
             
             section.visibleItemsInvalidationHandler = { [weak self] visibleItems, point, environment in
                 guard
@@ -74,9 +79,9 @@ class ViewController: UIViewController {
         pageControl.currentPageIndicatorTintColor = .red
         pageControl.numberOfPages = 4
         pageControl.backgroundColor = .systemGroupedBackground
-        pageControl.isUserInteractionEnabled = false
         pageControl.isHidden = traitCollection.horizontalSizeClass != .compact
-        
+        pageControl.addTarget(self, action: #selector(pageControlTapHandler(sender:)), for: .valueChanged)
+
         let stack = UIStackView(arrangedSubviews: [collectionView, pageControl])
         stack.axis = .vertical
         stack.translatesAutoresizingMaskIntoConstraints = false
@@ -90,6 +95,11 @@ class ViewController: UIViewController {
             stack.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             stack.trailingAnchor.constraint(equalTo:  view.safeAreaLayoutGuide.trailingAnchor)
         ])
+    }
+    
+    @objc func pageControlTapHandler(sender:UIPageControl) {
+        collectionView.scrollToItem(at: .init(row: sender.currentPage, section: 0),
+                                    at: .top, animated: true)
     }
     
     private func configureDataSource() {
