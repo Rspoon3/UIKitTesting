@@ -89,16 +89,15 @@ class SimpleListCell: UICollectionViewCell {
 
         contentView.addSubview(stack)
 
-        let padding: CGFloat = 15
         NSLayoutConstraint.activate([
             header.heightAnchor.constraint(equalToConstant: 50),
             headerStack.centerYAnchor.constraint(equalTo: header.centerYAnchor),
             headerStack.centerXAnchor.constraint(equalTo: header.centerXAnchor),
 
-            stack.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor, constant: padding),
-            stack.bottomAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.bottomAnchor, constant: -padding),
-            stack.leadingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leadingAnchor, constant: padding),
-            stack.trailingAnchor.constraint(equalTo:  contentView.safeAreaLayoutGuide.trailingAnchor, constant: -padding),
+            stack.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor),
+            stack.bottomAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.bottomAnchor),
+            stack.leadingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leadingAnchor),
+            stack.trailingAnchor.constraint(equalTo:  contentView.safeAreaLayoutGuide.trailingAnchor)
         ])
     }
 

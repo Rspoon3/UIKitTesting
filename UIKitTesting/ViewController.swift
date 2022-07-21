@@ -36,23 +36,49 @@ class ViewController: UIViewController {
                                  layoutEnvironment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
             let isCompact = self?.traitCollection.horizontalSizeClass == .compact
             let height: CGFloat = 1
-            let width: CGFloat = 450
+            let maxWidth: CGFloat = 450
+            let minWidth: CGFloat = 300
+            let spacing: CGFloat = 10
+            let quarterSize = layoutEnvironment.container.effectiveContentSize.width / 4.0
+            var isFlexible: Bool
+            var itemWidth: NSCollectionLayoutDimension!
+            var groupWidth: NSCollectionLayoutDimension!
 
-            let itemSize = NSCollectionLayoutSize(widthDimension: isCompact ? .fractionalWidth(1) : .absolute(width),
+            if minWidth < quarterSize {
+                itemWidth = .fractionalWidth(1 / 4)
+                groupWidth = .fractionalWidth(1)
+                isFlexible = true
+            } else {
+                itemWidth = .absolute(maxWidth)
+                groupWidth = .absolute(maxWidth * 4)
+                isFlexible = false
+            }
+            
+            
+            let itemSize = NSCollectionLayoutSize(widthDimension: isCompact ? .fractionalWidth(1) : itemWidth,
                                                   heightDimension: .fractionalHeight(height))
             let item = NSCollectionLayoutItem(layoutSize: itemSize)
+            item.contentInsets = .init(top: 0,
+                                       leading: isCompact ? spacing * 2 : spacing,
+                                       bottom: 0,
+                                       trailing: isCompact ? spacing * 2 : spacing)
             
-            let groupSize = NSCollectionLayoutSize(widthDimension: isCompact ? .fractionalWidth(1) : .absolute(width * 4),
+            let groupSize = NSCollectionLayoutSize(widthDimension: isCompact ? .fractionalWidth(1) : groupWidth,
                                                    heightDimension: .fractionalHeight(height))
             let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+            
+            if isFlexible && !isCompact {
+                group.contentInsets = .init(top: 0, leading: spacing, bottom: 0, trailing: spacing)
+            }
+            
+            
             let section = NSCollectionLayoutSection(group: group)
             
-            section.orthogonalScrollingBehavior = isCompact ? .groupPaging : .continuous
-            section.contentInsets = .init(top: 0,
-                                          leading: isCompact ? 0 : 15,
-                                          bottom: 0,
-                                          trailing: isCompact ? 0 : 15)
+            if !isFlexible && !isCompact {
+                section.contentInsets = .init(top: 0, leading: spacing, bottom: 0, trailing: spacing)
+            }
             
+            section.orthogonalScrollingBehavior = isCompact ? .groupPaging : .continuous
             section.visibleItemsInvalidationHandler = { [weak self] visibleItems, point, environment in
                 guard
                     let self = self,
