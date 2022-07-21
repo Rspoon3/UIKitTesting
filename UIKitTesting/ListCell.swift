@@ -116,14 +116,6 @@ class ListCell: UICollectionViewListCell {
         
         avatarPlaceholder.text = "RW"
         
-        var content = defaultContentConfiguration()
-        content.text = text
-        content.imageProperties.reservedLayoutSize = .init(width: 30, height: 30)
-        content.imageProperties.maximumSize = .init(width: 30, height: 30)
-        content.imageProperties.cornerRadius = 15
-        content.imageProperties.tintColor = .systemGray
-        content.image = UIImage(systemName: "person.crop.circle.fill")
-
         imageTask = Task {
             let url = URL(string: "https://picsum.photos/id/\(Int.random(in: 1...800))/100/100")!
             let (data,_) = try await URLSession.shared.data(from: url)
