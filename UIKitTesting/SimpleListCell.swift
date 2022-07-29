@@ -17,12 +17,27 @@ class SimpleListCell: UICollectionViewListCell, UICollectionViewDelegate {
     private var dataSource: UICollectionViewDiffableDataSource<Section, String>! = nil
     private var collectionView: UICollectionView! = nil
     private let label = UILabel()
-    private var c: NSLayoutConstraint!
+    private var collectionViewHeightConstraint: NSLayoutConstraint?
+    private var collectionViewImageYConstraint: NSLayoutConstraint?
+    private var collectionViewImageView = UIImageView()
     private var stack: UIStackView!
     weak var delegate: SimpleListCellDelegate?
     var ip: IndexPath!
+    var string = [String]()
     
-
+    override func preferredLayoutAttributesFitting(_ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
+        collectionView.layoutIfNeeded()
+        collectionViewHeightConstraint?.constant = collectionView.collectionViewLayout.collectionViewContentSize.height
+        
+        collectionViewImageYConstraint?.isActive = false
+        let cell = collectionView.cellForItem(at: IndexPath(item: 0, section: 0))!
+        collectionViewImageYConstraint = collectionViewImageView.centerYAnchor.constraint(equalTo: cell.contentView.centerYAnchor)
+        collectionViewImageYConstraint?.isActive = true
+        
+        return super.preferredLayoutAttributesFitting(layoutAttributes)
+        
+    }
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         configureCollectionView()
@@ -59,13 +74,31 @@ class SimpleListCell: UICollectionViewListCell, UICollectionViewDelegate {
         
         label.font = .preferredFont(forTextStyle: .largeTitle)
         
-        stack = UIStackView(arrangedSubviews: [label, collectionView])
+        collectionViewImageView = UIImageView(image: UIImage(systemName: "star"))
+        collectionViewImageView.contentMode = .scaleAspectFit
+        collectionViewImageView.translatesAutoresizingMaskIntoConstraints = false
+        collectionViewImageView.setContentCompressionResistancePriority(.required, for: .horizontal)
+
+        let imageContainer = UIView()
+        imageContainer.addSubview(collectionViewImageView)
+        imageContainer.setContentCompressionResistancePriority(.required, for: .horizontal)
+        imageContainer.translatesAutoresizingMaskIntoConstraints = false
+
+        
+        let collectionStack = UIStackView(arrangedSubviews: [imageContainer, collectionView])
+        collectionStack.alignment = .top
+        collectionStack.backgroundColor = .yellow
+
+        stack = UIStackView(arrangedSubviews: [label, collectionStack])
         stack.translatesAutoresizingMaskIntoConstraints = false
         stack.axis = .vertical
+        stack.backgroundColor = .purple
         contentView.addSubview(stack)
         
-        c = collectionView.heightAnchor.constraint(equalToConstant: 44)
-        c.priority = .defaultHigh
+        collectionViewHeightConstraint = collectionView.heightAnchor.constraint(equalToConstant: 44)
+        collectionViewHeightConstraint?.priority = .defaultHigh
+        
+        collectionViewImageYConstraint = collectionViewImageView.centerYAnchor.constraint(equalTo: collectionView.centerYAnchor)
         
         let padding: CGFloat = 10
         NSLayoutConstraint.activate([
@@ -73,7 +106,13 @@ class SimpleListCell: UICollectionViewListCell, UICollectionViewDelegate {
             stack.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -padding),
             stack.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: padding),
             stack.trailingAnchor.constraint(equalTo:  contentView.trailingAnchor, constant: -padding),
-            c
+            collectionViewHeightConstraint!,
+            
+            collectionViewImageYConstraint!,
+            collectionViewImageView.leadingAnchor.constraint(equalTo: imageContainer.leadingAnchor),
+            collectionViewImageView.trailingAnchor.constraint(equalTo: imageContainer.trailingAnchor),
+            
+            imageContainer.widthAnchor.constraint(equalTo: collectionViewImageView.widthAnchor)
         ])
     }
     
@@ -101,29 +140,31 @@ class SimpleListCell: UICollectionViewListCell, UICollectionViewDelegate {
     }
     
     func applyInitialSnapshot(using items: [String]) {
+        self.string = items
         label.text = items.count.description
         
         var snapshot = NSDiffableDataSourceSnapshot<Section, String>()
         snapshot.appendSections([.main])
         snapshot.appendItems(items)
         
-        dataSource.apply(snapshot, animatingDifferences: false){ [weak self] in
-            self?.updateHeightConstraint()
-        }
+        dataSource.apply(snapshot, animatingDifferences: false)
     }
-    
-    private func updateHeightConstraint() {
-        collectionView.layoutIfNeeded()
-        let height = collectionView.collectionViewLayout.collectionViewContentSize.height
-        c.constant = height
-        delegate?.reconfigure(ip: ip)
-//        delegate?.invalidateLayout()
 
-    }
     
     
     //MARK: - UICollectionViewDelegate
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        updateHeightConstraint()
+        print(indexPath)
+//        var snapshot = NSDiffableDataSourceSnapshot<Section, String>()
+//        snapshot.appendSections([.main])
+//        snapshot.appendItems(Array(string.prefix(4)))
+//        dataSource.apply(snapshot, animatingDifferences: false)
+//
+//        collectionView.setNeedsLayout()
+//        collectionView.layoutIfNeeded()
+//        setNeedsLayout()
+//        layoutIfNeeded()
+//
+//        delegate?.reconfigure(ip: ip)
     }
 }
