@@ -18,8 +18,6 @@ class SimpleListCell: UICollectionViewListCell, UICollectionViewDelegate {
     private var collectionView: UICollectionView! = nil
     private let label = UILabel()
     private var collectionViewHeightConstraint: NSLayoutConstraint?
-    private var collectionViewImageYConstraint: NSLayoutConstraint?
-    private var collectionViewImageView = UIImageView()
     private var stack: UIStackView!
     weak var delegate: SimpleListCellDelegate?
     var ip: IndexPath!
@@ -28,12 +26,6 @@ class SimpleListCell: UICollectionViewListCell, UICollectionViewDelegate {
     override func preferredLayoutAttributesFitting(_ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
         collectionView.layoutIfNeeded()
         collectionViewHeightConstraint?.constant = collectionView.collectionViewLayout.collectionViewContentSize.height
-        
-        collectionViewImageYConstraint?.isActive = false
-        let cell = collectionView.cellForItem(at: IndexPath(item: 0, section: 0))!
-        collectionViewImageYConstraint = collectionViewImageView.centerYAnchor.constraint(equalTo: cell.contentView.centerYAnchor)
-        collectionViewImageYConstraint?.isActive = true
-        
         return super.preferredLayoutAttributesFitting(layoutAttributes)
         
     }
@@ -54,15 +46,42 @@ class SimpleListCell: UICollectionViewListCell, UICollectionViewDelegate {
     }
     
     private func createLayout() -> UICollectionViewLayout {
-        let itemSize = NSCollectionLayoutSize(widthDimension: .estimated(44), heightDimension: .estimated(44))
-        let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(44))
-        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
-        group.interItemSpacing = .fixed(10)
-        let section = NSCollectionLayoutSection(group: group)
-        section.interGroupSpacing = 10
-        section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 10, bottom: 10, trailing: 10)
-        return UICollectionViewCompositionalLayout(section: section)
+        return UICollectionViewCompositionalLayout() { [weak self] sectionIndex, layoutEnvironment in
+            let headerWidth: CGFloat = 30
+            let spacing: CGFloat = 10
+            let itemSize = NSCollectionLayoutSize(widthDimension: .estimated(44), heightDimension: .estimated(44))
+            let item = NSCollectionLayoutItem(layoutSize: itemSize)
+            let groupSize = NSCollectionLayoutSize(widthDimension: .absolute(layoutEnvironment.container.effectiveContentSize.width - headerWidth + spacing), heightDimension: .estimated(44))
+            let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+            group.interItemSpacing = .fixed(10)
+            
+            
+            print(layoutEnvironment.container.contentSize.height, Date(), "content")
+            print(layoutEnvironment.container.effectiveContentSize.height, Date(), "Effective\n\n")
+//
+            group.edgeSpacing = NSCollectionLayoutEdgeSpacing(leading: .fixed(headerWidth + spacing),
+                                                              top: nil,
+                                                              trailing: nil,
+                                                              bottom: nil)
+            
+            
+            
+            
+            let section = NSCollectionLayoutSection(group: group)
+            section.interGroupSpacing = spacing
+            section.contentInsets = NSDirectionalEdgeInsets(top: spacing, leading: 0, bottom: spacing, trailing: spacing)
+            
+            
+            let leftSize = NSCollectionLayoutSize(widthDimension: .absolute(headerWidth),
+                                                  heightDimension: .fractionalHeight(0.5))
+            
+            let left = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: leftSize,
+                                                                   elementKind: "leadingKind",
+                                                                   alignment: .leading)
+            section.boundarySupplementaryItems = [left]
+            
+            return section
+        }
     }
     
     private func configureCollectionView() {
@@ -74,22 +93,7 @@ class SimpleListCell: UICollectionViewListCell, UICollectionViewDelegate {
         
         label.font = .preferredFont(forTextStyle: .largeTitle)
         
-        collectionViewImageView = UIImageView(image: UIImage(systemName: "star"))
-        collectionViewImageView.contentMode = .scaleAspectFit
-        collectionViewImageView.translatesAutoresizingMaskIntoConstraints = false
-        collectionViewImageView.setContentCompressionResistancePriority(.required, for: .horizontal)
-
-        let imageContainer = UIView()
-        imageContainer.addSubview(collectionViewImageView)
-        imageContainer.setContentCompressionResistancePriority(.required, for: .horizontal)
-        imageContainer.translatesAutoresizingMaskIntoConstraints = false
-
-        
-        let collectionStack = UIStackView(arrangedSubviews: [imageContainer, collectionView])
-        collectionStack.alignment = .top
-        collectionStack.backgroundColor = .yellow
-
-        stack = UIStackView(arrangedSubviews: [label, collectionStack])
+        stack = UIStackView(arrangedSubviews: [label, collectionView])
         stack.translatesAutoresizingMaskIntoConstraints = false
         stack.axis = .vertical
         stack.backgroundColor = .purple
@@ -98,7 +102,6 @@ class SimpleListCell: UICollectionViewListCell, UICollectionViewDelegate {
         collectionViewHeightConstraint = collectionView.heightAnchor.constraint(equalToConstant: 44)
         collectionViewHeightConstraint?.priority = .defaultHigh
         
-        collectionViewImageYConstraint = collectionViewImageView.centerYAnchor.constraint(equalTo: collectionView.centerYAnchor)
         
         let padding: CGFloat = 10
         NSLayoutConstraint.activate([
@@ -107,12 +110,6 @@ class SimpleListCell: UICollectionViewListCell, UICollectionViewDelegate {
             stack.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: padding),
             stack.trailingAnchor.constraint(equalTo:  contentView.trailingAnchor, constant: -padding),
             collectionViewHeightConstraint!,
-            
-            collectionViewImageYConstraint!,
-            collectionViewImageView.leadingAnchor.constraint(equalTo: imageContainer.leadingAnchor),
-            collectionViewImageView.trailingAnchor.constraint(equalTo: imageContainer.trailingAnchor),
-            
-            imageContainer.widthAnchor.constraint(equalTo: collectionViewImageView.widthAnchor)
         ])
     }
     
@@ -136,6 +133,23 @@ class SimpleListCell: UICollectionViewListCell, UICollectionViewDelegate {
             (collectionView, indexPath, identifier) -> UICollectionViewCell? in
             
             return collectionView.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: identifier)
+        }
+        
+        
+        let headerRegistration = UICollectionView.SupplementaryRegistration<TitleSupplementaryView>(elementKind: "leadingKind") { [weak self] (supplementaryView, string, indexPath) in
+            guard let self = self else { return }
+            supplementaryView.backgroundColor = .lightGray
+            supplementaryView.layer.borderColor = UIColor.black.cgColor
+            supplementaryView.layer.borderWidth = 1.0
+            
+            if let cell = self.collectionView.cellForItem(at: indexPath) {
+                supplementaryView.update(cell)
+            }
+            
+        }
+        
+        dataSource.supplementaryViewProvider = { (view, kind, index) in
+            return self.collectionView.dequeueConfiguredReusableSupplementary(using: headerRegistration, for: index)
         }
     }
     
@@ -166,5 +180,50 @@ class SimpleListCell: UICollectionViewListCell, UICollectionViewDelegate {
 //        layoutIfNeeded()
 //
 //        delegate?.reconfigure(ip: ip)
+    }
+}
+class TitleSupplementaryView: UICollectionReusableView {
+    var collectionViewImageYConstraint: NSLayoutConstraint?
+    var collectionViewImageView = UIImageView()
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        configure()
+    }
+    required init?(coder: NSCoder) {
+        fatalError()
+    }
+    
+    func update(_ view: UIView) {
+//        collectionViewImageYConstraint?.isActive = false
+//        collectionViewImageYConstraint = collectionViewImageView.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+//        collectionViewImageYConstraint?.isActive = true
+    }
+
+    private func configure() {
+//        collectionViewImageView = UIImageView(image: UIImage(systemName: "star"))
+//        collectionViewImageView.contentMode = .scaleAspectFit
+//        collectionViewImageView.translatesAutoresizingMaskIntoConstraints = false
+//
+//        let imageContainer = UIView()
+////        imageContainer.addSubview(collectionViewImageView)
+//        imageContainer.translatesAutoresizingMaskIntoConstraints = false
+
+        
+//        collectionViewImageYConstraint = collectionViewImageView.centerYAnchor.constraint(equalTo: centerYAnchor)
+
+//        addSubview(imageContainer)
+        
+        let inset = CGFloat(0)
+        NSLayoutConstraint.activate([
+//            imageContainer.topAnchor.constraint(equalTo: topAnchor, constant: inset),
+//            imageContainer.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -inset),
+//            imageContainer.leadingAnchor.constraint(equalTo: leadingAnchor, constant: inset),
+//            imageContainer.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -inset),
+            
+//            collectionViewImageYConstraint!,
+//            collectionViewImageView.leadingAnchor.constraint(equalTo: imageContainer.leadingAnchor),
+//            collectionViewImageView.trailingAnchor.constraint(equalTo: imageContainer.trailingAnchor),
+        ])
     }
 }
