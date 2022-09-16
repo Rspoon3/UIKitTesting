@@ -26,7 +26,7 @@ class BadgedUISegmentedControl: UIView{
         
         for info in badgeInfos {
             let x = info.segmentView.frame.maxX - (info.badge.frame.width / 1.5)
-            info.badge.frame.origin = .init(x: x, y: info.segmentView.frame.minY)
+            info.badge.frame.origin.x = x
         }
     }
     
