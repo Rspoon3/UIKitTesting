@@ -8,12 +8,10 @@
 import UIKit
 
 class EqualHeightsUICollectionViewCompositionalLayout: UICollectionViewCompositionalLayout {
-    private var heights: [Int: [IndexPath: CGFloat]] = [:]
-    private var largests: [Int: CGFloat] = [:]
+    private var heights = [Int: [IndexPath: CGFloat]]()
+    private var largests = [Int: CGFloat]()
     private let columns: Int
-    private var didLayout = false
-    var count = 1
-    
+
     init(section: NSCollectionLayoutSection, columns: Int) {
         self.columns = columns
         super.init(section: section)
@@ -39,9 +37,9 @@ class EqualHeightsUICollectionViewCompositionalLayout: UICollectionViewCompositi
     
     override func invalidateLayout() {
         super.invalidateLayout()
-        print("Invalidating")
-        heights.removeAll()
-        largests.removeAll()
+
+        heights.removeAll(keepingCapacity: true)
+        largests.removeAll(keepingCapacity: true)
     }
     
     func updateLayoutAttributesHeight(layoutAttributes: UICollectionViewLayoutAttributes) {

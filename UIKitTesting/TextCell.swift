@@ -9,13 +9,12 @@ import UIKit
 
 class TextCell: UICollectionViewCell {
     let label = UILabel()
-    let bottomLabel = UILabel()
-    let container = UIView()
-    weak var collectionView: UICollectionView?
-    var flag = false
+    weak var layout: EqualHeightsUICollectionViewCompositionalLayout?
+
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        backgroundColor = .systemBlue.withAlphaComponent(0.75)
         configure()
     }
     
@@ -25,21 +24,17 @@ class TextCell: UICollectionViewCell {
 
     override func preferredLayoutAttributesFitting(_ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
         let attribute = super.preferredLayoutAttributesFitting(layoutAttributes)
-
-        if let layout = collectionView?.collectionViewLayout as? EqualHeightsUICollectionViewCompositionalLayout {
-            layout.updateLayoutAttributesHeight(layoutAttributes: attribute)
-            print(attribute.frame.height)
-        }
-
+        layout?.updateLayoutAttributesHeight(layoutAttributes: attribute)
         return attribute
     }
     
     private func configure() {
+        let bottomLabel = UILabel()
+        
         label.numberOfLines = 0
         label.font = UIFont.preferredFont(forTextStyle: .title1)
         label.backgroundColor = .systemPurple
         label.textColor = .white
-        label.translatesAutoresizingMaskIntoConstraints = false
         label.setContentHuggingPriority(.defaultHigh, for: .vertical)
         
         bottomLabel.numberOfLines = 0
@@ -47,22 +42,21 @@ class TextCell: UICollectionViewCell {
         bottomLabel.text = "Bottom of cell"
         bottomLabel.backgroundColor = .systemRed
         bottomLabel.textColor = .white
-        bottomLabel.translatesAutoresizingMaskIntoConstraints = false
         bottomLabel.setContentHuggingPriority(.defaultLow, for: .vertical)
         
-        contentView.addSubview(label)
-        contentView.addSubview(bottomLabel)
-                
-        let inset = CGFloat(0)
+        let stackView = UIStackView(arrangedSubviews: [label, bottomLabel])
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.axis = .vertical
+        stackView.spacing = 20
+
+        contentView.addSubview(stackView)
+        
+        let padding: CGFloat = 15
         NSLayoutConstraint.activate([
-            label.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: inset),
-            label.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -inset),
-            label.topAnchor.constraint(equalTo: contentView.topAnchor, constant: inset),
-            
-            bottomLabel.leadingAnchor.constraint(equalTo: label.leadingAnchor),
-            bottomLabel.trailingAnchor.constraint(equalTo: label.trailingAnchor),
-            bottomLabel.topAnchor.constraint(equalTo: label.bottomAnchor, constant: inset),
-            bottomLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -inset)
+            stackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: padding),
+            stackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -padding),
+            stackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: padding),
+            stackView.trailingAnchor.constraint(equalTo:  contentView.trailingAnchor, constant: -padding),
         ])
     }
 }

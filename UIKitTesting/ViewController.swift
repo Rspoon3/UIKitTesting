@@ -69,13 +69,14 @@ class ViewController: UIViewController {
         collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: createLayout())
         collectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         collectionView.backgroundColor = .systemBackground
+        
         view.addSubview(collectionView)
     }
     
     func configureDataSource() {
         let cellRegistration = UICollectionView.CellRegistration<TextCell, String> { [weak self] (cell, indexPath, string) in
             cell.label.text = string
-            cell.collectionView = self?.collectionView
+            cell.layout = self?.collectionView?.collectionViewLayout as? EqualHeightsUICollectionViewCompositionalLayout
         }
         
         dataSource = UICollectionViewDiffableDataSource<Section, String>(collectionView: collectionView) {
