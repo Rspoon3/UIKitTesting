@@ -6,102 +6,69 @@
 //
 
 import UIKit
-import Combine
-
 
 class ViewController: UIViewController {
+    var dataSource: UICollectionViewDiffableDataSource<Section, String>! = nil
+    var collectionView: UICollectionView! = nil
+    var items = Array(1...100).map{"This is item \($0)"}
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        let test = TestVC()
-//        test.modalPresentationStyle = .fullScreen
-        present(test, animated: true)
+    enum Section: String {
+        case main
     }
-}
-
-class TestVC: UIViewController {
-    private var cancellables = Set<AnyCancellable>()
-    private let stack = UIStackView()
-    private let textView = UITextView()
-    private let padding: CGFloat = 20
-    private var stackBottomConstraint:NSLayoutConstraint?
-    private var charactersRemainingLabel = UILabel()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        configureNotificationObservers()
-        configureStackView()
-        view.backgroundColor = .systemBackground
-        title = "Test"
+        view.backgroundColor = .red
+        navigationItem.title = "List"
+        configureCollectionView()
+        configureDataSource()
+        applyInitialSnapshot()
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        textView.becomeFirstResponder()
+    private func configureCollectionView() {
+        let config = UICollectionLayoutListConfiguration(appearance: .insetGrouped)
+        let layout = UICollectionViewCompositionalLayout.list(using: config)
+        
+        collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: layout)
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        collectionView.backgroundColor = .systemBackground
+        
+        view.addSubview(collectionView)
+        
+//        let bottomPadding = UIApplication
+//            .shared
+//            .connectedScenes
+//            .compactMap { $0 as? UIWindowScene }
+//            .flatMap { $0.windows }
+//            .first?
+//            .safeAreaInsets.bottom ?? 0
+//
+        
+        NSLayoutConstraint.activate([
+            collectionView.topAnchor.constraint(equalTo: view.topAnchor),
+            collectionView.bottomAnchor.constraint(equalTo: view.keyboardLayoutGuide.topAnchor),
+            collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            collectionView.trailingAnchor.constraint(equalTo:  view.trailingAnchor)
+        ])
     }
     
-    private func updateConstraints(using info: [AnyHashable: Any]) {
-        guard let keyboardFrame = info[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
-        let duration = info[UIResponder.keyboardAnimationDurationUserInfoKey] as? TimeInterval ?? 0.25
+    private func configureDataSource() {
+        let cellRegistration = UICollectionView.CellRegistration<TextFieldCell, String> { (cell, indexPath, item) in
+            cell.configure(text: item)
+        }
         
-        let globalPoint = view.convert(view.frame.origin, to: nil).y
-        let keyboardRectangle = keyboardFrame.cgRectValue
-        let keyboardHeight = keyboardRectangle.height
-        let topOfKeyboard = UIScreen.main.bounds.height - globalPoint - keyboardHeight
-        let bottomOfStack = stack.frame.maxY
-        let offset = bottomOfStack - topOfKeyboard + (padding * 2)
-        
-   
-        UIView.animate(withDuration: duration){ [weak self] in
-            guard let self = self else { return }
-            self.stackBottomConstraint?.constant = keyboardHeight == 0 ? -self.padding : -offset
-            self.view.layoutIfNeeded()
+        dataSource = UICollectionViewDiffableDataSource<Section, String>(collectionView: collectionView) {
+            (collectionView, indexPath, identifier) -> UICollectionViewCell? in
+            
+            return collectionView.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: identifier)
         }
     }
     
-    private func configureNotificationObservers(){
-        NotificationCenter.default
-            .publisher(for: UIResponder.keyboardWillShowNotification)
-            .compactMap(\.userInfo)
-            .eraseToAnyPublisher()
-            .sink() { [weak self] info in
-                self?.updateConstraints(using: info)
-            }.store(in: &cancellables)
+    private func applyInitialSnapshot() {
+        var snapshot = NSDiffableDataSourceSnapshot<Section, String>()
+        snapshot.appendSections([.main])
+        snapshot.appendItems(items)
         
-        NotificationCenter.default
-            .publisher(for: UIResponder.keyboardWillHideNotification)
-            .compactMap(\.userInfo)
-            .eraseToAnyPublisher()
-            .sink() { [weak self] info in
-                self?.updateConstraints(using: info)
-            }.store(in: &cancellables)
-    }
-    
-    private func configureStackView(){
-        let placeholderLabel = UILabel()
-        placeholderLabel.text = "This is the top text that doesn't need to be avoided."
-        placeholderLabel.font = .preferredFont(forTextStyle: .caption1)
-
-        textView.translatesAutoresizingMaskIntoConstraints = false
-        
-        charactersRemainingLabel.text = "This is the bottom text and the keyboard is in the way."
-        charactersRemainingLabel.font = .preferredFont(forTextStyle: .caption1)
-        
-        stack.addArrangedSubview(placeholderLabel)
-        stack.addArrangedSubview(textView)
-        stack.addArrangedSubview(charactersRemainingLabel)
-        stack.axis = .vertical
-        stack.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(stack)
-        
-        stackBottomConstraint = stack.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -padding)
-        
-        NSLayoutConstraint.activate([
-            stack.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: padding),
-            stack.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: padding),
-            stack.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -padding),
-        ])
-        
-        stackBottomConstraint?.isActive = true
+        dataSource.apply(snapshot, animatingDifferences: false)
     }
 }
