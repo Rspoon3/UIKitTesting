@@ -14,8 +14,11 @@ class StackCell: UICollectionViewListCell {
     private let label4 = UILabel()
     private let label5 = UILabel()
     private let row = UILabel()
-    var stack: UIStackView!
     
+    private var topStack: UIStackView!
+    private var bottomStack: UIStackView!
+    private var stack: UIStackView!
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         addViews()
@@ -26,12 +29,15 @@ class StackCell: UICollectionViewListCell {
     }
     
     func configure(row: Int) {
-        label1.isHidden = !row.isMultiple(of: 1)
-        label2.isHidden = !row.isMultiple(of: 2)
-        label3.isHidden = !row.isMultiple(of: 3)
-        label4.isHidden = !row.isMultiple(of: 4)
-        label5.isHidden = !row.isMultiple(of: 5)
+//        label1.isHidden = !row.isMultiple(of: 1)
+//        label2.isHidden = !row.isMultiple(of: 2)
+//        label3.isHidden = !row.isMultiple(of: 3)
+//        label4.isHidden = !row.isMultiple(of: 4)
+//        label5.isHidden = !row.isMultiple(of: 5)
         
+        topStack.isHidden = !row.isMultiple(of: 3)
+        bottomStack.isHidden = !row.isMultiple(of: 5)
+
         self.row.text = row.description
         
         stack.spacing = 10
@@ -52,22 +58,41 @@ class StackCell: UICollectionViewListCell {
         label4.text = "This is label 4"
         label5.text = "This is label 5"
         
-        stack = UIStackView(arrangedSubviews: [row, label1, label2, label3, label4, label5])
+        
+        
+        topStack = UIStackView(arrangedSubviews: [label1, label2])
+        topStack.spacing = 10
+        topStack.backgroundColor = .systemBlue
+
+        bottomStack = UIStackView(arrangedSubviews: [label3, label4, label5])
+        bottomStack.spacing = 10
+        bottomStack.backgroundColor = .systemGreen
+        
+//        stack = UIStackView(arrangedSubviews: [row, label1, label2, label3, label4, label5])
+        stack = UIStackView(arrangedSubviews: [row, topStack, bottomStack])
         stack.translatesAutoresizingMaskIntoConstraints = false
         stack.axis = .vertical
         stack.spacing = 0
-        stack.distribution = .fillEqually
+        stack.alignment = .leading
+        stack.backgroundColor = .systemGray4
 
-        contentView.addSubview(stack)
+        let container = UIView()
+        container.backgroundColor = .systemPink.withAlphaComponent(0.1)
+        container.translatesAutoresizingMaskIntoConstraints = false
         
-        let bottom = stack.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -15)
-        bottom.priority = .defaultLow
+        container.addSubview(stack)
+        contentView.addSubview(container)
         
         NSLayoutConstraint.activate([
-            stack.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 15),
-            bottom,
-            stack.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 15),
-            stack.trailingAnchor.constraint(equalTo:  contentView.trailingAnchor, constant: -15)
+            container.topAnchor.constraint(equalTo: contentView.topAnchor),
+            container.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, priority: .defaultLow),
+            container.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 50),
+            container.trailingAnchor.constraint(equalTo:  contentView.trailingAnchor),
+            
+            stack.topAnchor.constraint(equalTo: container.topAnchor, constant: 15),
+            stack.bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: -15),
+            stack.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: 15),
+            stack.trailingAnchor.constraint(equalTo:  container.trailingAnchor, constant: -15)
         ])
     }
 }
