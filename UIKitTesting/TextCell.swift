@@ -8,8 +8,8 @@
 import UIKit
 
 class TextCell: UICollectionViewCell {
-    let label = UILabel()
-    weak var layout: EqualHeightsUICollectionViewCompositionalLayout?
+    private let label = UILabel()
+    weak private var layout: EqualHeightsUICollectionViewCompositionalLayout?
 
     
     override init(frame: CGRect) {
@@ -26,6 +26,12 @@ class TextCell: UICollectionViewCell {
         let attribute = super.preferredLayoutAttributesFitting(layoutAttributes)
         layout?.updateLayoutAttributesHeight(layoutAttributes: attribute)
         return attribute
+    }
+    
+    
+    func configure(text: String, layout: EqualHeightsUICollectionViewCompositionalLayout?) {
+        label.text = text
+        self.layout = layout
     }
     
     private func configure() {

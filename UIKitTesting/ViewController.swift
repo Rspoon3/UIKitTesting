@@ -75,8 +75,8 @@ class ViewController: UIViewController {
     
     func configureDataSource() {
         let cellRegistration = UICollectionView.CellRegistration<TextCell, String> { [weak self] (cell, indexPath, string) in
-            cell.label.text = string
-            cell.layout = self?.collectionView?.collectionViewLayout as? EqualHeightsUICollectionViewCompositionalLayout
+            cell.configure(text: string,
+                           layout: self?.collectionView?.collectionViewLayout as? EqualHeightsUICollectionViewCompositionalLayout)
         }
         
         dataSource = UICollectionViewDiffableDataSource<Section, String>(collectionView: collectionView) {
