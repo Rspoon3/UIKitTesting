@@ -12,33 +12,21 @@ struct ColorItem: Identifiable, Hashable {
     let color: UIColor
 }
 
-class ViewController: UIViewController {
-    var dataSource: UICollectionViewDiffableDataSource<Section, ColorItem>! = nil
+class ViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate {
+    var cellRegistration: UICollectionView.CellRegistration<TestCell, ColorItem>!
     var collectionView: UICollectionView! = nil
     let minScale: CGFloat = 0.8
     let maxScale: CGFloat = 1
-    var items = [ColorItem]()
+    var items = [UIColor.systemRed, .systemBlue, .systemOrange, .systemPink, .systemGray, .systemTeal, .systemGreen].map{ColorItem(color: $0)}
     var currentIndex: IndexPath!
     let scrollRateInSeconds: TimeInterval = 3
     private var canPrint = false
-
-
-    enum Section: String {
-        case main
-    }
+    private let numberOfItems = 1_000_000
 
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.title = "List"
-
-        for _ in 0..<1_000{
-            let colors = [UIColor.systemRed, .systemBlue, .systemOrange, .systemPink, .systemGray, .systemTeal, .systemGreen].map{ColorItem(color: $0)}
-            items.append(contentsOf: colors)
-        }
-
         configureCollectionView()
-        configureDataSource()
-        applyInitialSnapshot()
         scrollToMiddle()
 //        startTimer()
         
@@ -65,7 +53,7 @@ class ViewController: UIViewController {
         }
     }
 
-    func createLayout() -> UICollectionViewLayout {
+    private func createLayout() -> UICollectionViewLayout {
         return UICollectionViewCompositionalLayout { [weak self]
             (sectionIndex: Int, layoutEnvironment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
             guard let self else { return nil }
@@ -111,12 +99,16 @@ class ViewController: UIViewController {
         }
     }
 
-
     private func configureCollectionView() {
+        cellRegistration = UICollectionView.CellRegistration<TestCell, ColorItem> { (cell, indexPath, item) in
+            cell.configure(with: item.color)
+        }
+
         collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: createLayout())
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.backgroundColor = .systemBackground
         collectionView.delegate = self
+        collectionView.dataSource = self
         view.addSubview(collectionView)
 
         NSLayoutConstraint.activate([
@@ -126,32 +118,20 @@ class ViewController: UIViewController {
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])
     }
-
-    private func configureDataSource() {
-        let cellRegistration = UICollectionView.CellRegistration<TestCell, ColorItem> { (cell, indexPath, item) in
-            cell.configure(with: item.color)
-        }
-
-        dataSource = UICollectionViewDiffableDataSource<Section, ColorItem>(collectionView: collectionView) {
-            (collectionView, indexPath, item) -> UICollectionViewCell? in
-
-            return collectionView.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: item)
-        }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let index = indexPath.item % items.count
+        let item = items[index]
+        
+        return collectionView.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: item)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return numberOfItems
     }
 
-    private func applyInitialSnapshot() {
-        var snapshot = NSDiffableDataSourceSnapshot<Section, ColorItem>()
-        snapshot.appendSections([.main])
-        snapshot.appendItems(items)
-
-        dataSource.apply(snapshot, animatingDifferences: false)
-    }
-}
-
-extension ViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        if isViewLoaded {
-            print("Did end", indexPath.item)
-        }
+        guard canPrint else { return }
+        print("Did end", indexPath.item)
     }
 }

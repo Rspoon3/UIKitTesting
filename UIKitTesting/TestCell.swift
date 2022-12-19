@@ -16,7 +16,7 @@ class TestCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        containerView.layer.shadowColor = UIColor.black.withAlphaComponent(0.25).cgColor
+        containerView.layer.shadowColor = UIColor.black.withAlphaComponent(1.25).cgColor
         containerView.layer.shadowRadius = 20
         containerView.layer.shadowOffset = .init(width: 0, height: 9)
         containerView.layer.shouldRasterize = true
@@ -41,15 +41,15 @@ class TestCell: UICollectionViewCell {
 //        ])
         
         NSLayoutConstraint.activate([
-            containerView.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor),
-            containerView.bottomAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.bottomAnchor),
-            containerView.leadingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leadingAnchor),
-            containerView.trailingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.trailingAnchor),
+            containerView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            containerView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+            containerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            containerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             
-            imageView.topAnchor.constraint(equalTo: containerView.safeAreaLayoutGuide.topAnchor),
-            imageView.bottomAnchor.constraint(equalTo: containerView.safeAreaLayoutGuide.bottomAnchor),
-            imageView.leadingAnchor.constraint(equalTo: containerView.safeAreaLayoutGuide.leadingAnchor),
-            imageView.trailingAnchor.constraint(equalTo: containerView.safeAreaLayoutGuide.trailingAnchor),
+            imageView.topAnchor.constraint(equalTo: containerView.topAnchor),
+            imageView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
+            imageView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
+            imageView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
         ])
     }
     
@@ -58,7 +58,7 @@ class TestCell: UICollectionViewCell {
     }
     
     func configure(with color: UIColor) {
-//        contentView.backgroundColor = color
+        contentView.backgroundColor = color
     }
     
     func shadowOpacity(percentage: Double) {
