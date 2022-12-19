@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9427ED3C29437CD300E9440A /* TestCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9427ED3B29437CD300E9440A /* TestCell.swift */; };
 		A6D826FD27CE8CDD001244D0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D826FC27CE8CDD001244D0 /* AppDelegate.swift */; };
 		A6D826FF27CE8CDD001244D0 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D826FE27CE8CDD001244D0 /* SceneDelegate.swift */; };
 		A6D8270127CE8CDD001244D0 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D8270027CE8CDD001244D0 /* ViewController.swift */; };
@@ -16,6 +17,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		9427ED3B29437CD300E9440A /* TestCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestCell.swift; sourceTree = "<group>"; };
 		A6D826F927CE8CDD001244D0 /* UIKitTesting.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UIKitTesting.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A6D826FC27CE8CDD001244D0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A6D826FE27CE8CDD001244D0 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -59,6 +61,7 @@
 				A6D826FC27CE8CDD001244D0 /* AppDelegate.swift */,
 				A6D826FE27CE8CDD001244D0 /* SceneDelegate.swift */,
 				A6D8270027CE8CDD001244D0 /* ViewController.swift */,
+				9427ED3B29437CD300E9440A /* TestCell.swift */,
 				A6D8270227CE8CDD001244D0 /* Main.storyboard */,
 				A6D8270527CE8CDD001244D0 /* Assets.xcassets */,
 				A6D8270727CE8CDD001244D0 /* LaunchScreen.storyboard */,
@@ -139,6 +142,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A6D8270127CE8CDD001244D0 /* ViewController.swift in Sources */,
+				9427ED3C29437CD300E9440A /* TestCell.swift in Sources */,
 				A6D826FD27CE8CDD001244D0 /* AppDelegate.swift in Sources */,
 				A6D826FF27CE8CDD001244D0 /* SceneDelegate.swift in Sources */,
 			);
@@ -289,7 +293,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = X2B564LBX6;
+				DEVELOPMENT_TEAM = SBS8ZBXB9U;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = UIKitTesting/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -302,7 +306,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = govenda.UIKitTesting;
+				PRODUCT_BUNDLE_IDENTIFIER = rspoon3.UIKitTesting;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -317,7 +321,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = X2B564LBX6;
+				DEVELOPMENT_TEAM = SBS8ZBXB9U;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = UIKitTesting/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -330,7 +334,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = govenda.UIKitTesting;
+				PRODUCT_BUNDLE_IDENTIFIER = rspoon3.UIKitTesting;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
