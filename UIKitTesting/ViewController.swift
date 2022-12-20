@@ -7,6 +7,7 @@
 
 import UIKit
 import LoremSwiftum
+import Combine
 
 class ViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate {
     var cellRegistration: UICollectionView.CellRegistration<TestCell, UIColor>!
@@ -19,7 +20,9 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
     var currentIndex: IndexPath!
     let scrollRateInSeconds: TimeInterval = 3
     private let numberOfCarouselItems = 1_000_000
-
+    private var cancellables = Set<AnyCancellable>()
+    private var scrollViewObserver: ScrollViewObserver?
+    
     
     //MARK: - Lifecycle
     
@@ -29,8 +32,15 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
         configureCollectionView()
         scrollToMiddle()
 //        startTimer()
+        
+        
+        UIScrollView.swizzlScrollViewWillBeginDragging()
+        
+        if let scrollView = collectionView.horizontalUIScrollViews().first {
+            scrollViewObserver = ScrollViewObserver(scrollView: scrollView)
+        }
     }
-
+    
     
     //MARK: - Private Helpers
     
@@ -38,17 +48,17 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
         currentIndex = IndexPath(row: carouselItems.count / 2, section: 0)
         collectionView.scrollToItem(at: currentIndex, at: .centeredHorizontally, animated: false)
     }
-
+    
     private func startTimer() {
         let _ = Timer.scheduledTimer(withTimeInterval: scrollRateInSeconds, repeats: true) { [weak self] timer in
             guard let self else { return }
             var animated = true
-
+            
             if self.currentIndex.item == self.carouselItems.count {
                 self.currentIndex.item = 0
                 animated = false
             }
-
+            
             self.collectionView.scrollToItem(at: self.currentIndex, at: .centeredHorizontally, animated: animated)
             self.currentIndex.item += 1
         }
@@ -56,7 +66,7 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
     
     
     //MARK: - Layout
-
+    
     private func createCarasouelSection(_ layoutEnvironment: NSCollectionLayoutEnvironment, _ self: ViewController) -> NSCollectionLayoutSection? {
         let containerWidth = layoutEnvironment.container.contentSize.width
         let spacing: CGFloat = 12
@@ -82,6 +92,7 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
         
         section.visibleItemsInvalidationHandler = { [weak self] (items, offset, environment) in
             guard let self else { return }
+            //            print(items.first?.indexPath, items.last?.indexPath)
             
             items.forEach { item in
                 guard let cell = self.collectionView.cellForItem(at: item.indexPath) as? TestCell else { return }
@@ -113,11 +124,11 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
         }
         
         let config = UICollectionViewCompositionalLayoutConfiguration()
-        config.interSectionSpacing = 50
+        config.interSectionSpacing = 20
         layout.configuration = config
         return layout
     }
-
+    
     private func configureCollectionView() {
         cellRegistration = UICollectionView.CellRegistration<TestCell, UIColor> { (cell, indexPath, color) in
             cell.configure(with: color)
@@ -128,14 +139,14 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
             content.text = text
             cell.contentConfiguration = content
         }
-
+        
         collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: createLayout())
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.backgroundColor = .systemBackground
         collectionView.delegate = self
         collectionView.dataSource = self
         view.addSubview(collectionView)
-
+        
         NSLayoutConstraint.activate([
             collectionView.topAnchor.constraint(equalTo: view.topAnchor),
             collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
@@ -168,5 +179,16 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
         } else {
             return listItems.count
         }
+    }
+    
+    
+    //MARK: - Delegate
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        collectionView.deselectItem(at: indexPath, animated: false)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, shouldHighlightItemAt indexPath: IndexPath) -> Bool {
+        return false
     }
 }

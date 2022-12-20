@@ -16,8 +16,8 @@ class TestCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        containerView.layer.shadowColor = UIColor.black.withAlphaComponent(1.25).cgColor
-        containerView.layer.shadowRadius = 20
+        containerView.layer.shadowColor = UIColor.black.withAlphaComponent(0.1).cgColor
+        containerView.layer.shadowRadius = 5
         containerView.layer.shadowOffset = .init(width: 0, height: 9)
         containerView.layer.shouldRasterize = true
         containerView.layer.rasterizationScale = UIScreen.main.scale
