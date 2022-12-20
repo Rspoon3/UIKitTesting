@@ -58,7 +58,7 @@ class TestCell: UICollectionViewCell {
     }
     
     func configure(with color: UIColor) {
-        contentView.backgroundColor = color
+//        contentView.backgroundColor = color
     }
     
     func shadowOpacity(percentage: Double) {
