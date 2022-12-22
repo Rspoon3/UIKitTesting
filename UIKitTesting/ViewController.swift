@@ -9,19 +9,21 @@ import UIKit
 import LoremSwiftum
 import Combine
 
+
 class ViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate {
     var cellRegistration: UICollectionView.CellRegistration<TestCell, UIColor>!
     var textCellRegistration: UICollectionView.CellRegistration<UICollectionViewListCell, String>!
-    var collectionView: UICollectionView! = nil
+    var collectionView: OrthogonalUICollectionView! = nil
     let minScale: CGFloat = 0.8
     let maxScale: CGFloat = 1
     let carouselItems = [UIColor.systemRed, .systemBlue, .systemOrange, .systemPink, .systemGray, .systemTeal, .systemGreen]
     let listItems = Array(0..<100).map{_ in Lorem.sentences(.random(in: 1..<5))}
     var currentIndex: IndexPath!
-    let scrollRateInSeconds: TimeInterval = 3
+    let scrollRateInSeconds: TimeInterval = 2
     private let numberOfCarouselItems = 1_000_000
     private var cancellables = Set<AnyCancellable>()
     private var scrollViewObserver: ScrollViewObserver?
+    private var timer: Timer?
     
     
     //MARK: - Lifecycle
@@ -31,36 +33,39 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
         navigationItem.title = "List"
         configureCollectionView()
         scrollToMiddle()
-//        startTimer()
-        
-        
-        UIScrollView.swizzlScrollViewWillBeginDragging()
-        
-        if let scrollView = collectionView.horizontalUIScrollViews().first {
-            scrollViewObserver = ScrollViewObserver(scrollView: scrollView)
-        }
     }
-    
     
     //MARK: - Private Helpers
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        startTimer()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        timer?.invalidate()
+        timer = nil
+    }
+    
     private func scrollToMiddle() {
-        currentIndex = IndexPath(row: carouselItems.count / 2, section: 0)
+        currentIndex = IndexPath(row: numberOfCarouselItems / 2, section: 0)
         collectionView.scrollToItem(at: currentIndex, at: .centeredHorizontally, animated: false)
     }
     
     private func startTimer() {
-        let _ = Timer.scheduledTimer(withTimeInterval: scrollRateInSeconds, repeats: true) { [weak self] timer in
+        timer = Timer.scheduledTimer(withTimeInterval: scrollRateInSeconds, repeats: true) { [weak self] timer in
             guard let self else { return }
-            var animated = true
+//
+//            if self.currentIndex.item == self.numberOfCarouselItems - 1 {
+//                self.currentIndex.item = 0
+//                animated = false
+//            }
             
-            if self.currentIndex.item == self.carouselItems.count {
-                self.currentIndex.item = 0
-                animated = false
-            }
-            
-            self.collectionView.scrollToItem(at: self.currentIndex, at: .centeredHorizontally, animated: animated)
             self.currentIndex.item += 1
+//            print(self.currentIndex)
+            self.collectionView.scrollToItem(at: self.currentIndex, at: .centeredVertically, animated: true)
+            
         }
     }
     
@@ -89,20 +94,23 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
         
         section.orthogonalScrollingBehavior = .groupPagingCentered
         section.interGroupSpacing = interGroupSpacing + spacing
+//        section.interGroupSpacing = 10
         
         section.visibleItemsInvalidationHandler = { [weak self] (items, offset, environment) in
             guard let self else { return }
-            //            print(items.first?.indexPath, items.last?.indexPath)
-            
+//                        print(items.first?.indexPath, items.last?.indexPath)
+
             items.forEach { item in
                 guard let cell = self.collectionView.cellForItem(at: item.indexPath) as? TestCell else { return }
-                
+
                 let distanceFromCenter = abs((item.frame.midX - offset.x) - environment.container.contentSize.width / 2.0)
                 let percentageToMidX =  1 - (distanceFromCenter / (item.frame.width + spacing))
                 let scale = ((self.maxScale - self.minScale) * percentageToMidX) + self.minScale
                 let clampedScale = max(self.minScale, scale)
-                
+
                 cell.shadowOpacity(percentage: percentageToMidX)
+                
+//                cell.scale(clampedScale)
                 item.transform = CGAffineTransform(scaleX: clampedScale, y: clampedScale)
             }
         }
@@ -114,7 +122,7 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
         let layout = UICollectionViewCompositionalLayout { [weak self]
             (sectionIndex: Int, layoutEnvironment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
             guard let self else { return nil }
-            
+                        
             if sectionIndex == 0 {
                 return self.createCarasouelSection(layoutEnvironment, self)
             } else {
@@ -140,11 +148,12 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
             cell.contentConfiguration = content
         }
         
-        collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: createLayout())
+        collectionView = OrthogonalUICollectionView(frame: view.bounds, collectionViewLayout: createLayout())
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.backgroundColor = .systemBackground
         collectionView.delegate = self
         collectionView.dataSource = self
+        
         view.addSubview(collectionView)
         
         NSLayoutConstraint.activate([
@@ -158,7 +167,7 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
     
     //MARK: - Data Source
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 2
+        return 1
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -166,7 +175,9 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
             let index = indexPath.item % carouselItems.count
             let item = carouselItems[index]
             
-            return collectionView.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: item)
+            let cell = collectionView.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: item)
+            cell.label.text = indexPath.item.formatted()
+            return cell
         } else {
             let item = listItems[indexPath.item]
             return collectionView.dequeueConfiguredReusableCell(using: textCellRegistration, for: indexPath, item: item)
@@ -181,14 +192,23 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
         }
     }
     
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        collectionView.deselectItem(at: indexPath, animated: false)
+        
+        let test = UIViewController()
+        test.view.backgroundColor = .red
+        
+        navigationController?.pushViewController(test, animated: true)
+    }
+    
     
     //MARK: - Delegate
     
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        collectionView.deselectItem(at: indexPath, animated: false)
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, shouldHighlightItemAt indexPath: IndexPath) -> Bool {
-        return false
-    }
+//    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+//        collectionView.deselectItem(at: indexPath, animated: false)
+//    }
+//
+//    func collectionView(_ collectionView: UICollectionView, shouldHighlightItemAt indexPath: IndexPath) -> Bool {
+//        return false
+//    }
 }
