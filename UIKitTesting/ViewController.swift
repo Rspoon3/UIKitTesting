@@ -19,7 +19,7 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
     let carouselItems = [UIColor.systemRed, .systemBlue, .systemOrange, .systemPink, .systemGray, .systemTeal, .systemGreen]
     let listItems = Array(0..<100).map{_ in Lorem.sentences(.random(in: 1..<5))}
     var currentIndex: IndexPath!
-    let scrollRateInSeconds: TimeInterval = 2
+    let scrollRateInSeconds: TimeInterval = 4
     private let numberOfCarouselItems = 1_000_000
     private var cancellables = Set<AnyCancellable>()
     private var scrollViewObserver: ScrollViewObserver?
@@ -50,23 +50,23 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
     
     private func scrollToMiddle() {
         currentIndex = IndexPath(row: numberOfCarouselItems / 2, section: 0)
-        collectionView.scrollToItem(at: currentIndex, at: .centeredHorizontally, animated: false)
+        collectionView.scrollToItem(at: currentIndex, at: .centeredHorizontally, animated: true)
     }
     
     private func startTimer() {
         timer = Timer.scheduledTimer(withTimeInterval: scrollRateInSeconds, repeats: true) { [weak self] timer in
-            guard let self else { return }
-//
-//            if self.currentIndex.item == self.numberOfCarouselItems - 1 {
-//                self.currentIndex.item = 0
-//                animated = false
-//            }
-            
-            self.currentIndex.item += 1
-//            print(self.currentIndex)
-            self.collectionView.scrollToItem(at: self.currentIndex, at: .centeredVertically, animated: true)
-            
+            self?.scrollToNextIndex()
         }
+    }
+    
+    private func scrollToNextIndex() {
+        if currentIndex.item == numberOfCarouselItems - 1 {
+            currentIndex.item = 0
+        } else {
+            currentIndex.item += 1
+        }
+        
+        collectionView.scrollToItem(at: currentIndex, at: .centeredVertically, animated: true)
     }
     
     
@@ -76,7 +76,6 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
         let containerWidth = layoutEnvironment.container.contentSize.width
         let spacing: CGFloat = 12
         let width: CGFloat = containerWidth - spacing * 4
-        let heightFraction: CGFloat  =  160 / 327
         
         // Item
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1),
@@ -85,7 +84,7 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
         
         // Group
         let groupSize = NSCollectionLayoutSize(widthDimension: .absolute(width),
-                                               heightDimension: .fractionalWidth(heightFraction))
+                                               heightDimension: .absolute(width / 2))
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
         
         // Section
@@ -94,24 +93,27 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
         
         section.orthogonalScrollingBehavior = .groupPagingCentered
         section.interGroupSpacing = interGroupSpacing + spacing
-//        section.interGroupSpacing = 10
         
         section.visibleItemsInvalidationHandler = { [weak self] (items, offset, environment) in
             guard let self else { return }
-//                        print(items.first?.indexPath, items.last?.indexPath)
-
+            
             items.forEach { item in
-                guard let cell = self.collectionView.cellForItem(at: item.indexPath) as? TestCell else { return }
-
                 let distanceFromCenter = abs((item.frame.midX - offset.x) - environment.container.contentSize.width / 2.0)
                 let percentageToMidX =  1 - (distanceFromCenter / (item.frame.width + spacing))
                 let scale = ((self.maxScale - self.minScale) * percentageToMidX) + self.minScale
                 let clampedScale = max(self.minScale, scale)
-
-                cell.shadowOpacity(percentage: percentageToMidX)
                 
-//                cell.scale(clampedScale)
+                
+                if let cell = self.collectionView.cellForItem(at: item.indexPath) as? TestCell {
+                    cell.shadowOpacity(percentage: percentageToMidX)
+//                    cell.scale(clampedScale)
+                }
+                
                 item.transform = CGAffineTransform(scaleX: clampedScale, y: clampedScale)
+                
+                if scale > 0.9 {
+                    self.currentIndex = item.indexPath
+                }
             }
         }
         
@@ -139,7 +141,8 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
     
     private func configureCollectionView() {
         cellRegistration = UICollectionView.CellRegistration<TestCell, UIColor> { (cell, indexPath, color) in
-            cell.configure(with: color)
+            cell.configure(with: color, indexPath: indexPath)
+            cell.label.text = indexPath.item.formatted()
         }
         
         textCellRegistration = UICollectionView.CellRegistration<UICollectionViewListCell, String> { (cell, indexPath, text) in
@@ -175,9 +178,7 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
             let index = indexPath.item % carouselItems.count
             let item = carouselItems[index]
             
-            let cell = collectionView.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: item)
-            cell.label.text = indexPath.item.formatted()
-            return cell
+            return collectionView.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: item)
         } else {
             let item = listItems[indexPath.item]
             return collectionView.dequeueConfiguredReusableCell(using: textCellRegistration, for: indexPath, item: item)

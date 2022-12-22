@@ -27,7 +27,6 @@ class TestCell: UICollectionViewCell {
 
         imageView.clipsToBounds = true
         imageView.layer.cornerRadius = cornerRadius
-        imageView.image = .init(named: "dog")
         imageView.contentMode = .scaleAspectFill
         imageView.translatesAutoresizingMaskIntoConstraints = false
 
@@ -67,8 +66,11 @@ class TestCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configure(with color: UIColor) {
+    func configure(with color: UIColor, indexPath: IndexPath) {
 //        contentView.backgroundColor = color
+        
+        let i = indexPath.item.isMultiple(of: 2) ? "carousel_B-new-size" : "dog"
+        imageView.image = .init(named: i)
     }
     
     func shadowOpacity(percentage: Double) {
