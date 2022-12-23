@@ -68,37 +68,56 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
     
     //MARK: - Layout
     
-    private func createCarasouelSection(_ layoutEnvironment: NSCollectionLayoutEnvironment, _ self: ViewController) -> NSCollectionLayoutSection? {
-        let containerWidth = layoutEnvironment.container.contentSize.width
-        let spacing: CGFloat = 12
-        let width: CGFloat = containerWidth - spacing * 4
-        
-        // Item
-        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1),
-                                              heightDimension: .fractionalHeight(1))
-        let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        
-        // Group
-        let groupSize = NSCollectionLayoutSize(widthDimension: .absolute(width),
-                                               heightDimension: .absolute(width / 2))
-        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
-        
-        // Section
-        let section = NSCollectionLayoutSection(group: group)
-        
-        section.orthogonalScrollingBehavior = .groupPagingCentered
-        section.interGroupSpacing = 12
-        
-        
-        return section
-    }
+    
+//    func createLayout() -> UICollectionViewLayout {
+//        let columns = 3
+//        let spacing = CGFloat(10)
+//
+//        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
+//                                              heightDimension: .estimated(100))
+//        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+//
+//        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
+//                                               heightDimension: .estimated(100))
+//        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitem: item, count: columns)
+//        group.interItemSpacing = .fixed(spacing)
+//
+//        let section = NSCollectionLayoutSection(group: group)
+//        section.interGroupSpacing = spacing
+//        section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10)
+//
+//        return EqualHeightsUICollectionViewCompositionalLayout(section: section, columns: columns)
+//    }
     
     private func createLayout() -> UICollectionViewLayout {
-        return CustomLayout { [weak self]
-            (sectionIndex: Int, layoutEnvironment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
-            guard let self else { return nil }
+        
+        
+        return CustomLayout { (sectionIndex: Int, layoutEnvironment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
+        
+//        return UICollectionViewCompositionalLayout { (sectionIndex: Int, layoutEnvironment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
             
-            return self.createCarasouelSection(layoutEnvironment, self)
+            let containerWidth = layoutEnvironment.container.contentSize.width
+            let spacing: CGFloat = 12
+            let width: CGFloat = containerWidth - spacing * 4
+            
+            // Item
+            let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1),
+                                                  heightDimension: .fractionalHeight(1))
+            let item = NSCollectionLayoutItem(layoutSize: itemSize)
+            
+            // Group
+            let groupSize = NSCollectionLayoutSize(widthDimension: .absolute(width),
+                                                   heightDimension: .absolute(width / 2))
+            let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+            
+            // Section
+            let section = NSCollectionLayoutSection(group: group)
+            
+            section.orthogonalScrollingBehavior = .groupPagingCentered
+            section.interGroupSpacing = 12
+            
+            return section
+//            return section
         }
     }
     
@@ -161,3 +180,5 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
     //        return false
     //    }
 }
+
+

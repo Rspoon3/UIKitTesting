@@ -8,51 +8,39 @@
 import UIKit
 
 class CustomLayout: UICollectionViewCompositionalLayout {
-//    private var heights = [Int: [IndexPath: CGFloat]]()
-//    private var largests = [Int: CGFloat]()
-//    private let columns: Int
-//
-//    init(section: NSCollectionLayoutSection, columns: Int) {
-//        self.columns = columns
-//        super.init(section: section)
-//    }
-//    
-//    required init?(coder: NSCoder) {
-//        fatalError("init(coder:) has not been implemented")
-//    }
-//    
-//    override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
-//        let attributes = super.layoutAttributesForElements(in: rect)
-//        
-//        if #unavailable(iOS 15) {
-//            if let attributes = attributes {
-//                for attribute in attributes {
-//                    updateLayoutAttributesHeight(layoutAttributes: attribute)
-//                }
-//            }
-//        }
-//        
-//        return attributes
-//    }
-//    
-//    override func invalidateLayout() {
-//        super.invalidateLayout()
-//
-//        heights.removeAll(keepingCapacity: true)
-//        largests.removeAll(keepingCapacity: true)
-//    }
-//    
-//    func updateLayoutAttributesHeight(layoutAttributes: UICollectionViewLayoutAttributes) {
-//        let height = layoutAttributes.frame.height
-//        let indexPath = layoutAttributes.indexPath
-//        let row = indexPath.item / columns
-//
-//        heights[row]?[indexPath] = height
-//        
-//        largests[row] = max(largests[row] ?? 0, height)
-//        
-//        let size = CGSize(width: layoutAttributes.frame.width,
-//                          height: largests[row] ?? 0)
-//        layoutAttributes.frame = .init(origin: layoutAttributes.frame.origin, size: size)
+    private let minScale: CGFloat = 0.8
+    private let maxScale: CGFloat = 1
+
+    override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
+        guard let collectionView = collectionView else { return nil }
+        let rectAttributes = super.layoutAttributesForElements(in: rect)!.map { $0.copy() as! UICollectionViewLayoutAttributes }
+        let visibleRect = CGRect(origin: collectionView.contentOffset, size: collectionView.frame.size)
+
+        for attributes in rectAttributes where attributes.frame.intersects(visibleRect) {
+            let distanceFromCenter = abs((attributes.center.x - collectionView.contentOffset.x) - collectionView.frame.size.width / 2.0)
+
+            let percentageToMidX =  1 - (distanceFromCenter / (attributes.size.width + 12))
+            let scale = ((self.maxScale - self.minScale) * percentageToMidX) + self.minScale
+            let clampedScale = max(self.minScale, scale)
+
+//            print(clampedScale)
+
+            attributes.transform = CGAffineTransform(scaleX: clampedScale, y: clampedScale)
+        }
+        
+        print(rectAttributes)
+
+        return rectAttributes
+    }
+
+    override func shouldInvalidateLayout(forBoundsChange newBounds: CGRect) -> Bool {
+        // Invalidate layout so that every cell get a chance to be zoomed when it reaches the center of the screen
+        return true
+    }
+
+//    override func invalidationContext(forBoundsChange newBounds: CGRect) -> UICollectionViewLayoutInvalidationContext {
+//        let context = super.invalidationContext(forBoundsChange: newBounds) as! UICollectionViewFlowLayoutInvalidationContext
+//        context.invalidateFlowLayoutDelegateMetrics = newBounds.size != collectionView?.bounds.size
+//        return context
 //    }
 }
