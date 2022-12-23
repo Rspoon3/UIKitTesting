@@ -13,11 +13,20 @@ class TestCell: UICollectionViewCell {
     private let imageView = UIImageView()
     private let cornerRadius: CGFloat = 8
     let label = UILabel()
+    
+    override func apply(_ layoutAttributes: UICollectionViewLayoutAttributes) {
+        super.apply(layoutAttributes)
+        
+        if let layoutAttributes = layoutAttributes as? FSPagerViewLayoutAttributes {
+            print(layoutAttributes.percentageToMidX)
+            shadowOpacity(percentage: layoutAttributes.percentageToMidX)
+        }
+    }
  
     override init(frame: CGRect) {
         super.init(frame: frame)
                 
-        containerView.layer.shadowColor = UIColor.black.withAlphaComponent(0.1).cgColor
+        containerView.layer.shadowColor = UIColor.black.withAlphaComponent(0.9).cgColor
         containerView.layer.shadowRadius = 5
         containerView.layer.shadowOffset = .init(width: 0, height: 9)
         containerView.layer.shouldRasterize = true
