@@ -104,6 +104,7 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
                 let clampedScale = max(self.minScale, scale)
                 
                 
+
                 if let cell = self.collectionView.cellForItem(at: item.indexPath) as? TestCell {
                     cell.shadowOpacity(percentage: percentageToMidX)
 //                    cell.scale(clampedScale)
@@ -156,6 +157,9 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
         collectionView.backgroundColor = .systemBackground
         collectionView.delegate = self
         collectionView.dataSource = self
+        collectionView.didStartDragging = {
+            print("started draggin")
+        }
         
         view.addSubview(collectionView)
         

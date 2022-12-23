@@ -9,23 +9,25 @@ import UIKit
 
 
 class OrthogonalUICollectionView: UICollectionView {
-    var needScrollView = true
-    var draggingInitiated = false
+    private var draggingInitiated = false
     private let contentOffsetString = "contentOffset"
     private var observer: NSKeyValueObservation?
-   
+    var didStartDragging: (() -> Void)?
+    var didStopDragging: (() -> Void)?
     
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        guard needScrollView else { return }
+    override func didAddSubview(_ subview: UIView) {
+        super.didAddSubview(subview)
         
-        for subview in subviews {
-            guard let scrollView = subview as? UIScrollView else { continue }
-            setObserver(using: scrollView)
-            needScrollView = false
-            break
+        guard
+            self.observer == nil,
+            let scrollView = subview as? UIScrollView
+        else {
+            return
         }
+        
+        setObserver(using: scrollView)
     }
+    
     
     private func setObserver(using scrollView: UIScrollView) {
         observer = scrollView.observe(\UIScrollView.contentOffset, options: .new) { [weak self] scrollView, _ in
@@ -33,10 +35,10 @@ class OrthogonalUICollectionView: UICollectionView {
             
             if !self.draggingInitiated && scrollView.isDragging {
                 self.draggingInitiated = true
-                print("Started Dragging")
+                self.didStartDragging?()
             } else if self.draggingInitiated && !scrollView.isDragging {
                 self.draggingInitiated = false
-                print("Ended Dragging")
+                self.didStopDragging?()
             }
         }
     }
