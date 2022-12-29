@@ -13,7 +13,13 @@ class TestCell: UICollectionViewCell {
     private let imageView = UIImageView()
     private let cornerRadius: CGFloat = 8
     let label = UILabel()
- 
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesBegan(touches, with: event)
+        print(transform)
+    }
+    
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
                 
@@ -40,9 +46,10 @@ class TestCell: UICollectionViewCell {
 //            view.widthAnchor.constraint(equalToConstant: 50)
 //        ])
         
-        label.font = .preferredFont(forTextStyle: .largeTitle)
+        label.font = .preferredFont(forTextStyle: .headline)
         label.textColor = .white
         label.translatesAutoresizingMaskIntoConstraints = false
+        label.numberOfLines = 0
         
         containerView.addSubview(label)
         

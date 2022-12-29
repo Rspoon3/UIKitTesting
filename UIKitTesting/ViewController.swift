@@ -31,6 +31,27 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.title = "List"
+        
+        let blue = UIView()
+        blue.backgroundColor = .systemBlue
+        let red = UIView()
+        red.backgroundColor = .systemRed
+        
+        let stack = UIStackView(arrangedSubviews: [blue, red])
+        stack.translatesAutoresizingMaskIntoConstraints = false
+        stack.spacing = 0
+        stack.distribution = .fillEqually
+        
+        view.addSubview(stack)
+        
+        NSLayoutConstraint.activate([
+            stack.topAnchor.constraint(equalTo: view.topAnchor),
+            stack.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            stack.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            stack.widthAnchor.constraint(equalToConstant: 12 * 2)
+        ])
+        
+        
         configureCollectionView()
         scrollToMiddle()
     }
@@ -39,7 +60,7 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        startTimer()
+//        startTimer()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -113,6 +134,11 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
                 if let cell = self.collectionView.cellForItem(at: item.indexPath) as? TestCell {
                     cell.shadowOpacity(percentage: percentageToMidX)
 //                    cell.scale(clampedScale)
+                    cell.label.text = "\(distanceFromCenter)\n\(percentageToMidX)"
+                }
+                
+                if item.indexPath.item > 100 {
+                    print(scale, item.indexPath.item)
                 }
                 
                 item.transform = CGAffineTransform(scaleX: clampedScale, y: clampedScale)
@@ -163,6 +189,8 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.decelerationRate = .fast
+        collectionView.layer.opacity = 0.5
+        
         collectionView.didStartDragging = { [weak self] in
             self?.stopTimer()
         }
