@@ -59,6 +59,11 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
         }
     }
     
+    private func stopTimer() {
+        timer?.invalidate()
+        timer = nil
+    }
+    
     private func scrollToNextIndex() {
         if currentIndex.item == numberOfCarouselItems - 1 {
             currentIndex.item = 0
@@ -157,8 +162,8 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
         collectionView.backgroundColor = .systemBackground
         collectionView.delegate = self
         collectionView.dataSource = self
-        collectionView.didStartDragging = {
-            print("started draggin")
+        collectionView.didStartDragging = { [weak self] in
+            self?.stopTimer()
         }
         
         view.addSubview(collectionView)
