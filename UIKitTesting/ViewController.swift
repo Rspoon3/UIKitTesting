@@ -162,6 +162,7 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
         collectionView.backgroundColor = .systemBackground
         collectionView.delegate = self
         collectionView.dataSource = self
+        collectionView.decelerationRate = .fast
         collectionView.didStartDragging = { [weak self] in
             self?.stopTimer()
         }
