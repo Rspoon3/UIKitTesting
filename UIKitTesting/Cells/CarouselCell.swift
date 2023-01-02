@@ -1,5 +1,5 @@
 //
-//  TestCell.swift
+//  CarouselCell.swift
 //  UIKitTesting
 //
 //  Created by Richard Witherspoon on 12/9/22.
@@ -8,17 +8,18 @@
 import UIKit
 
 
-class TestCell: UICollectionViewCell {
+final class CarouselCell: UICollectionViewCell {
     private let containerView = UIView()
     private let imageView = UIImageView()
     private let cornerRadius: CGFloat = 8
     let label = UILabel()
     
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        super.touchesBegan(touches, with: event)
-        print(transform)
+    override func apply(_ layoutAttributes: UICollectionViewLayoutAttributes) {
+        super.apply(layoutAttributes)
+        if let attribute = layoutAttributes as? CarouselLayoutAttributes {
+            shadowOpacity(percentage: attribute.percentageToMidX)
+        }
     }
-    
     
     override init(frame: CGRect) {
         super.init(frame: frame)

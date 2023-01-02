@@ -8,26 +8,36 @@
 
 /* Begin PBXBuildFile section */
 		941B25842953E17B0057B09C /* OrthogonalUICollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 941B25832953E17B0057B09C /* OrthogonalUICollectionView.swift */; };
-		9427ED3C29437CD300E9440A /* TestCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9427ED3B29437CD300E9440A /* TestCell.swift */; };
-		9460BB39295256C9003CAF42 /* ScrollViewObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9460BB38295256C9003CAF42 /* ScrollViewObserver.swift */; };
+		9427ED3C29437CD300E9440A /* CarouselCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9427ED3B29437CD300E9440A /* CarouselCell.swift */; };
+		94CD51372960D2E100A0AB42 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94CD51362960D2E100A0AB42 /* TabBarController.swift */; };
+		94CD51392960D51E00A0AB42 /* CarouselLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94CD51382960D51E00A0AB42 /* CarouselLayout.swift */; };
+		94CD513B2960D55400A0AB42 /* CustomCarouselLayoutVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94CD513A2960D55400A0AB42 /* CustomCarouselLayoutVC.swift */; };
+		94CD513D2960D6DC00A0AB42 /* CarouselLayoutAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94CD513C2960D6DC00A0AB42 /* CarouselLayoutAttributes.swift */; };
+		94CD51442960D7D600A0AB42 /* ColorStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94CD51432960D7D600A0AB42 /* ColorStackView.swift */; };
+		94CD51462960E90300A0AB42 /* CarouselVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94CD51452960E90300A0AB42 /* CarouselVC.swift */; };
+		94CD51482963881000A0AB42 /* CarouselManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94CD51472963881000A0AB42 /* CarouselManager.swift */; };
 		94EC774F2951FA8100F3CE62 /* LoremSwiftum in Frameworks */ = {isa = PBXBuildFile; productRef = 94EC774E2951FA8100F3CE62 /* LoremSwiftum */; };
 		A6D826FD27CE8CDD001244D0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D826FC27CE8CDD001244D0 /* AppDelegate.swift */; };
 		A6D826FF27CE8CDD001244D0 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D826FE27CE8CDD001244D0 /* SceneDelegate.swift */; };
-		A6D8270127CE8CDD001244D0 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D8270027CE8CDD001244D0 /* ViewController.swift */; };
-		A6D8270427CE8CDD001244D0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A6D8270227CE8CDD001244D0 /* Main.storyboard */; };
+		A6D8270127CE8CDD001244D0 /* OrthogonalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D8270027CE8CDD001244D0 /* OrthogonalViewController.swift */; };
 		A6D8270627CE8CDD001244D0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A6D8270527CE8CDD001244D0 /* Assets.xcassets */; };
 		A6D8270927CE8CDD001244D0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A6D8270727CE8CDD001244D0 /* LaunchScreen.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		941B25832953E17B0057B09C /* OrthogonalUICollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrthogonalUICollectionView.swift; sourceTree = "<group>"; };
-		9427ED3B29437CD300E9440A /* TestCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestCell.swift; sourceTree = "<group>"; };
-		9460BB38295256C9003CAF42 /* ScrollViewObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollViewObserver.swift; sourceTree = "<group>"; };
+		9427ED3B29437CD300E9440A /* CarouselCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarouselCell.swift; sourceTree = "<group>"; };
+		94CD51362960D2E100A0AB42 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
+		94CD51382960D51E00A0AB42 /* CarouselLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarouselLayout.swift; sourceTree = "<group>"; };
+		94CD513A2960D55400A0AB42 /* CustomCarouselLayoutVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCarouselLayoutVC.swift; sourceTree = "<group>"; };
+		94CD513C2960D6DC00A0AB42 /* CarouselLayoutAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarouselLayoutAttributes.swift; sourceTree = "<group>"; };
+		94CD51432960D7D600A0AB42 /* ColorStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorStackView.swift; sourceTree = "<group>"; };
+		94CD51452960E90300A0AB42 /* CarouselVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarouselVC.swift; sourceTree = "<group>"; };
+		94CD51472963881000A0AB42 /* CarouselManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarouselManager.swift; sourceTree = "<group>"; };
 		A6D826F927CE8CDD001244D0 /* UIKitTesting.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UIKitTesting.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A6D826FC27CE8CDD001244D0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A6D826FE27CE8CDD001244D0 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		A6D8270027CE8CDD001244D0 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		A6D8270327CE8CDD001244D0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		A6D8270027CE8CDD001244D0 /* OrthogonalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrthogonalViewController.swift; sourceTree = "<group>"; };
 		A6D8270527CE8CDD001244D0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A6D8270827CE8CDD001244D0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A6D8270A27CE8CDD001244D0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -45,6 +55,53 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		94CD513E2960D6E600A0AB42 /* View Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				94CD51362960D2E100A0AB42 /* TabBarController.swift */,
+				A6D8270027CE8CDD001244D0 /* OrthogonalViewController.swift */,
+				94CD513A2960D55400A0AB42 /* CustomCarouselLayoutVC.swift */,
+				94CD51452960E90300A0AB42 /* CarouselVC.swift */,
+			);
+			path = "View Controllers";
+			sourceTree = "<group>";
+		};
+		94CD513F2960D6F800A0AB42 /* Uitlities */ = {
+			isa = PBXGroup;
+			children = (
+				941B25832953E17B0057B09C /* OrthogonalUICollectionView.swift */,
+				94CD51432960D7D600A0AB42 /* ColorStackView.swift */,
+				94CD51472963881000A0AB42 /* CarouselManager.swift */,
+			);
+			path = Uitlities;
+			sourceTree = "<group>";
+		};
+		94CD51402960D6FE00A0AB42 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				A6D826FC27CE8CDD001244D0 /* AppDelegate.swift */,
+				A6D826FE27CE8CDD001244D0 /* SceneDelegate.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		94CD51412960D71000A0AB42 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				9427ED3B29437CD300E9440A /* CarouselCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		94CD51422960D75600A0AB42 /* Custom Flow Layout */ = {
+			isa = PBXGroup;
+			children = (
+				94CD51382960D51E00A0AB42 /* CarouselLayout.swift */,
+				94CD513C2960D6DC00A0AB42 /* CarouselLayoutAttributes.swift */,
+			);
+			path = "Custom Flow Layout";
+			sourceTree = "<group>";
+		};
 		A6D826F027CE8CDD001244D0 = {
 			isa = PBXGroup;
 			children = (
@@ -64,13 +121,11 @@
 		A6D826FB27CE8CDD001244D0 /* UIKitTesting */ = {
 			isa = PBXGroup;
 			children = (
-				A6D826FC27CE8CDD001244D0 /* AppDelegate.swift */,
-				9460BB38295256C9003CAF42 /* ScrollViewObserver.swift */,
-				A6D826FE27CE8CDD001244D0 /* SceneDelegate.swift */,
-				A6D8270027CE8CDD001244D0 /* ViewController.swift */,
-				941B25832953E17B0057B09C /* OrthogonalUICollectionView.swift */,
-				9427ED3B29437CD300E9440A /* TestCell.swift */,
-				A6D8270227CE8CDD001244D0 /* Main.storyboard */,
+				94CD51402960D6FE00A0AB42 /* App */,
+				94CD513F2960D6F800A0AB42 /* Uitlities */,
+				94CD513E2960D6E600A0AB42 /* View Controllers */,
+				94CD51422960D75600A0AB42 /* Custom Flow Layout */,
+				94CD51412960D71000A0AB42 /* Cells */,
 				A6D8270527CE8CDD001244D0 /* Assets.xcassets */,
 				A6D8270727CE8CDD001244D0 /* LaunchScreen.storyboard */,
 				A6D8270A27CE8CDD001244D0 /* Info.plist */,
@@ -144,7 +199,6 @@
 			files = (
 				A6D8270927CE8CDD001244D0 /* LaunchScreen.storyboard in Resources */,
 				A6D8270627CE8CDD001244D0 /* Assets.xcassets in Resources */,
-				A6D8270427CE8CDD001244D0 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -155,11 +209,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A6D8270127CE8CDD001244D0 /* ViewController.swift in Sources */,
+				A6D8270127CE8CDD001244D0 /* OrthogonalViewController.swift in Sources */,
 				941B25842953E17B0057B09C /* OrthogonalUICollectionView.swift in Sources */,
-				9427ED3C29437CD300E9440A /* TestCell.swift in Sources */,
+				94CD513D2960D6DC00A0AB42 /* CarouselLayoutAttributes.swift in Sources */,
+				94CD51442960D7D600A0AB42 /* ColorStackView.swift in Sources */,
+				9427ED3C29437CD300E9440A /* CarouselCell.swift in Sources */,
+				94CD51482963881000A0AB42 /* CarouselManager.swift in Sources */,
 				A6D826FD27CE8CDD001244D0 /* AppDelegate.swift in Sources */,
-				9460BB39295256C9003CAF42 /* ScrollViewObserver.swift in Sources */,
+				94CD51462960E90300A0AB42 /* CarouselVC.swift in Sources */,
+				94CD51372960D2E100A0AB42 /* TabBarController.swift in Sources */,
+				94CD51392960D51E00A0AB42 /* CarouselLayout.swift in Sources */,
+				94CD513B2960D55400A0AB42 /* CustomCarouselLayoutVC.swift in Sources */,
 				A6D826FF27CE8CDD001244D0 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -167,14 +227,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		A6D8270227CE8CDD001244D0 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				A6D8270327CE8CDD001244D0 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		A6D8270727CE8CDD001244D0 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -314,7 +366,6 @@
 				INFOPLIST_FILE = UIKitTesting/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -342,7 +393,6 @@
 				INFOPLIST_FILE = UIKitTesting/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
