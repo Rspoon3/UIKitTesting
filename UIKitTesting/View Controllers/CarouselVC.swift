@@ -18,6 +18,25 @@ class CarouselVC: UIViewController, UICollectionViewDataSource, UICollectionView
     var currentIndex: IndexPath!
     
     
+    //MARK: - Life Cycle
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        let stack = ColorStackView()
+        stack.addAndConstraint(to: view)
+        
+        registerCell()
+        configureCollectionView()
+//        scrollToMiddle()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        timer?.invalidate()
+        timer = nil
+    }
+
     // MARK: - Public Helper
     
     func scrollToMiddle() {
@@ -75,27 +94,6 @@ class CarouselVC: UIViewController, UICollectionViewDataSource, UICollectionView
             cell.configure(with: color, indexPath: indexPath)
         }
     }
-    
-    
-    //MARK: - Life Cycle
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        let stack = ColorStackView()
-        stack.addAndConstraint(to: view)
-        
-        registerCell()
-        configureCollectionView()
-        scrollToMiddle()
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        timer?.invalidate()
-        timer = nil
-    }
-
     
     //MARK: - Data Source
     

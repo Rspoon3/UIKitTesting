@@ -24,7 +24,7 @@ class OrthogonalUICollectionView: UICollectionView {
         else {
             return
         }
-        
+            
         setObserver(using: scrollView)
     }
     
