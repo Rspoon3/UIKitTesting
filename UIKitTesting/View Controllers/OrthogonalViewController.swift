@@ -40,7 +40,7 @@ final class OrthogonalViewController: CarouselVC {
                                                                     itemWidth: item.frame.width)
                     
                     if let cell = self.collectionView.cellForItem(at: item.indexPath) as? CarouselCell {
-                        cell.shadowOpacity(percentage: spacing.percentageToMidX)
+                        cell.reflectionOpacity(percentage: spacing.percentageToMidX)
                         //cell.label.text = "\(distanceFromCenter)\n\(percentageToMidX)"
                     }
                     

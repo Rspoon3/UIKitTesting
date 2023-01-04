@@ -8,10 +8,9 @@
 import UIKit
 
 class CarouselVC: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate {
-    let collectionViewOpacity: Float = 0.5
     var collectionView: UICollectionView! = nil
-    var cellRegistration: UICollectionView.CellRegistration<CarouselCell, UIColor>!
-    let carouselItems = [UIColor.systemRed, .systemBlue, .systemOrange, .systemPink, .systemGray, .systemTeal, .systemGreen]
+    var cellRegistration: UICollectionView.CellRegistration<CarouselCell, String>!
+    let carouselItems = Array(1...12).map{ i in "Slide-\(i)"}
     let scrollRateInSeconds: TimeInterval = 4
     var timer: Timer?
     let numberOfCarouselItems = 1_000_000
@@ -23,12 +22,9 @@ class CarouselVC: UIViewController, UICollectionViewDataSource, UICollectionView
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let stack = ColorStackView()
-        stack.addAndConstraint(to: view)
-        
         registerCell()
         configureCollectionView()
-//        scrollToMiddle()
+        scrollToMiddle()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -59,7 +55,6 @@ class CarouselVC: UIViewController, UICollectionViewDataSource, UICollectionView
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.decelerationRate = .fast
-        collectionView.layer.opacity = collectionViewOpacity
         
         view.addSubview(collectionView)
         
@@ -90,8 +85,8 @@ class CarouselVC: UIViewController, UICollectionViewDataSource, UICollectionView
     }
     
     private func registerCell() {
-        cellRegistration = UICollectionView.CellRegistration<CarouselCell, UIColor> { (cell, indexPath, color) in
-            cell.configure(with: color, indexPath: indexPath)
+        cellRegistration = UICollectionView.CellRegistration<CarouselCell, String> { (cell, indexPath, title) in
+            cell.configure(with: title, indexPath: indexPath)
         }
     }
     

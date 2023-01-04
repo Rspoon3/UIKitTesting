@@ -9,64 +9,59 @@ import UIKit
 
 
 final class CarouselCell: UICollectionViewCell {
-    private let containerView = UIView()
     private let imageView = UIImageView()
+    private let reflectedImageView = UIImageView()
     private let cornerRadius: CGFloat = 8
-    let label = UILabel()
+    private let context = CIContext()
+    private let filter = CIFilter(name: "CIGaussianBlur")!
+    private let blurRadius = 24
     
     override func apply(_ layoutAttributes: UICollectionViewLayoutAttributes) {
         super.apply(layoutAttributes)
         if let attribute = layoutAttributes as? CarouselLayoutAttributes {
-            shadowOpacity(percentage: attribute.percentageToMidX)
+            reflectionOpacity(percentage: attribute.percentageToMidX)
         }
     }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-                
-        containerView.layer.shadowColor = UIColor.black.withAlphaComponent(0.1).cgColor
-        containerView.layer.shadowRadius = 5
-        containerView.layer.shadowOffset = .init(width: 0, height: 9)
-        containerView.layer.shouldRasterize = true
-        containerView.layer.rasterizationScale = UIScreen.main.scale
-        containerView.translatesAutoresizingMaskIntoConstraints = false
-        containerView.layer.cornerRadius = cornerRadius
 
         imageView.clipsToBounds = true
         imageView.layer.cornerRadius = cornerRadius
         imageView.contentMode = .scaleAspectFill
         imageView.translatesAutoresizingMaskIntoConstraints = false
+//        imageView.alpha = 0.1
+        
+        reflectedImageView.layer.cornerRadius = cornerRadius
+//        reflectedImageView.contentMode = .scaleAspectFill
+//        reflectedImageView.contentMode = .scaleToFill //default
+        reflectedImageView.translatesAutoresizingMaskIntoConstraints = false
+//        reflectedImageView.layer.borderColor = UIColor.black.cgColor
+//        reflectedImageView.layer.borderWidth = 1
+        
+        
+//        let blurEffect = UIBlurEffect(style: .systemThinMaterial)
+//        let blurEffectView = UIVisualEffectView(effect: blurEffect)
+//        blurEffectView.frame = contentView.bounds
+//        blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        
+        contentView.addSubview(reflectedImageView)
 
-        contentView.addSubview(containerView)
-        containerView.addSubview(imageView)
+//        contentView.addSubview(blurEffectView)
         
-//        NSLayoutConstraint.activate([
-//            view.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-//            view.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-//            view.heightAnchor.constraint(equalToConstant: 50),
-//            view.widthAnchor.constraint(equalToConstant: 50)
-//        ])
+        contentView.addSubview(imageView)
         
-        label.font = .preferredFont(forTextStyle: .headline)
-        label.textColor = .white
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.numberOfLines = 0
-        
-        containerView.addSubview(label)
-        
+        let blurPadding:CGFloat = CGFloat(blurRadius) / 2
         NSLayoutConstraint.activate([
-            containerView.topAnchor.constraint(equalTo: contentView.topAnchor),
-            containerView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-            containerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            containerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            imageView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            imageView.heightAnchor.constraint(equalTo: contentView.widthAnchor, multiplier: 0.5),
+            imageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            imageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             
-            imageView.topAnchor.constraint(equalTo: containerView.topAnchor),
-            imageView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
-            imageView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
-            imageView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
-            
-            label.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
-            label.centerYAnchor.constraint(equalTo: containerView.centerYAnchor),
+            reflectedImageView.topAnchor.constraint(equalTo: imageView.topAnchor, constant: 36 - blurPadding),
+            reflectedImageView.bottomAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 4 + blurPadding * 2),
+            reflectedImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20 - blurPadding),
+            reflectedImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20 + blurPadding)
         ])
     }
     
@@ -74,19 +69,31 @@ final class CarouselCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configure(with color: UIColor, indexPath: IndexPath) {
-//        contentView.backgroundColor = color
+    private func createBluredImage(using image: UIImage, p: CGFloat = 24) -> UIImage? {
+        let beginImage = CIImage(image: image)
         
-        let i = indexPath.item.isMultiple(of: 2) ? "carousel_B-new-size" : "dog"
-        imageView.image = .init(named: i)
+        filter.setValue(beginImage, forKey: kCIInputImageKey)
+        filter.setValue(p, forKey: kCIInputRadiusKey)
+        
+        guard
+            let outputImage = filter.outputImage,
+            let cgImage = context.createCGImage(outputImage, from: outputImage.extent)
+        else {
+            return nil
+        }
+        
+        return UIImage(cgImage: cgImage)
     }
     
-    func shadowOpacity(percentage: Double) {
-//        view.transform = CGAffineTransform(scaleX: percentage, y: percentage)
-        containerView.layer.shadowOpacity = Float(percentage)
+    
+    func configure(with imageTitle: String, indexPath: IndexPath) {
+        guard let image = UIImage(named: imageTitle) else { return }
+        
+        imageView.image = image
+        reflectedImageView.image = createBluredImage(using: image)
     }
     
-    func scale(_ scale: CGFloat) {
-        containerView.transform = CGAffineTransform(scaleX: scale, y: scale)
+    func reflectionOpacity(percentage: Double) {
+        reflectedImageView.alpha = percentage * 0.6
     }
 }
