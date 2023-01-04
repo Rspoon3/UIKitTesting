@@ -8,35 +8,50 @@
 import UIKit
 
 class ViewController: UIViewController {
-    var slider: UISlider!
     private let context = CIContext()
     private let filter = CIFilter(name: "CIGaussianBlur")!
+    private let dog = UIImage(named: "dog")!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let imageView = UIImageView(image: .init(named: "slide1"))
+        let label = UILabel()
+        label.text = "0"
+        label.textAlignment = .center
+        
+        let imageView = UIImageView(image: dog)
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.layer.borderWidth = 1
         imageView.layer.borderColor = UIColor.black.cgColor
+//        imageView.contentMode = .scaleAspectFill
         
-        slider = UISlider(frame: .zero, primaryAction: .init(handler: { [weak self] action in
-            let slider = action.sender as! UISlider
-            let value = slider.value
-            imageView.image = self?.createBluredImage(using: .init(named: "slide1")!, value: CGFloat(value))
+        let slider = UISlider(frame: .zero, primaryAction: .init(handler: { [weak self] action in
+            guard
+                let self,
+                let slider = action.sender as? UISlider
+            else {
+                return
+            }
+            
+            label.text = "\(slider.value)"
+            imageView.image = self.createBluredImage(using: self.dog, value: CGFloat(slider.value))
         }))
         
-        slider.translatesAutoresizingMaskIntoConstraints = false
         slider.minimumValue = 0
         slider.maximumValue = 20
+
+        let stack = UIStackView(arrangedSubviews: [label, slider])
+        stack.translatesAutoresizingMaskIntoConstraints = false
+        stack.axis = .vertical
+
         
         view.addSubview(imageView)
-        view.addSubview(slider)
+        view.addSubview(stack)
         
         NSLayoutConstraint.activate([
-            slider.bottomAnchor.constraint(equalTo: imageView.topAnchor, constant: -20),
-            slider.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            slider.widthAnchor.constraint(equalToConstant: 100),
+            stack.bottomAnchor.constraint(equalTo: imageView.topAnchor, constant: -20),
+            stack.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            stack.widthAnchor.constraint(equalToConstant: 100),
             
             imageView.widthAnchor.constraint(equalToConstant: 300),
             imageView.heightAnchor.constraint(equalToConstant: 300),
@@ -53,7 +68,7 @@ class ViewController: UIViewController {
          
          guard
              let outputImage = filter.outputImage,
-             let cgImage = context.createCGImage(outputImage, from: outputImage.extent)
+             let cgImage = context.createCGImage(outputImage, from: .init(x: beginImage!.extent.minX, y: beginImage!.extent.minY, width: beginImage!.extent.width - 100, height: beginImage!.extent.height - 100))
          else {
              return nil
          }
