@@ -43,10 +43,10 @@ struct CarouselManager {
     
     func performSpacingCalulations(itemMidX: CGFloat, XOffset: CGFloat, itemWidth: CGFloat) -> Spacing {
         let distanceFromCenter = abs((itemMidX - XOffset) - collectionViewWidth / 2.0)
-        let percentageToMidX =  1 - (distanceFromCenter / (itemWidth + spacing))
+        let percentageToMidX =  1 - (distanceFromCenter / (itemWidth - spacing * 2))
         let scale = ((maxScale - minScale) * percentageToMidX) + minScale
         let clampedScale = max(minScale, scale)
-        
+                
         return Spacing(percentageToMidX: percentageToMidX, clampedScale: clampedScale)
     }
 }
