@@ -10,14 +10,24 @@ import SwiftUI
 
 class CarouselVC: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate {
     var collectionView: UICollectionView! = nil
-    var cellRegistration: UICollectionView.CellRegistration<CarouselCell, String>!
-    var swiftUICellRegistration: UICollectionView.CellRegistration<UICollectionViewCell, String>!
-    let carouselItems = Array(1...12).map{ i in "Slide-\(i)"}
-    let scrollRateInSeconds: TimeInterval = 2
-    var timer: Timer?
-    let numberOfCarouselItems = 1_000_000
     var currentIndex = IndexPath(item: 0, section: 0)
-    
+    private var cellRegistration: UICollectionView.CellRegistration<CarouselCell, String>!
+    private var swiftUICellRegistration: UICollectionView.CellRegistration<UICollectionViewCell, String>!
+    private var swiftUILegacyCellRegistration: UICollectionView.CellRegistration<SwiftUICollectionViewCell<CarouselCellView>, String>!
+    private let carouselItems = Array(1...12).map{ i in "Slide-\(i)"}
+    private var scrollRateInSeconds: TimeInterval?
+    private var timer: Timer?
+    private let numberOfCarouselItems = 1_000_000
+    private var cellType: CellType = .uikit
+    private let cellTypeButton = UIButton()
+    private var showGif = true
+    private var showCellType = true
+
+    enum CellType: String, CaseIterable {
+        case uikit = "UIKIt"
+        case swiftui = "SwiftUI"
+        case swiftuiLegacy = "SwiftUI Legacy"
+    }
     
     
     //MARK: - Life Cycle
@@ -53,27 +63,103 @@ class CarouselVC: UIViewController, UICollectionViewDataSource, UICollectionView
     func configureCollectionView() {
         fatalError("\(#function) has not be implmented")
     }
-    
-    func commonCollectionViewSetup() {
+        
+    func commonViewSetup() {
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.backgroundColor = .systemBackground
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.decelerationRate = .normal
         
-        let label = UILabel()
-        label.text = "Deceleration Rate: normal"
+        let deceleartionLabel = UILabel()
+        deceleartionLabel.text = "Deceleration Rate: normal"
         
-        let mySwitch = UISwitch(frame: .zero, primaryAction: .init(handler: { [weak self] action in
+        let deceleartionSwitch = UISwitch(frame: .zero, primaryAction: .init(handler: { [weak self] action in
             let mySwitch = action.sender as! UISwitch
             self?.collectionView.decelerationRate = mySwitch.isOn ? .fast : .normal
             
-            label.text = "Deceleration Rate: \(mySwitch.isOn ? "fast" : "normal")"
+            deceleartionLabel.text = "Deceleration Rate: \(mySwitch.isOn ? "fast" : "normal")"
         }))
         
-        mySwitch.isOn = false
+        deceleartionSwitch.isOn = false
         
-        let stack = UIStackView(arrangedSubviews: [mySwitch, label, collectionView])
+        let decelerationStack = UIStackView(arrangedSubviews: [deceleartionLabel, deceleartionSwitch])
+        decelerationStack.spacing = 10
+        
+        
+        let typeLabel = UILabel()
+        typeLabel.text = "Show Cell Type: \(showCellType)"
+        
+        let typeSwitch = UISwitch(frame: .zero, primaryAction: .init(handler: { [weak self] action in
+            guard let self else { return }
+            self.showCellType.toggle()
+            self.collectionView.reloadData()
+            typeLabel.text = "Show Cell Type: \(self.showCellType)"
+        }))
+        
+        typeSwitch.isOn = showCellType
+
+        let typeStack = UIStackView(arrangedSubviews: [typeLabel, typeSwitch])
+        typeStack.spacing = 10
+            
+        
+        let gifLabel = UILabel()
+        gifLabel.text = "Include Gif: \(showGif)"
+        
+        let gifSwitch = UISwitch(frame: .zero, primaryAction: .init(handler: { [weak self] action in
+            guard let self else { return }
+            self.showGif.toggle()
+            self.collectionView.reloadData()
+            gifLabel.text = "Include Gif: \(self.showGif)"
+        }))
+        
+        gifSwitch.isOn = showGif
+
+        let gifStack = UIStackView(arrangedSubviews: [gifLabel, gifSwitch])
+        gifStack.spacing = 10
+        
+        
+        let menuItems = CellType.allCases.map { type in
+            UIAction(title: type.rawValue) { [weak self] _ in
+                self?.cellType = type
+                self?.updateCellTypeLabelText()
+                self?.collectionView.reloadData()
+            }
+        }
+        
+        let menu = UIMenu(title: "", image: nil, identifier: nil, options: [], children: menuItems)
+        
+        cellTypeButton.menu = menu
+        cellTypeButton.setTitleColor(.systemBlue, for: .normal)
+        cellTypeButton.showsMenuAsPrimaryAction = true
+        updateCellTypeLabelText()
+        
+        let scrollButton = UIButton()
+        let array = Array(0...10)
+        let scrollItems = array.map { i in
+            let title = i == 0 ? "N/A" : "\(i)"
+            
+            return UIAction(title: title) { [weak self] _ in
+                self?.stopTimer()
+                
+                if i == 0 {
+                    self?.scrollRateInSeconds = nil
+                } else {
+                    self?.scrollRateInSeconds = TimeInterval(i)
+                    self?.startTimer(timeInterval: TimeInterval(i))
+                }
+                
+                self?.collectionView.reloadData()
+                scrollButton.setTitle("Scroll Rate: \(self?.scrollRateInSeconds?.formatted() ?? "N/A")", for: .normal)
+            }
+        }
+        
+        scrollButton.menu = UIMenu(title: "Scroll Rate", image: nil, identifier: nil, options: [], children: scrollItems)
+        scrollButton.setTitleColor(.systemBlue, for: .normal)
+        scrollButton.showsMenuAsPrimaryAction = true
+        scrollButton.setTitle("Scroll Rate: \(scrollRateInSeconds?.formatted() ?? "N/A")", for: .normal)
+
+        let stack = UIStackView(arrangedSubviews: [decelerationStack, typeStack, gifStack, cellTypeButton, scrollButton, collectionView])
         stack.translatesAutoresizingMaskIntoConstraints = false
         stack.axis = .vertical
         stack.spacing = 20
@@ -93,9 +179,12 @@ class CarouselVC: UIViewController, UICollectionViewDataSource, UICollectionView
     }
     
     // MARK: - Private Helper
+    private func updateCellTypeLabelText() {
+        cellTypeButton.setTitle("Cell Type: \(cellType.rawValue)", for: .normal)
+    }
     
-    private func startTimer() {
-        timer = Timer.scheduledTimer(withTimeInterval: scrollRateInSeconds, repeats: true) { [weak self] timer in
+    private func startTimer(timeInterval: TimeInterval) {
+        timer = Timer.scheduledTimer(withTimeInterval: timeInterval, repeats: true) { [weak self] timer in
             self?.scrollToNextIndex()
         }
     }
@@ -111,17 +200,45 @@ class CarouselVC: UIViewController, UICollectionViewDataSource, UICollectionView
     }
     
     private func registerCell() {
-        cellRegistration = UICollectionView.CellRegistration<CarouselCell, String> { (cell, indexPath, title) in
-            cell.configure(with: title, indexPath: indexPath)
+        cellRegistration = UICollectionView.CellRegistration<CarouselCell, String> { [weak self] (cell, indexPath, title) in
+            guard let self else { return }
+            
+            let info = CellInfo(index: indexPath.item,
+                                showGif: self.showGif,
+                                cellType: self.showCellType ? self.cellType : nil,
+                                imageTitle: title)
+            cell.configure(info: info)
+            print("Configure uikit type")
         }
         
-        swiftUICellRegistration = UICollectionView.CellRegistration<UICollectionViewCell, String> { (cell, indexPath, title) in
+        swiftUILegacyCellRegistration = UICollectionView.CellRegistration<SwiftUICollectionViewCell, String> { [weak self] (cell, indexPath, title) in
+            guard let self else { return }
+            
+            let info = CellInfo(index: indexPath.item,
+                                showGif: self.showGif,
+                                cellType: self.showCellType ? self.cellType : nil,
+                                imageTitle: title)
+            
+            let view = CarouselCellView(info: info)
+            cell.configure(with: view, parent: self)
+            print("Configure swiftui legacy type")
+        }
+        
+        swiftUICellRegistration = UICollectionView.CellRegistration<UICollectionViewCell, String> { [weak self] (cell, indexPath, title) in
+            guard let self else { return }
+            
+            let info = CellInfo(index: indexPath.item,
+                                showGif: self.showGif,
+                                cellType: self.showCellType ? self.cellType : nil,
+                                imageTitle: title)
+            
             let hostingConfiguration = UIHostingConfiguration {
-                CarouselCellView(title: title, indexPath: indexPath.item)
+                CarouselCellView(info: info)
             }
                 .margins(.all, 0)
             
             cell.contentConfiguration = hostingConfiguration
+            print("Configure swiftui type")
         }
     }
     
@@ -135,8 +252,15 @@ class CarouselVC: UIViewController, UICollectionViewDataSource, UICollectionView
         let index = indexPath.item % carouselItems.count
         let item = carouselItems[index]
         
-//        return collectionView.dequeueConfiguredReusableCell(using: swiftUICellRegistration, for: indexPath, item: item)
-        return collectionView.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: item)
+        
+        switch cellType {
+        case .uikit:
+            return collectionView.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: item)
+        case .swiftui:
+            return collectionView.dequeueConfiguredReusableCell(using: swiftUICellRegistration, for: indexPath, item: item)
+        case .swiftuiLegacy:
+            return collectionView.dequeueConfiguredReusableCell(using: swiftUILegacyCellRegistration, for: indexPath, item: item)
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {

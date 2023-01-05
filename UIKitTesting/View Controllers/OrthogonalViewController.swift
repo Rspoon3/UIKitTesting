@@ -67,6 +67,6 @@ final class OrthogonalViewController: CarouselVC {
             }
         }
         
-        commonCollectionViewSetup()
+        commonViewSetup()
     }
 }

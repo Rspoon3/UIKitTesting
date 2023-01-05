@@ -17,6 +17,6 @@ class CustomCarouselLayoutVC: CarouselVC {
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.contentInsetAdjustmentBehavior = .always
         
-        commonCollectionViewSetup()
+        commonViewSetup()
     }
 }

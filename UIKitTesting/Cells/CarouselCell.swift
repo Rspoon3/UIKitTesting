@@ -5,76 +5,15 @@
 //  Created by Richard Witherspoon on 12/9/22.
 //
 
-import SwiftUI
+import UIKit
 import FLAnimatedImage
 
-
-struct GIFView: UIViewRepresentable {
-    let data: Data
-    
-    func makeUIView(context: Context) -> UIView {
-        let view = UIView(frame: .zero)
-        let gif = FLAnimatedImage(gifData: data)!
-        let imageView = FLAnimatedImageView()
-        
-        imageView.animatedImage = gif
-        imageView.contentMode = .scaleAspectFill
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        
-        view.addSubview(imageView)
-        
-        NSLayoutConstraint.activate([
-            imageView.heightAnchor.constraint(equalTo: view.heightAnchor),
-            imageView.widthAnchor.constraint(equalTo: view.widthAnchor)
-        ])
-
-        return view
-      }
-    
-    func updateUIView(_ uiView: UIView, context: Context) {
-    }
+struct CellInfo {
+    let index: Int
+    let showGif: Bool
+    let cellType: CarouselVC.CellType?
+    let imageTitle: String
 }
-
-struct CarouselCellView: View {
-    private let cornerRadius: CGFloat = 8
-    let title: String
-    let indexPath: Int
-    let gifData = try! Data(contentsOf: Bundle.main.url(forResource: "slideGif", withExtension: "gif")!)
-    private let testOpactiy: Double = 1
-    
-    var body: some View {
-        GeometryReader { geo in
-            ZStack(alignment: .top) {
-                if indexPath.isMultiple(of: 4) {
-                    GIFView(data: gifData)
-                        .cornerRadius(cornerRadius)
-                        .padding(.top, 36)
-                        .padding(.horizontal, 40)
-                        .blur(radius: 20)
-                    
-                    GIFView(data: gifData)
-                        .cornerRadius(cornerRadius)
-                        .padding(.bottom, 4)
-                        .opacity(testOpactiy)
-                } else {
-                    Image(title)
-                        .resizable()
-                        .cornerRadius(cornerRadius)
-                        .padding(.top, 36)
-                        .padding(.horizontal, 40)
-                        .blur(radius: 20)
-                    
-                    Image(title)
-                        .resizable()
-                        .cornerRadius(cornerRadius)
-                        .padding(.bottom, 4)
-                        .opacity(testOpactiy)
-                }
-            }
-        }
-    }
-}
-
 
 final class CarouselCell: UICollectionViewCell {
     private let imageView = FLAnimatedImageView()
@@ -83,6 +22,7 @@ final class CarouselCell: UICollectionViewCell {
     private let context = CIContext()
     private let filter = CIFilter(name: "CIGaussianBlur")!
     private let blurRadius = 24
+    private let typeLabel = UILabel()
     
     override func apply(_ layoutAttributes: UICollectionViewLayoutAttributes) {
         super.apply(layoutAttributes)
@@ -93,7 +33,9 @@ final class CarouselCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-
+        typeLabel.translatesAutoresizingMaskIntoConstraints = false
+        typeLabel.alpha = 0
+        
         imageView.clipsToBounds = true
         imageView.layer.cornerRadius = cornerRadius
         imageView.contentMode = .scaleAspectFill
@@ -119,6 +61,8 @@ final class CarouselCell: UICollectionViewCell {
         
         contentView.addSubview(imageView)
         
+        contentView.addSubview(typeLabel)
+        
         let blurPadding:CGFloat = CGFloat(blurRadius) / 2
         NSLayoutConstraint.activate([
             imageView.topAnchor.constraint(equalTo: contentView.topAnchor),
@@ -129,7 +73,10 @@ final class CarouselCell: UICollectionViewCell {
             reflectedImageView.topAnchor.constraint(equalTo: imageView.topAnchor, constant: 36 - blurPadding),
             reflectedImageView.bottomAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 4 + blurPadding * 2),
             reflectedImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20 - blurPadding),
-            reflectedImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20 + blurPadding)
+            reflectedImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20 + blurPadding),
+            
+            typeLabel.topAnchor.constraint(equalTo: contentView.topAnchor),
+            typeLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor)
         ])
     }
     
@@ -162,13 +109,13 @@ final class CarouselCell: UICollectionViewCell {
     }
     
     
-    func configure(with imageTitle: String, indexPath: IndexPath) {
-        guard let image = UIImage(named: imageTitle) else { return }
+    func configure(info: CellInfo) {
+        guard let image = UIImage(named: info.imageTitle) else { return }
 
         let gifData = try! Data(contentsOf: Bundle.main.url(forResource: "slideGif", withExtension: "gif")!)
         let gif = FLAnimatedImage(gifData: gifData)
         
-        if indexPath.item.isMultiple(of: 4){
+        if info.index.isMultiple(of: 4) && info.showGif {
             imageView.animatedImage = gif
             reflectedImageView.image = createBluredImage(using: imageView.image!)
         } else {
@@ -176,6 +123,12 @@ final class CarouselCell: UICollectionViewCell {
             reflectedImageView.image = createBluredImage(using: image)
         }
         
+        if let text = info.cellType?.rawValue {
+            typeLabel.text = text
+            typeLabel.alpha = 1
+        } else {
+            typeLabel.alpha = 0
+        }
     }
     
     func reflectionOpacity(percentage: Double) {
@@ -197,12 +150,3 @@ final class CarouselCell: UICollectionViewCell {
         return newImage
     }
 }
-//
-//extension UIImage {
-//    public class func gif(asset: String) -> UIImage? {
-//        if let asset = NSDataAsset(name: asset) {
-//            return UIImage.gif(data: asset.data)
-//        }
-//        return nil
-//    }
-//}

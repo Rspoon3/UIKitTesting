@@ -11,6 +11,9 @@
 		9427ED3C29437CD300E9440A /* CarouselCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9427ED3B29437CD300E9440A /* CarouselCell.swift */; };
 		9457CFF529673665004AC936 /* FLAnimatedImage in Frameworks */ = {isa = PBXBuildFile; productRef = 9457CFF429673665004AC936 /* FLAnimatedImage */; };
 		9457CFF72967384E004AC936 /* slideGif.gif in Resources */ = {isa = PBXBuildFile; fileRef = 9457CFF62967384E004AC936 /* slideGif.gif */; };
+		9457CFF929674EFD004AC936 /* SwiftUICollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9457CFF829674EFD004AC936 /* SwiftUICollectionViewCell.swift */; };
+		9457CFFB29674F11004AC936 /* GIFView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9457CFFA29674F11004AC936 /* GIFView.swift */; };
+		9457CFFD29674F23004AC936 /* CarouselCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9457CFFC29674F23004AC936 /* CarouselCellView.swift */; };
 		94CD51372960D2E100A0AB42 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94CD51362960D2E100A0AB42 /* TabBarController.swift */; };
 		94CD51392960D51E00A0AB42 /* CarouselLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94CD51382960D51E00A0AB42 /* CarouselLayout.swift */; };
 		94CD513B2960D55400A0AB42 /* CustomCarouselLayoutVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94CD513A2960D55400A0AB42 /* CustomCarouselLayoutVC.swift */; };
@@ -29,6 +32,9 @@
 		941B25832953E17B0057B09C /* OrthogonalUICollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrthogonalUICollectionView.swift; sourceTree = "<group>"; };
 		9427ED3B29437CD300E9440A /* CarouselCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarouselCell.swift; sourceTree = "<group>"; };
 		9457CFF62967384E004AC936 /* slideGif.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = slideGif.gif; sourceTree = "<group>"; };
+		9457CFF829674EFD004AC936 /* SwiftUICollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUICollectionViewCell.swift; sourceTree = "<group>"; };
+		9457CFFA29674F11004AC936 /* GIFView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GIFView.swift; sourceTree = "<group>"; };
+		9457CFFC29674F23004AC936 /* CarouselCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarouselCellView.swift; sourceTree = "<group>"; };
 		94CD51362960D2E100A0AB42 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		94CD51382960D51E00A0AB42 /* CarouselLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarouselLayout.swift; sourceTree = "<group>"; };
 		94CD513A2960D55400A0AB42 /* CustomCarouselLayoutVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCarouselLayoutVC.swift; sourceTree = "<group>"; };
@@ -89,6 +95,8 @@
 			isa = PBXGroup;
 			children = (
 				9427ED3B29437CD300E9440A /* CarouselCell.swift */,
+				9457CFFC29674F23004AC936 /* CarouselCellView.swift */,
+				9457CFF829674EFD004AC936 /* SwiftUICollectionViewCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -106,6 +114,7 @@
 			isa = PBXGroup;
 			children = (
 				941B25832953E17B0057B09C /* OrthogonalUICollectionView.swift */,
+				9457CFFA29674F11004AC936 /* GIFView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -226,12 +235,15 @@
 				941B25842953E17B0057B09C /* OrthogonalUICollectionView.swift in Sources */,
 				94CD513D2960D6DC00A0AB42 /* CarouselLayoutAttributes.swift in Sources */,
 				9427ED3C29437CD300E9440A /* CarouselCell.swift in Sources */,
+				9457CFF929674EFD004AC936 /* SwiftUICollectionViewCell.swift in Sources */,
 				94CD51482963881000A0AB42 /* CarouselManager.swift in Sources */,
 				A6D826FD27CE8CDD001244D0 /* AppDelegate.swift in Sources */,
 				94CD51462960E90300A0AB42 /* CarouselVC.swift in Sources */,
 				94CD51372960D2E100A0AB42 /* TabBarController.swift in Sources */,
 				94CD51392960D51E00A0AB42 /* CarouselLayout.swift in Sources */,
+				9457CFFD29674F23004AC936 /* CarouselCellView.swift in Sources */,
 				94CD513B2960D55400A0AB42 /* CustomCarouselLayoutVC.swift in Sources */,
+				9457CFFB29674F11004AC936 /* GIFView.swift in Sources */,
 				A6D826FF27CE8CDD001244D0 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
