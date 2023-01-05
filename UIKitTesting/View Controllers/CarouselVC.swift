@@ -119,14 +119,27 @@ class CarouselVC: UIViewController, UICollectionViewDataSource, UICollectionView
         gifStack.spacing = 10
         
         
-        let menuItems = CellType.allCases.map { type in
-            UIAction(title: type.rawValue) { [weak self] _ in
-                self?.cellType = type
-                self?.updateCellTypeLabelText()
-                self?.collectionView.reloadData()
+        let menuItems: [UIAction]
+        
+        if #available(iOS 16.0, *) {
+            menuItems = CellType.allCases.map { type in
+                UIAction(title: type.rawValue) { [weak self] _ in
+                    self?.cellType = type
+                    self?.updateCellTypeLabelText()
+                    self?.collectionView.reloadData()
+                }
+            }
+        } else {
+            menuItems = CellType.allCases.filter{$0 != .swiftui }.map { type in
+                UIAction(title: type.rawValue) { [weak self] _ in
+                    self?.cellType = type
+                    self?.updateCellTypeLabelText()
+                    self?.collectionView.reloadData()
+                }
             }
         }
         
+            
         let menu = UIMenu(title: "", image: nil, identifier: nil, options: [], children: menuItems)
         
         cellTypeButton.menu = menu
@@ -150,14 +163,14 @@ class CarouselVC: UIViewController, UICollectionViewDataSource, UICollectionView
                 }
                 
                 self?.collectionView.reloadData()
-                scrollButton.setTitle("Scroll Rate: \(self?.scrollRateInSeconds?.formatted() ?? "N/A")", for: .normal)
+                scrollButton.setTitle("Scroll Rate: \(self?.scrollRateInSeconds?.description ?? "N/A")", for: .normal)
             }
         }
         
         scrollButton.menu = UIMenu(title: "Scroll Rate", image: nil, identifier: nil, options: [], children: scrollItems)
         scrollButton.setTitleColor(.systemBlue, for: .normal)
         scrollButton.showsMenuAsPrimaryAction = true
-        scrollButton.setTitle("Scroll Rate: \(scrollRateInSeconds?.formatted() ?? "N/A")", for: .normal)
+        scrollButton.setTitle("Scroll Rate: \(scrollRateInSeconds?.description ?? "N/A")", for: .normal)
 
         let stack = UIStackView(arrangedSubviews: [decelerationStack, typeStack, gifStack, cellTypeButton, scrollButton, collectionView])
         stack.translatesAutoresizingMaskIntoConstraints = false
@@ -224,21 +237,23 @@ class CarouselVC: UIViewController, UICollectionViewDataSource, UICollectionView
             print("Configure swiftui legacy type")
         }
         
-        swiftUICellRegistration = UICollectionView.CellRegistration<UICollectionViewCell, String> { [weak self] (cell, indexPath, title) in
-            guard let self else { return }
-            
-            let info = CellInfo(index: indexPath.item,
-                                showGif: self.showGif,
-                                cellType: self.showCellType ? self.cellType : nil,
-                                imageTitle: title)
-            
-            let hostingConfiguration = UIHostingConfiguration {
-                CarouselCellView(info: info)
+        if #available(iOS 16.0, *) {
+            swiftUICellRegistration = UICollectionView.CellRegistration<UICollectionViewCell, String> { [weak self] (cell, indexPath, title) in
+                guard let self else { return }
+                
+                let info = CellInfo(index: indexPath.item,
+                                    showGif: self.showGif,
+                                    cellType: self.showCellType ? self.cellType : nil,
+                                    imageTitle: title)
+                
+                let hostingConfiguration = UIHostingConfiguration {
+                    CarouselCellView(info: info)
+                }
+                    .margins(.all, 0)
+                
+                cell.contentConfiguration = hostingConfiguration
+                print("Configure swiftui type")
             }
-                .margins(.all, 0)
-            
-            cell.contentConfiguration = hostingConfiguration
-            print("Configure swiftui type")
         }
     }
     
