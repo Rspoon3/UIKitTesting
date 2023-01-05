@@ -23,7 +23,7 @@ final class OrthogonalViewController: CarouselVC {
             
             // Group
             let groupSize = NSCollectionLayoutSize(widthDimension: .absolute(manager.cellWidth),
-                                                   heightDimension: .absolute(manager.cellHeight))
+                                                   heightDimension: .absolute(manager.cellHeight + 4))
             let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
             
             // Section

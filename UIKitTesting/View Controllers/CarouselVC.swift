@@ -6,10 +6,12 @@
 //
 
 import UIKit
+import SwiftUI
 
 class CarouselVC: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate {
     var collectionView: UICollectionView! = nil
     var cellRegistration: UICollectionView.CellRegistration<CarouselCell, String>!
+    var swiftUICellRegistration: UICollectionView.CellRegistration<UICollectionViewCell, String>!
     let carouselItems = Array(1...12).map{ i in "Slide-\(i)"}
     let scrollRateInSeconds: TimeInterval = 2
     var timer: Timer?
@@ -112,6 +114,15 @@ class CarouselVC: UIViewController, UICollectionViewDataSource, UICollectionView
         cellRegistration = UICollectionView.CellRegistration<CarouselCell, String> { (cell, indexPath, title) in
             cell.configure(with: title, indexPath: indexPath)
         }
+        
+        swiftUICellRegistration = UICollectionView.CellRegistration<UICollectionViewCell, String> { (cell, indexPath, title) in
+            let hostingConfiguration = UIHostingConfiguration {
+                CarouselCellView(title: title, indexPath: indexPath.item)
+            }
+                .margins(.all, 0)
+            
+            cell.contentConfiguration = hostingConfiguration
+        }
     }
     
     //MARK: - Data Source
@@ -124,6 +135,7 @@ class CarouselVC: UIViewController, UICollectionViewDataSource, UICollectionView
         let index = indexPath.item % carouselItems.count
         let item = carouselItems[index]
         
+//        return collectionView.dequeueConfiguredReusableCell(using: swiftUICellRegistration, for: indexPath, item: item)
         return collectionView.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: item)
     }
     

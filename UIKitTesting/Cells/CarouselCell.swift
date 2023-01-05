@@ -5,8 +5,75 @@
 //  Created by Richard Witherspoon on 12/9/22.
 //
 
-import UIKit
+import SwiftUI
 import FLAnimatedImage
+
+
+struct GIFView: UIViewRepresentable {
+    let data: Data
+    
+    func makeUIView(context: Context) -> UIView {
+        let view = UIView(frame: .zero)
+        let gif = FLAnimatedImage(gifData: data)!
+        let imageView = FLAnimatedImageView()
+        
+        imageView.animatedImage = gif
+        imageView.contentMode = .scaleAspectFill
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        
+        view.addSubview(imageView)
+        
+        NSLayoutConstraint.activate([
+            imageView.heightAnchor.constraint(equalTo: view.heightAnchor),
+            imageView.widthAnchor.constraint(equalTo: view.widthAnchor)
+        ])
+
+        return view
+      }
+    
+    func updateUIView(_ uiView: UIView, context: Context) {
+    }
+}
+
+struct CarouselCellView: View {
+    private let cornerRadius: CGFloat = 8
+    let title: String
+    let indexPath: Int
+    let gifData = try! Data(contentsOf: Bundle.main.url(forResource: "slideGif", withExtension: "gif")!)
+    private let testOpactiy: Double = 1
+    
+    var body: some View {
+        GeometryReader { geo in
+            ZStack(alignment: .top) {
+                if indexPath.isMultiple(of: 4) {
+                    GIFView(data: gifData)
+                        .cornerRadius(cornerRadius)
+                        .padding(.top, 36)
+                        .padding(.horizontal, 40)
+                        .blur(radius: 20)
+                    
+                    GIFView(data: gifData)
+                        .cornerRadius(cornerRadius)
+                        .padding(.bottom, 4)
+                        .opacity(testOpactiy)
+                } else {
+                    Image(title)
+                        .resizable()
+                        .cornerRadius(cornerRadius)
+                        .padding(.top, 36)
+                        .padding(.horizontal, 40)
+                        .blur(radius: 20)
+                    
+                    Image(title)
+                        .resizable()
+                        .cornerRadius(cornerRadius)
+                        .padding(.bottom, 4)
+                        .opacity(testOpactiy)
+                }
+            }
+        }
+    }
+}
 
 
 final class CarouselCell: UICollectionViewCell {
