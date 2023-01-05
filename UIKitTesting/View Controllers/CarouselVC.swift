@@ -11,20 +11,23 @@ class CarouselVC: UIViewController, UICollectionViewDataSource, UICollectionView
     var collectionView: UICollectionView! = nil
     var cellRegistration: UICollectionView.CellRegistration<CarouselCell, String>!
     let carouselItems = Array(1...12).map{ i in "Slide-\(i)"}
-    let scrollRateInSeconds: TimeInterval = 4
+    let scrollRateInSeconds: TimeInterval = 2
     var timer: Timer?
     let numberOfCarouselItems = 1_000_000
-    var currentIndex: IndexPath!
+    var currentIndex = IndexPath(item: 0, section: 0)
+    
     
     
     //MARK: - Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = .systemBackground
         
         registerCell()
         configureCollectionView()
         scrollToMiddle()
+//        startTimer()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -54,15 +57,36 @@ class CarouselVC: UIViewController, UICollectionViewDataSource, UICollectionView
         collectionView.backgroundColor = .systemBackground
         collectionView.delegate = self
         collectionView.dataSource = self
-        collectionView.decelerationRate = .fast
+        collectionView.decelerationRate = .normal
         
-        view.addSubview(collectionView)
+        let label = UILabel()
+        label.text = "Deceleration Rate: normal"
+        
+        let mySwitch = UISwitch(frame: .zero, primaryAction: .init(handler: { [weak self] action in
+            let mySwitch = action.sender as! UISwitch
+            self?.collectionView.decelerationRate = mySwitch.isOn ? .fast : .normal
+            
+            label.text = "Deceleration Rate: \(mySwitch.isOn ? "fast" : "normal")"
+        }))
+        
+        mySwitch.isOn = false
+        
+        let stack = UIStackView(arrangedSubviews: [mySwitch, label, collectionView])
+        stack.translatesAutoresizingMaskIntoConstraints = false
+        stack.axis = .vertical
+        stack.spacing = 20
+        stack.alignment = .center
+        stack.distribution = .fill
+
+        view.addSubview(stack)
         
         NSLayoutConstraint.activate([
-            collectionView.topAnchor.constraint(equalTo: view.topAnchor),
-            collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+            stack.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            stack.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            stack.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            stack.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            
+            collectionView.widthAnchor.constraint(equalTo: view.widthAnchor)
         ])
     }
     
@@ -73,7 +97,7 @@ class CarouselVC: UIViewController, UICollectionViewDataSource, UICollectionView
             self?.scrollToNextIndex()
         }
     }
-    
+
     private func scrollToNextIndex() {
         if currentIndex.item == numberOfCarouselItems - 1 {
             currentIndex.item = 0
@@ -81,7 +105,7 @@ class CarouselVC: UIViewController, UICollectionViewDataSource, UICollectionView
             currentIndex.item += 1
         }
         
-        collectionView.scrollToItem(at: currentIndex, at: .centeredVertically, animated: true)
+        collectionView.scrollToItem(at: currentIndex, at: .centeredHorizontally, animated: true)
     }
     
     private func registerCell() {
