@@ -21,9 +21,14 @@ class ViewController: UIViewController {
         
         let imageView = UIImageView(image: dog)
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.layer.borderWidth = 1
+//        imageView.layer.borderWidth = 1
         imageView.layer.borderColor = UIColor.black.cgColor
 //        imageView.contentMode = .scaleAspectFill
+        
+        let blurEffect = UIBlurEffect(style: .systemThinMaterial)
+        let blurEffectView = UIVisualEffectView(effect: blurEffect)
+        blurEffectView.translatesAutoresizingMaskIntoConstraints = false
+        blurEffectView.alpha = 0
         
         let slider = UISlider(frame: .zero, primaryAction: .init(handler: { [weak self] action in
             guard
@@ -47,6 +52,7 @@ class ViewController: UIViewController {
         
         view.addSubview(imageView)
         view.addSubview(stack)
+        view.addSubview(blurEffectView)
         
         NSLayoutConstraint.activate([
             stack.bottomAnchor.constraint(equalTo: imageView.topAnchor, constant: -20),
@@ -57,6 +63,13 @@ class ViewController: UIViewController {
             imageView.heightAnchor.constraint(equalToConstant: 300),
             imageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             imageView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            
+            
+            blurEffectView.topAnchor.constraint(equalTo: imageView.topAnchor, constant: -20),
+            blurEffectView.bottomAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 20),
+            blurEffectView.leadingAnchor.constraint(equalTo: imageView.leadingAnchor, constant: -20),
+            blurEffectView.trailingAnchor.constraint(equalTo: imageView.trailingAnchor, constant: 20)
+            
         ])
     }
 
@@ -68,7 +81,7 @@ class ViewController: UIViewController {
          
          guard
              let outputImage = filter.outputImage,
-             let cgImage = context.createCGImage(outputImage, from: .init(x: beginImage!.extent.minX, y: beginImage!.extent.minY, width: beginImage!.extent.width - 100, height: beginImage!.extent.height - 100))
+             let cgImage = context.createCGImage(outputImage, from: beginImage!.extent)
          else {
              return nil
          }
@@ -77,3 +90,34 @@ class ViewController: UIViewController {
      }
 }
 
+
+
+extension UIImage {
+    
+    func blurredImageWithBlurredEdges(inputRadius: CGFloat) -> UIImage? {
+        
+        guard let currentFilter = CIFilter(name: "CIGaussianBlur") else {
+            return nil
+        }
+        guard let beginImage = CIImage(image: self) else {
+            return nil
+        }
+        currentFilter.setValue(beginImage, forKey: kCIInputImageKey)
+        currentFilter.setValue(inputRadius, forKey: "inputRadius")
+        guard let output = currentFilter.outputImage else {
+            return nil
+        }
+        
+        // UIKit and UIImageView .contentMode doesn't play well with
+        // CIImage only, so we need to back the return UIImage with a CGImage
+        let context = CIContext()
+        
+        // cropping rect because blur changed size of image
+        guard let final = context.createCGImage(output, from: beginImage.extent) else {
+            return nil
+        }
+        
+        return UIImage(cgImage: final)
+        
+    }
+}
