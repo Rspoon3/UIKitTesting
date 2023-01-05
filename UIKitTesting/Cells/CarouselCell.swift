@@ -69,11 +69,18 @@ final class CarouselCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func createBluredImage(using image: UIImage, p: CGFloat = 24) -> UIImage? {
-        let beginImage = CIImage(image: image)
+    private func createBluredImage(using image: UIImage) -> UIImage? {
+        let width = contentView.frame.width - 40
+        let height = contentView.frame.height - 36 + 4
+        
+        guard let resized = resizeImage(with: image, scaledToFill: .init(width: width, height: height)) else {
+            return nil
+        }
+        
+        let beginImage = CIImage(image: resized)
         
         filter.setValue(beginImage, forKey: kCIInputImageKey)
-        filter.setValue(p, forKey: kCIInputRadiusKey)
+        filter.setValue(blurRadius, forKey: kCIInputRadiusKey)
         
         guard
             let outputImage = filter.outputImage,
@@ -82,7 +89,8 @@ final class CarouselCell: UICollectionViewCell {
             return nil
         }
         
-        return UIImage(cgImage: cgImage)
+        let i = UIImage(cgImage: cgImage)
+        return i
     }
     
     
@@ -96,4 +104,20 @@ final class CarouselCell: UICollectionViewCell {
     func reflectionOpacity(percentage: Double) {
         reflectedImageView.alpha = percentage * 0.6
     }
+    
+    private func resizeImage(with image: UIImage?, scaledToFill size: CGSize) -> UIImage? {
+        let scale: CGFloat = max(size.width / (image?.size.width ?? 0.0), size.height / (image?.size.height ?? 0.0))
+        let width: CGFloat = (image?.size.width ?? 0.0) * scale
+        let height: CGFloat = (image?.size.height ?? 0.0) * scale
+        let imageRect = CGRect(x: (size.width - width) / 2.0, y: (size.height - height) / 2.0, width: width, height: height)
+        
+        UIGraphicsBeginImageContextWithOptions(size, false, 0)
+        image?.draw(in: imageRect)
+        
+        let newImage: UIImage? = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        return newImage
+    }
 }
+
