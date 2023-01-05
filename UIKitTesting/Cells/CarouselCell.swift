@@ -6,10 +6,11 @@
 //
 
 import UIKit
+import FLAnimatedImage
 
 
 final class CarouselCell: UICollectionViewCell {
-    private let imageView = UIImageView()
+    private let imageView = FLAnimatedImageView()
     private let reflectedImageView = UIImageView()
     private let cornerRadius: CGFloat = 8
     private let context = CIContext()
@@ -96,9 +97,18 @@ final class CarouselCell: UICollectionViewCell {
     
     func configure(with imageTitle: String, indexPath: IndexPath) {
         guard let image = UIImage(named: imageTitle) else { return }
+
+        let gifData = try! Data(contentsOf: Bundle.main.url(forResource: "slideGif", withExtension: "gif")!)
+        let gif = FLAnimatedImage(gifData: gifData)
         
-        imageView.image = image
-        reflectedImageView.image = createBluredImage(using: image)
+        if indexPath.item.isMultiple(of: 4){
+            imageView.animatedImage = gif
+            reflectedImageView.image = createBluredImage(using: imageView.image!)
+        } else {
+            imageView.image = image
+            reflectedImageView.image = createBluredImage(using: image)
+        }
+        
     }
     
     func reflectionOpacity(percentage: Double) {
@@ -120,4 +130,12 @@ final class CarouselCell: UICollectionViewCell {
         return newImage
     }
 }
-
+//
+//extension UIImage {
+//    public class func gif(asset: String) -> UIImage? {
+//        if let asset = NSDataAsset(name: asset) {
+//            return UIImage.gif(data: asset.data)
+//        }
+//        return nil
+//    }
+//}
