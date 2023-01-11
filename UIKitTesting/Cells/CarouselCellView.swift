@@ -31,15 +31,20 @@ struct CarouselCellView: View {
                 } else {
                     Image(info.imageTitle)
                         .resizable()
-                        .cornerRadius(cornerRadius)
+                        .aspectRatio(contentMode: .fill)
+                        .frame(height: (geo.size.width / 2) - 36 + 4)
+                        .clipped()
                         .padding(.top, 36)
                         .padding(.horizontal, 40)
+                        .cornerRadius(cornerRadius)
                         .blur(radius: 20)
                     
                     Image(info.imageTitle)
                         .resizable()
+                        .aspectRatio(contentMode: .fill)
+                        .frame(height: geo.size.width / 2)
                         .cornerRadius(cornerRadius)
-                        .padding(.bottom, 4)
+                        .clipped()
                         .opacity(testOpactiy)
                 }
                 
