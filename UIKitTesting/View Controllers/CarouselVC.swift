@@ -41,12 +41,20 @@ class CarouselVC: UIViewController, UICollectionViewDataSource, UICollectionView
         scrollToMiddle()
 //        startTimer()
         
-        if #unavailable(iOS 15) {
-            DispatchQueue.main.asyncAfter(deadline: .now()) {
-                self.collectionView.collectionViewLayout.invalidateLayout()
-                self.scrollToMiddle()
-            }
-        }
+//        if #unavailable(iOS 15) {
+//            DispatchQueue.main.asyncAfter(deadline: .now()) {
+//                self.collectionView.collectionViewLayout.invalidateLayout()
+//                self.scrollToMiddle()
+//            }
+//        }
+        didScrollToMiddle = true
+    }
+    
+    var didScrollToMiddle = false
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        guard didScrollToMiddle else { return }
+        scrollToMiddle()
     }
     
     override func viewWillDisappear(_ animated: Bool) {

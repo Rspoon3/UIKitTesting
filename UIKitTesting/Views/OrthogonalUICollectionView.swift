@@ -18,19 +18,17 @@ class OrthogonalUICollectionView: UICollectionView {
     override func didAddSubview(_ subview: UIView) {
         super.didAddSubview(subview)
         
-        guard
-            self.observer == nil,
-            let scrollView = subview as? UIScrollView
-        else {
+        guard let scrollView = subview as? UIScrollView else {
             return
         }
-            
+        
         setObserver(using: scrollView)
     }
     
     
     private func setObserver(using scrollView: UIScrollView) {
-        observer = scrollView.observe(\UIScrollView.contentOffset, options: .new) { [weak self] scrollView, _ in
+        observer = scrollView.observe(\UIScrollView.contentOffset, options: [.new]) { [weak self] scrollView, _ in
+            
             guard let self else { return }
             
             if !self.draggingInitiated && scrollView.isDragging {

@@ -40,14 +40,18 @@ final class CarouselCell: UICollectionViewCell {
         imageView.layer.cornerRadius = cornerRadius
         imageView.contentMode = .scaleAspectFill
         imageView.translatesAutoresizingMaskIntoConstraints = false
-//        imageView.alpha = 0.1
+        imageView.alpha = 0//0.051
+        
         
         reflectedImageView.layer.cornerRadius = cornerRadius
-//        reflectedImageView.contentMode = .scaleAspectFill
+//        reflectedImageView.sizeThatFits(.init(width: 100, height: 100))
+        reflectedImageView.sizeToFit()
+
+//        reflectedImageView.contentMode = .center
 //        reflectedImageView.contentMode = .scaleToFill //default
         reflectedImageView.translatesAutoresizingMaskIntoConstraints = false
-//        reflectedImageView.layer.borderColor = UIColor.black.cgColor
-//        reflectedImageView.layer.borderWidth = 1
+        reflectedImageView.layer.borderColor = UIColor.black.cgColor
+        reflectedImageView.layer.borderWidth = 1
         
         
 //        let blurEffect = UIBlurEffect(style: .light)
@@ -63,7 +67,15 @@ final class CarouselCell: UICollectionViewCell {
         
         contentView.addSubview(typeLabel)
         
-        let blurPadding:CGFloat = CGFloat(blurRadius) / 2
+        
+        let aspect = UIView()
+        aspect.backgroundColor = .clear
+        aspect.layer.borderColor = UIColor.green.cgColor
+        aspect.layer.borderWidth = 1
+        aspect.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(aspect)
+        
+        let blurPadding:CGFloat = CGFloat(blurRadius) /// 2
         NSLayoutConstraint.activate([
             imageView.topAnchor.constraint(equalTo: contentView.topAnchor),
             imageView.heightAnchor.constraint(equalTo: contentView.widthAnchor, multiplier: 0.5),
@@ -74,6 +86,11 @@ final class CarouselCell: UICollectionViewCell {
             reflectedImageView.bottomAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 4 + blurPadding * 2),
             reflectedImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20 - blurPadding),
             reflectedImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20 + blurPadding),
+            
+            aspect.topAnchor.constraint(equalTo: imageView.topAnchor, constant: 36),
+            aspect.bottomAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 4),
+            aspect.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
+            aspect.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20 ),
             
             typeLabel.topAnchor.constraint(equalTo: contentView.topAnchor),
             typeLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor)
@@ -90,7 +107,7 @@ final class CarouselCell: UICollectionViewCell {
         let width = contentView.frame.width - 40
         let height = contentView.frame.height - 36 + 4
         
-        guard let resized = resizeImage(with: image, scaledToFill: .init(width: width, height: height)) else {
+        guard var resized = resizeImage(with: image, scaledToFill: .init(width: width, height: height)) else {
             return nil
         }
         
@@ -134,14 +151,17 @@ final class CarouselCell: UICollectionViewCell {
     }
     
     func reflectionOpacity(percentage: Double) {
-        reflectedImageView.alpha = percentage * 0.6
+//        reflectedImageView.alpha = percentage * 0.6
     }
     
     private func resizeImage(with image: UIImage?, scaledToFill size: CGSize) -> UIImage? {
         let scale: CGFloat = max(size.width / (image?.size.width ?? 0.0), size.height / (image?.size.height ?? 0.0))
+        
+        
         let width: CGFloat = (image?.size.width ?? 0.0) * scale
         let height: CGFloat = (image?.size.height ?? 0.0) * scale
         let imageRect = CGRect(x: (size.width - width) / 2.0, y: (size.height - height) / 2.0, width: width, height: height)
+        
         
         UIGraphicsBeginImageContextWithOptions(size, false, 0)
         image?.draw(in: imageRect)

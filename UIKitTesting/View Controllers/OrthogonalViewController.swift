@@ -40,9 +40,7 @@ final class OrthogonalViewController: CarouselVC {
                                               bottom: 0,
                                               trailing: horizontalInsets)
             }
-            
-            print("Start", manager.interGroupSpacing, manager.cellWidth)
-                        
+                                    
             section.visibleItemsInvalidationHandler = { [weak self] (items, offset, environment) in
                 guard let self else { return }
                 
@@ -54,7 +52,7 @@ final class OrthogonalViewController: CarouselVC {
 //                    print(adjustedOffset)
                     //
                     if item.indexPath.item == 0 {
-                        print(offset.x)
+//                        print(offset.x)
                         
                         //                        print(item.bounds.width, manager.cellWidth)
 //                        print("Min x: ", item.frame.minX, item.transform, spacing.clampedScale)
