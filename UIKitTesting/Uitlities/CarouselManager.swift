@@ -91,10 +91,12 @@ struct CarouselManager {
 
         let percentageToMidX = 1 - (distanceFromCenter / s)
         let scale = ((maxScale - minScale) * percentageToMidX) + minScale
+        var clampedScale = max(minScale, scale)
+        clampedScale = round(clampedScale * 1000) / 1000.0
 
 
         if ip == 1 {
-            print(itemMidX, distanceFromCenter, scale)
+            print(itemMidX, distanceFromCenter, scale, clampedScale)
 //            print(distanceFromCenter, itemWidth + interGroupSpacing)
             
 //            print(distanceFromCenter, XOffset, itemMidX)
@@ -103,7 +105,7 @@ struct CarouselManager {
 //            print(distanceFromCenter, percentageToMidX, scale, clampedScale) //50000 0, 1234, 306
         }
                 
-        return Spacing(percentageToMidX: 0.5, clampedScale: scale)
+        return Spacing(percentageToMidX: 0.5, clampedScale: clampedScale)
     }
 }
 //itemWidth 976

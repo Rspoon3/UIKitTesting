@@ -50,14 +50,14 @@ final class CarouselCell: UICollectionViewCell {
 //        reflectedImageView.layer.borderWidth = 1
         
         
-        let blurEffect = UIBlurEffect(style: .light)
-        let blurEffectView = UIVisualEffectView(effect: blurEffect)
-        blurEffectView.frame = contentView.bounds
-        blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+//        let blurEffect = UIBlurEffect(style: .light)
+//        let blurEffectView = UIVisualEffectView(effect: blurEffect)
+//        blurEffectView.frame = contentView.bounds
+//        blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         
         contentView.addSubview(reflectedImageView)
 
-        contentView.addSubview(blurEffectView)
+//        contentView.addSubview(blurEffectView)
         
         contentView.addSubview(imageView)
         
