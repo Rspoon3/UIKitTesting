@@ -26,6 +26,10 @@ class ViewController: UIViewController {
 //        imageView.contentMode = .scaleAspectFill
         imageView.image = self.createBluredImage(using: self.dog, value: 24)
         
+//        imageView.clipsToBounds = true
+//        imageView.layer.cornerRadius = 8
+//        imageView.contentMode = .scaleAspectFill
+        
         let imageView2 = UIImageView(image: dog)
         imageView2.translatesAutoresizingMaskIntoConstraints = false
         imageView2.layer.borderWidth = 1
@@ -88,8 +92,9 @@ class ViewController: UIViewController {
             imageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             
             
-            imageView2.widthAnchor.constraint(equalToConstant: 350),
-            imageView2.heightAnchor.constraint(equalToConstant: 350),
+            imageView2.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            imageView2.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            imageView2.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             imageView2.topAnchor.constraint(equalTo: imageView.bottomAnchor),
             imageView2.centerXAnchor.constraint(equalTo: view.centerXAnchor),
 
