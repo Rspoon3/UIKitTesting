@@ -49,15 +49,15 @@ final class CarouselLayout: UICollectionViewFlowLayout {
         let visibleRect = CGRect(origin: collectionView.contentOffset, size: collectionView.frame.size)
 
         for attributes in rectAttributes where attributes.frame.intersects(visibleRect) {
-            let spacing = manager.performSpacingCalulations(itemMidX: attributes.center.x,
-                                                            XOffset: collectionView.contentOffset.x,
-                                                            itemWidth: attributes.size.width)
-            
-            if let attributes = attributes as? CarouselLayoutAttributes {
-                attributes.percentageToMidX = spacing.percentageToMidX
-            }
-            
-            attributes.transform = CGAffineTransform(scaleX: spacing.clampedScale, y: spacing.clampedScale)
+//            let spacing = manager.performSpacingCalulations(itemMidX: attributes.center.x,
+//                                                            XOffset: collectionView.contentOffset.x,
+//                                                            itemWidth: attributes.size.width, ip: attributes.indexPath.item)
+//            
+//            if let attributes = attributes as? CarouselLayoutAttributes {
+//                attributes.percentageToMidX = spacing.percentageToMidX
+//            }
+//            
+//            attributes.transform = CGAffineTransform(scaleX: spacing.clampedScale, y: spacing.clampedScale)
         }
 
         return rectAttributes

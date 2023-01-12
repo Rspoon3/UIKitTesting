@@ -23,7 +23,7 @@ final class OrthogonalViewController: CarouselVC {
             
             // Group
             let groupSize = NSCollectionLayoutSize(widthDimension: .absolute(manager.cellWidth),
-                                                   heightDimension: .absolute(manager.cellHeight + 4))
+                                                   heightDimension: .absolute(manager.cellHeight))
             let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
             
             // Section
@@ -31,14 +31,23 @@ final class OrthogonalViewController: CarouselVC {
             section.orthogonalScrollingBehavior = .groupPagingCentered
             section.interGroupSpacing = manager.interGroupSpacing
             
+            print("Start", manager.interGroupSpacing, manager.cellWidth)
+                        
             section.visibleItemsInvalidationHandler = { [weak self] (items, offset, environment) in
                 guard let self else { return }
                 
                 items.forEach { item in
-                    let spacing = manager.performSpacingCalulations(itemMidX: item.frame.midX,
-                                                                    XOffset: offset.x,
-                                                                    itemWidth: item.frame.width)
-                    
+                    let adjustedOffset = (offset.x + manager.spacing * 2).round(nearest: 0.5)
+                    let spacing = manager.performSpacingCalulations(xOffset: adjustedOffset,
+                                                                    ip: item.indexPath.item)
+//                    print(adjustedOffset)
+//
+                    if item.indexPath.item == 0 {
+//                        print(item.bounds.width, manager.cellWidth)
+//                        print("Min x: ", item.frame.minX, item.transform, spacing.clampedScale)
+//                        print("Scale: \(spacing.clampedScale)")
+                    }
+                                        
                     if let cell = self.collectionView.cellForItem(at: item.indexPath) as? CarouselCell {
                         cell.reflectionOpacity(percentage: spacing.percentageToMidX)
                         //cell.label.text = "\(distanceFromCenter)\n\(percentageToMidX)"
@@ -68,5 +77,19 @@ final class OrthogonalViewController: CarouselVC {
         }
         
         commonViewSetup()
+    }
+}
+
+
+extension CGFloat {
+    func round(nearest: CGFloat) -> CGFloat {
+        let n = 1/nearest
+        let numberToRound = self * n
+        return numberToRound.rounded() / n
+    }
+
+    func floor(nearest: CGFloat) -> CGFloat {
+        let intDiv = CGFloat(Int(self / nearest))
+        return intDiv * nearest
     }
 }

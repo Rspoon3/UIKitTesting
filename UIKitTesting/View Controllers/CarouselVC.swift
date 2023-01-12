@@ -51,7 +51,8 @@ class CarouselVC: UIViewController, UICollectionViewDataSource, UICollectionView
     // MARK: - Public Helper
     
     func scrollToMiddle() {
-        currentIndex = IndexPath(row: numberOfCarouselItems / 2, section: 0)
+//        currentIndex = IndexPath(row: numberOfCarouselItems / 2, section: 0)
+        currentIndex = IndexPath(row: 1, section: 0)
         collectionView.scrollToItem(at: currentIndex, at: .centeredHorizontally, animated: true)
     }
     
@@ -221,7 +222,6 @@ class CarouselVC: UIViewController, UICollectionViewDataSource, UICollectionView
                                 cellType: self.showCellType ? self.cellType : nil,
                                 imageTitle: title)
             cell.configure(info: info)
-            print("Configure uikit type")
         }
         
         swiftUILegacyCellRegistration = UICollectionView.CellRegistration<SwiftUICollectionViewCell, String> { [weak self] (cell, indexPath, title) in
@@ -234,7 +234,6 @@ class CarouselVC: UIViewController, UICollectionViewDataSource, UICollectionView
             
             let view = CarouselCellView(info: info)
             cell.configure(with: view, parent: self)
-            print("Configure swiftui legacy type")
         }
         
         if #available(iOS 16.0, *) {
@@ -252,7 +251,6 @@ class CarouselVC: UIViewController, UICollectionViewDataSource, UICollectionView
                     .margins(.all, 0)
                 
                 cell.contentConfiguration = hostingConfiguration
-                print("Configure swiftui type")
             }
         }
     }
