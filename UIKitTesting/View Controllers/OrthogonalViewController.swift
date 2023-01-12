@@ -9,12 +9,31 @@ import UIKit
 
 final class OrthogonalViewController: CarouselVC {
     
+    private func lerp(from pointOne: Double, to pointTwo: Double, percentage: Double) -> Double {
+        
+        /// Keep the percentage variable within the 0.0 -> 1.0 range
+        var percentage = percentage
+        percentage = min(1, percentage)
+        percentage = max(0, percentage)
+        
+        let resultPoint = pointOne + (pointTwo - pointOne) * percentage
+        
+        return resultPoint
+    }
+    
     //MARK: - Layout
     private func createLayout() -> UICollectionViewLayout {
         return UICollectionViewCompositionalLayout { [weak self]
             (sectionIndex: Int, layoutEnvironment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
             guard let self else { return nil }
-            let manager = CarouselManager(collectionViewWidth: layoutEnvironment.container.contentSize.width)
+            let itemPeekSize:CGFloat = 12
+            let itemSpacing:CGFloat = 12
+            let contentPadding: CGFloat = itemPeekSize + itemSpacing
+            let itemPeekScale: CGFloat = 0.8
+            let contentWidth: CGFloat = layoutEnvironment.container.contentSize.width - (contentPadding * 2)
+            let scaledContentWidth: CGFloat = contentWidth * itemPeekScale
+            let sizeDifference: CGFloat = contentWidth - scaledContentWidth
+            let scaledOffset: CGFloat = sizeDifference / 2
             
             // Item
             let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1),
@@ -22,54 +41,72 @@ final class OrthogonalViewController: CarouselVC {
             let item = NSCollectionLayoutItem(layoutSize: itemSize)
             
             // Group
-            let groupSize = NSCollectionLayoutSize(widthDimension: .absolute(manager.cellWidth),
-                                                   heightDimension: .absolute(manager.cellHeight))
+            let groupSize = NSCollectionLayoutSize(widthDimension: .absolute(contentWidth),
+                                                   heightDimension: .absolute(contentWidth/2))
             let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
             
             // Section
             let section = NSCollectionLayoutSection(group: group)
             section.orthogonalScrollingBehavior = .groupPagingCentered
-            section.interGroupSpacing = manager.interGroupSpacing
+            section.interGroupSpacing = itemPeekSize - scaledOffset
+            
+            print("section.interGroupSpacing: ", section.interGroupSpacing)
             
             
-            if #unavailable(iOS 16) {
-                let horizontalInsets = manager.interGroupSpacing / 2
-                
-                section.contentInsets = .init(top: 0,
-                                              leading: horizontalInsets,
-                                              bottom: 0,
-                                              trailing: horizontalInsets)
-            }
-                                    
+//            if #unavailable(iOS 16) {
+//                let horizontalInsets = manager.interGroupSpacing / 2
+//
+//                section.contentInsets = .init(top: 0,
+//                                              leading: horizontalInsets,
+//                                              bottom: 0,
+//                                              trailing: horizontalInsets)
+//            }
+                                                
             section.visibleItemsInvalidationHandler = { [weak self] (items, offset, environment) in
                 guard let self else { return }
                 
                 items.forEach { item in
                     
-                    let adjustedOffset = (offset.x + manager.spacing * 2).round(nearest: 0.5)
-                    let spacing = manager.performSpacingCalulations(xOffset: adjustedOffset,
-                                                                    ip: item.indexPath.item)
-//                    print(adjustedOffset)
-                    //
-                    if item.indexPath.item == 0 {
-//                        print(offset.x)
-                        
-                        //                        print(item.bounds.width, manager.cellWidth)
-//                        print("Min x: ", item.frame.minX, item.transform, spacing.clampedScale)
-//                        print("Scale: \(spacing.clampedScale)")
-                    }
-                                        
-                    if let cell = self.collectionView.cellForItem(at: item.indexPath) as? CarouselCell {
-                        cell.reflectionOpacity(percentage: spacing.percentageToMidX)
-                        //cell.label.text = "\(distanceFromCenter)\n\(percentageToMidX)"
+                    var coerceIn = offset.x
+                    
+                    if coerceIn < 0 {
+                        coerceIn = 0
+                    } else if coerceIn > 1 {
+                        coerceIn = 1
                     }
                     
-                    item.transform = CGAffineTransform(scaleX: spacing.clampedScale,
-                                                       y: spacing.clampedScale)
+                    let fraction = 1 - coerceIn
+//                    let lerp = itemPeekScale + (1 - itemPeekScale) * fraction
                     
-                    if spacing.clampedScale > 0.9 {
-                        self.currentIndex = item.indexPath
+                    let lerp = self.lerp(from: itemPeekScale, to: 1, percentage: fraction)
+                    
+                    if item.indexPath.item == 1 {
+                        print(fraction, lerp)
                     }
+                    
+                    item.transform = CGAffineTransform(scaleX: lerp,
+                                                       y: lerp)
+                    
+                    
+//                    lerp(
+//                        start = itemPeekScale,
+//                        stop = 1f,
+//                        fraction = 1f - pageOffset.coerceIn(0f, 1f)
+//                    ).also { scale ->
+//                        scaleY = scale
+//                        scaleX = scale
+//                    }
+//
+//                    if let cell = self.collectionView.cellForItem(at: item.indexPath) as? CarouselCell {
+//                        cell.reflectionOpacity(percentage: spacing.percentageToMidX)
+//                    }
+//
+//                    item.transform = CGAffineTransform(scaleX: spacing.clampedScale,
+//                                                       y: spacing.clampedScale)
+//
+//                    if spacing.clampedScale > 0.9 {
+//                        self.currentIndex = item.indexPath
+//                    }
                 }
             }
             
