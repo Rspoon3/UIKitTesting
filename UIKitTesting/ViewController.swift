@@ -21,7 +21,7 @@ class ViewController: UIViewController {
         
         let imageView = UIImageView(image: dog)
         imageView.translatesAutoresizingMaskIntoConstraints = false
-//        imageView.layer.borderWidth = 1
+        imageView.layer.borderWidth = 1
         imageView.layer.borderColor = UIColor.black.cgColor
 //        imageView.contentMode = .scaleAspectFill
         
@@ -54,6 +54,18 @@ class ViewController: UIViewController {
         view.addSubview(stack)
         view.addSubview(blurEffectView)
         
+        
+        let test = UIView()
+        test.translatesAutoresizingMaskIntoConstraints = false
+        test.backgroundColor = .systemRed
+        view.addSubview(test)
+        
+        let blue = UIView()
+        blue.translatesAutoresizingMaskIntoConstraints = false
+        blue.backgroundColor = .systemBlue
+        view.addSubview(blue)
+
+        let blurPadding: CGFloat = CGFloat(20) / 2
         NSLayoutConstraint.activate([
             stack.bottomAnchor.constraint(equalTo: imageView.topAnchor, constant: -20),
             stack.centerXAnchor.constraint(equalTo: view.centerXAnchor),
@@ -63,6 +75,17 @@ class ViewController: UIViewController {
             imageView.heightAnchor.constraint(equalToConstant: 300),
             imageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             imageView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            
+            test.topAnchor.constraint(equalTo: imageView.centerYAnchor),
+            test.leadingAnchor.constraint(equalTo: imageView.leadingAnchor),
+            test.widthAnchor.constraint(equalToConstant: blurPadding),
+            test.heightAnchor.constraint(equalToConstant: 300),
+            
+            
+            blue.topAnchor.constraint(equalTo: imageView.centerYAnchor),
+            blue.trailingAnchor.constraint(equalTo: imageView.trailingAnchor),
+            blue.widthAnchor.constraint(equalToConstant: 20),
+            blue.heightAnchor.constraint(equalToConstant: 300),
             
             
             blurEffectView.topAnchor.constraint(equalTo: imageView.topAnchor, constant: -20),
@@ -81,7 +104,7 @@ class ViewController: UIViewController {
          
          guard
              let outputImage = filter.outputImage,
-             let cgImage = context.createCGImage(outputImage, from: beginImage!.extent)
+             let cgImage = context.createCGImage(outputImage, from: outputImage.extent)
          else {
              return nil
          }
