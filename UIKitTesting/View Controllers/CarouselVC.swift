@@ -40,6 +40,13 @@ class CarouselVC: UIViewController, UICollectionViewDataSource, UICollectionView
         configureCollectionView()
         scrollToMiddle()
 //        startTimer()
+        
+        if #unavailable(iOS 15) {
+            DispatchQueue.main.asyncAfter(deadline: .now()) {
+                self.collectionView.collectionViewLayout.invalidateLayout()
+                self.scrollToMiddle()
+            }
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -53,7 +60,7 @@ class CarouselVC: UIViewController, UICollectionViewDataSource, UICollectionView
     func scrollToMiddle() {
 //        currentIndex = IndexPath(row: numberOfCarouselItems / 2, section: 0)
         currentIndex = IndexPath(row: 1, section: 0)
-        collectionView.scrollToItem(at: currentIndex, at: .centeredHorizontally, animated: true)
+        collectionView.scrollToItem(at: currentIndex, at: .centeredHorizontally, animated: false)
     }
     
     func stopTimer() {

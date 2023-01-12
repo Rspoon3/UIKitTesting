@@ -96,7 +96,6 @@ struct CarouselManager {
 
 
         if ip == 1 {
-            print(itemMidX, distanceFromCenter, scale, clampedScale)
 //            print(distanceFromCenter, itemWidth + interGroupSpacing)
             
 //            print(distanceFromCenter, XOffset, itemMidX)
@@ -110,4 +109,36 @@ struct CarouselManager {
 }
 //itemWidth 976
 
+//15
+//Start -22.2 342.0
+//490.8 295.8 0.8150093808630394 0.815
+//490.8 330.79999999999995 0.7931207004377737 0.8
+//2023-01-12 03:30:55.549257-0500 UIKitTesting[14735:4734653] Metal API Validation Enabled
+//490.8 11.300000000000011 0.9929330831769856 0.993
+//Start -22.2 342.0
+//490.8 11.300000000000011 0.9929330831769856 0.993
+//Start -22.2 342.0
+//490.8 11.300000000000011 0.9929330831769856 0.993
 
+//Start -22.2 342.0
+//Start -22.2 342.0
+//0.0
+//2023-01-12 03:35:36.823334-0500 UIKitTesting[15554:4754777] Metal API Validation Enabled
+//-35.0
+//2023-01-12 03:35:37.023914-0500 UIKitTesting[15554:4754777] [UICollectionViewRecursion] cv == 0x13c0a5e00 Disabling recursion trigger logging
+
+
+//16
+//Start -22.2 342.0
+//490.8 295.8 0.8150093808630394 0.815
+//490.8 319.79999999999995 0.8 0.8
+//2023-01-12 03:31:21.695024-0500 UIKitTesting[14810:4736724] Metal API Validation Enabled
+//490.8 0.30000000000001137 0.999812382739212 1.0
+//Start -22.2 342.0
+//490.8 0.30000000000001137 0.999812382739212 1.0
+
+
+//Start -22.2 342.0
+//0.0
+//2023-01-12 03:35:14.485467-0500 UIKitTesting[15495:4753303] Metal API Validation Enabled
+//-24.0

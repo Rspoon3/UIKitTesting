@@ -31,19 +31,32 @@ final class OrthogonalViewController: CarouselVC {
             section.orthogonalScrollingBehavior = .groupPagingCentered
             section.interGroupSpacing = manager.interGroupSpacing
             
+            
+            if #unavailable(iOS 16) {
+                let horizontalInsets = manager.interGroupSpacing / 2
+                
+                section.contentInsets = .init(top: 0,
+                                              leading: horizontalInsets,
+                                              bottom: 0,
+                                              trailing: horizontalInsets)
+            }
+            
             print("Start", manager.interGroupSpacing, manager.cellWidth)
                         
             section.visibleItemsInvalidationHandler = { [weak self] (items, offset, environment) in
                 guard let self else { return }
                 
                 items.forEach { item in
+                    
                     let adjustedOffset = (offset.x + manager.spacing * 2).round(nearest: 0.5)
                     let spacing = manager.performSpacingCalulations(xOffset: adjustedOffset,
                                                                     ip: item.indexPath.item)
 //                    print(adjustedOffset)
-//
+                    //
                     if item.indexPath.item == 0 {
-//                        print(item.bounds.width, manager.cellWidth)
+                        print(offset.x)
+                        
+                        //                        print(item.bounds.width, manager.cellWidth)
 //                        print("Min x: ", item.frame.minX, item.transform, spacing.clampedScale)
 //                        print("Scale: \(spacing.clampedScale)")
                     }
