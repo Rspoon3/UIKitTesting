@@ -8,13 +8,6 @@
 import UIKit
 import FLAnimatedImage
 
-struct CellInfo {
-    let index: Int
-    let showGif: Bool
-    let cellType: CarouselVC.CellType?
-    let imageTitle: String
-}
-
 final class CarouselCell: UICollectionViewCell {
     private let imageView = FLAnimatedImageView()
     private let reflectedImageView = UIImageView()
@@ -40,7 +33,7 @@ final class CarouselCell: UICollectionViewCell {
         imageView.layer.cornerRadius = cornerRadius
         imageView.contentMode = .scaleAspectFill
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.alpha = 0//0.051
+//        imageView.alpha = 0//0.051
         
         
         reflectedImageView.layer.cornerRadius = cornerRadius
@@ -51,7 +44,7 @@ final class CarouselCell: UICollectionViewCell {
 //        reflectedImageView.contentMode = .scaleToFill //default
         reflectedImageView.translatesAutoresizingMaskIntoConstraints = false
         reflectedImageView.layer.borderColor = UIColor.black.cgColor
-        reflectedImageView.layer.borderWidth = 1
+//        reflectedImageView.layer.borderWidth = 1
         
         
 //        let blurEffect = UIBlurEffect(style: .light)
@@ -71,7 +64,7 @@ final class CarouselCell: UICollectionViewCell {
         let aspect = UIView()
         aspect.backgroundColor = .clear
         aspect.layer.borderColor = UIColor.green.cgColor
-        aspect.layer.borderWidth = 1
+//        aspect.layer.borderWidth = 1
         aspect.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(aspect)
         
@@ -151,7 +144,7 @@ final class CarouselCell: UICollectionViewCell {
     }
     
     func reflectionOpacity(percentage: Double) {
-//        reflectedImageView.alpha = percentage * 0.6
+        reflectedImageView.alpha = percentage * 0.6
     }
     
     private func resizeImage(with image: UIImage?, scaledToFill size: CGSize) -> UIImage? {

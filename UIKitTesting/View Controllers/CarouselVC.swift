@@ -22,12 +22,8 @@ class CarouselVC: UIViewController, UICollectionViewDataSource, UICollectionView
     private let cellTypeButton = UIButton()
     private var showGif = true
     private var showCellType = true
+    private var shouldScrollToMiddleForiOS14Bug = true
 
-    enum CellType: String, CaseIterable {
-        case uikit = "UIKIt"
-        case swiftui = "SwiftUI"
-        case swiftuiLegacy = "SwiftUI Legacy"
-    }
     
     
     //MARK: - Life Cycle
@@ -40,21 +36,15 @@ class CarouselVC: UIViewController, UICollectionViewDataSource, UICollectionView
         configureCollectionView()
         scrollToMiddle()
 //        startTimer()
-        
-//        if #unavailable(iOS 15) {
-//            DispatchQueue.main.asyncAfter(deadline: .now()) {
-//                self.collectionView.collectionViewLayout.invalidateLayout()
-//                self.scrollToMiddle()
-//            }
-//        }
-        didScrollToMiddle = true
     }
     
-    var didScrollToMiddle = false
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        guard didScrollToMiddle else { return }
-        scrollToMiddle()
+        
+        if #unavailable(iOS 15) {
+            guard shouldScrollToMiddleForiOS14Bug, isViewLoaded else { return }
+            scrollToMiddle()
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -66,8 +56,7 @@ class CarouselVC: UIViewController, UICollectionViewDataSource, UICollectionView
     // MARK: - Public Helper
     
     func scrollToMiddle() {
-//        currentIndex = IndexPath(row: numberOfCarouselItems / 2, section: 0)
-        currentIndex = IndexPath(row: 1, section: 0)
+        currentIndex = IndexPath(row: numberOfCarouselItems / 2, section: 0)
         collectionView.scrollToItem(at: currentIndex, at: .centeredHorizontally, animated: false)
     }
     
