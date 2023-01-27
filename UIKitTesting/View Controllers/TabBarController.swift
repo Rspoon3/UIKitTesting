@@ -28,7 +28,10 @@ final class TabBarController: UITabBarController {
                                                          image: UIImage(systemName: "2.circle"),
                                                          tag: 1)
         
-        viewControllers = [UINavigationController(rootViewController: orthogonalVC),
-                           UINavigationController(rootViewController: customCarouselLayoutVC)]
+//        viewControllers = [UINavigationController(rootViewController: orthogonalVC),
+//                           UINavigationController(rootViewController: customCarouselLayoutVC)]
+        
+        viewControllers = [UINavigationController(rootViewController: customCarouselLayoutVC),
+                           UINavigationController(rootViewController: orthogonalVC)]
     }
 }

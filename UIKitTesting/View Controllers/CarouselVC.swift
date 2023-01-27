@@ -17,12 +17,13 @@ class CarouselVC: UIViewController, UICollectionViewDataSource, UICollectionView
     private let carouselItems = Array(1...12).map{ i in "Slide-\(i)"}
     private var scrollRateInSeconds: TimeInterval?
     private var timer: Timer?
-    private let numberOfCarouselItems = 1_000_000
+    private let numberOfCarouselItems = 100_000
     private var cellType: CellType = .uikit
     private let cellTypeButton = UIButton()
     private var showGif = true
     private var showCellType = true
     private var shouldScrollToMiddleForiOS14Bug = true
+    private var viewDidAppear = false
 
     
     
@@ -34,18 +35,30 @@ class CarouselVC: UIViewController, UICollectionViewDataSource, UICollectionView
         
         registerCell()
         configureCollectionView()
-        scrollToMiddle()
-//        startTimer()
+
+        startTimer(timeInterval: 3)
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
-        if #unavailable(iOS 15) {
-            guard shouldScrollToMiddleForiOS14Bug, isViewLoaded else { return }
+        if !viewDidAppear {
             scrollToMiddle()
         }
+        
+        
+//        if #unavailable(iOS 15) {
+//            guard shouldScrollToMiddleForiOS14Bug, isViewLoaded else { return }
+//            scrollToMiddle()
+//            shouldScrollToMiddleForiOS14Bug = false
+//        }
     }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        viewDidAppear = true
+    }
+    
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
@@ -57,7 +70,7 @@ class CarouselVC: UIViewController, UICollectionViewDataSource, UICollectionView
     
     func scrollToMiddle() {
         currentIndex = IndexPath(row: numberOfCarouselItems / 2, section: 0)
-        collectionView.scrollToItem(at: currentIndex, at: .centeredHorizontally, animated: false)
+        collectionView.scrollToItem(at: .init(item: currentIndex.item, section: 0), at: .centeredHorizontally, animated: false)
     }
     
     func stopTimer() {
@@ -74,19 +87,21 @@ class CarouselVC: UIViewController, UICollectionViewDataSource, UICollectionView
         collectionView.backgroundColor = .systemBackground
         collectionView.delegate = self
         collectionView.dataSource = self
-        collectionView.decelerationRate = .normal
+        collectionView.decelerationRate = .fast
+        
+        print(collectionView.decelerationRate.rawValue)
         
         let deceleartionLabel = UILabel()
         deceleartionLabel.text = "Deceleration Rate: normal"
         
         let deceleartionSwitch = UISwitch(frame: .zero, primaryAction: .init(handler: { [weak self] action in
             let mySwitch = action.sender as! UISwitch
-            self?.collectionView.decelerationRate = mySwitch.isOn ? .fast : .normal
+            self?.collectionView.decelerationRate = mySwitch.isOn ? .normal : .fast
             
             deceleartionLabel.text = "Deceleration Rate: \(mySwitch.isOn ? "fast" : "normal")"
         }))
         
-        deceleartionSwitch.isOn = false
+        deceleartionSwitch.isOn = true
         
         let decelerationStack = UIStackView(arrangedSubviews: [deceleartionLabel, deceleartionSwitch])
         decelerationStack.spacing = 10
@@ -226,6 +241,7 @@ class CarouselVC: UIViewController, UICollectionViewDataSource, UICollectionView
                                 cellType: self.showCellType ? self.cellType : nil,
                                 imageTitle: title)
             cell.configure(info: info)
+            cell.indexLabel.text = "\(indexPath.item)"
         }
         
         swiftUILegacyCellRegistration = UICollectionView.CellRegistration<SwiftUICollectionViewCell, String> { [weak self] (cell, indexPath, title) in
@@ -303,5 +319,12 @@ class CarouselVC: UIViewController, UICollectionViewDataSource, UICollectionView
     //    func collectionView(_ collectionView: UICollectionView, shouldHighlightItemAt indexPath: IndexPath) -> Bool {
     //        return false
     //    }
+    
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        stopTimer()
+        
+        guard let layout = collectionView.collectionViewLayout as? CarouselLayout else { return }
+        layout.startOfScrollIndex = layout.currentIndex
+    }
 }
 

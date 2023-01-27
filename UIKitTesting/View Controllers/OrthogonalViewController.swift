@@ -11,7 +11,7 @@ final class OrthogonalViewController: CarouselVC {
 
     //MARK: - Layout
     private func createLayout() -> UICollectionViewLayout {
-        return UICollectionViewCompositionalLayout { [weak self]
+        UICollectionViewCompositionalLayout { [weak self]
             (sectionIndex: Int, layoutEnvironment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
             guard let self else { return nil }
             let spacing: CGFloat = 12
@@ -63,7 +63,7 @@ final class OrthogonalViewController: CarouselVC {
                     
                     if let cell = self.collectionView.cellForItem(at: item.indexPath) as? CarouselCell {
                         cell.reflectionOpacity(percentage: percentageToMidX)
-                    }
+                    }                    
                 }
             }
             
@@ -82,5 +82,10 @@ final class OrthogonalViewController: CarouselVC {
         }
         
         commonViewSetup()
+        
+//        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+//            self.collectionView.removeFromSuperview()
+//            self.collectionView = nil
+//        }
     }
 }

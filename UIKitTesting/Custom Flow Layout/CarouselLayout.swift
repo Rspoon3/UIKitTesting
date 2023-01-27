@@ -8,6 +8,8 @@ import UIKit
 
 final class CarouselLayout: UICollectionViewFlowLayout {
     private var manager = CarouselManager()
+    private(set) var currentIndex = IndexPath(item: 0, section: 0)
+    var startOfScrollIndex = IndexPath(item: 0, section: 0)
 
     
     //MARK: - Initializer
@@ -44,43 +46,62 @@ final class CarouselLayout: UICollectionViewFlowLayout {
     }
 
     override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
-        guard let collectionView = collectionView else { return nil }
-        let rectAttributes = super.layoutAttributesForElements(in: rect)!.map { $0.copy() as! UICollectionViewLayoutAttributes }
+        guard
+            let collectionView,
+            let rectAttributes = super.layoutAttributesForElements(in: rect)?.compactMap ({ $0.copy() as? UICollectionViewLayoutAttributes })
+        else {
+            return nil
+        }
+        
         let visibleRect = CGRect(origin: collectionView.contentOffset, size: collectionView.frame.size)
-
+        
         for attributes in rectAttributes where attributes.frame.intersects(visibleRect) {
-//            let spacing = manager.performSpacingCalulations(itemMidX: attributes.center.x,
-//                                                            XOffset: collectionView.contentOffset.x,
-//                                                            itemWidth: attributes.size.width, ip: attributes.indexPath.item)
-//            
-//            if let attributes = attributes as? CarouselLayoutAttributes {
-//                attributes.percentageToMidX = spacing.percentageToMidX
-//            }
-//            
-//            attributes.transform = CGAffineTransform(scaleX: spacing.clampedScale, y: spacing.clampedScale)
+            let spacing = manager.performSpacingCalulations(xOffset: collectionView.contentOffset.x,
+                                                            itemMidX: attributes.frame.midX)
+            
+            if let attributes = attributes as? CarouselLayoutAttributes {
+                attributes.percentageToMidX = spacing.percentageToMidX
+            }
+            
+            if spacing.clampedScale > 0.9 {
+                currentIndex = attributes.indexPath
+            }
+            
+            attributes.transform = CGAffineTransform(scaleX: spacing.clampedScale, y: spacing.clampedScale)
         }
 
         return rectAttributes
     }
-
+    
     override func targetContentOffset(forProposedContentOffset proposedContentOffset: CGPoint, withScrollingVelocity velocity: CGPoint) -> CGPoint {
-        guard let collectionView = collectionView else { return .zero }
-
-        // Add some snapping behaviour so that the zoomed cell is always centered
-        let targetRect = CGRect(x: proposedContentOffset.x, y: 0, width: collectionView.frame.width, height: collectionView.frame.height)
-        guard let rectAttributes = super.layoutAttributesForElements(in: targetRect) else { return .zero }
-
-        var offsetAdjustment = CGFloat.greatestFiniteMagnitude
-        let horizontalCenter = proposedContentOffset.x + collectionView.frame.width / 2
-
-        for layoutAttributes in rectAttributes {
-            let itemHorizontalCenter = layoutAttributes.center.x
-            if (itemHorizontalCenter - horizontalCenter).magnitude < offsetAdjustment.magnitude {
-                offsetAdjustment = itemHorizontalCenter - horizontalCenter
-            }
+        let targetContentOffset = super.targetContentOffset(forProposedContentOffset: proposedContentOffset, withScrollingVelocity: velocity)
+        
+        guard let collectionView else {
+            return targetContentOffset
         }
-
-        return CGPoint(x: proposedContentOffset.x + offsetAdjustment, y: proposedContentOffset.y)
+        
+        let centerX = collectionView.bounds.width / 2.0
+        let isForward = proposedContentOffset.x > collectionView.contentOffset.x
+        let xVelocity = abs(velocity.x)
+        var desiredAttribute: UICollectionViewLayoutAttributes?
+                        
+        if xVelocity == 0 {
+            if currentIndex == startOfScrollIndex {
+                desiredAttribute = collectionView.layoutAttributesForItem(at: startOfScrollIndex)
+            } else {
+                desiredAttribute = collectionView.layoutAttributesForItem(at: currentIndex)
+            }
+        } else if isForward {
+            desiredAttribute = collectionView.layoutAttributesForItem(at: .init(item: startOfScrollIndex.item + 1, section: 0))
+        } else {
+            desiredAttribute = collectionView.layoutAttributesForItem(at: .init(item: startOfScrollIndex.item - 1, section: 0))
+        }
+        
+        guard let desiredAttribute else {
+            return targetContentOffset
+        }
+        
+        return CGPoint(x: desiredAttribute.center.x - centerX, y: proposedContentOffset.y)
     }
 
     override func shouldInvalidateLayout(forBoundsChange newBounds: CGRect) -> Bool {

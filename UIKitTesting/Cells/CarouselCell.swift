@@ -16,7 +16,8 @@ final class CarouselCell: UICollectionViewCell {
     private let filter = CIFilter(name: "CIGaussianBlur")!
     private let blurRadius = 24
     private let typeLabel = UILabel()
-    
+    let indexLabel = UILabel()
+
     override func apply(_ layoutAttributes: UICollectionViewLayoutAttributes) {
         super.apply(layoutAttributes)
         if let attribute = layoutAttributes as? CarouselLayoutAttributes {
@@ -60,6 +61,11 @@ final class CarouselCell: UICollectionViewCell {
         
         contentView.addSubview(typeLabel)
         
+        contentView.addSubview(indexLabel)
+        
+        indexLabel.translatesAutoresizingMaskIntoConstraints = false
+        indexLabel.font = .preferredFont(forTextStyle: .largeTitle)
+        indexLabel.textColor = .red
         
         let aspect = UIView()
         aspect.backgroundColor = .clear
@@ -86,7 +92,10 @@ final class CarouselCell: UICollectionViewCell {
             aspect.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20 ),
             
             typeLabel.topAnchor.constraint(equalTo: contentView.topAnchor),
-            typeLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor)
+            typeLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            
+            indexLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            indexLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
         ])
         
 //        print("CELL: \(contentView.frame.width) \(contentView.bounds.width)")

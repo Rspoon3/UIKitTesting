@@ -42,26 +42,16 @@ struct CarouselManager {
     
     //MARK: - Public Helpers
     
-    func performSpacingCalulations(xOffset: CGFloat, ip: Int) -> Spacing {
-        let s = cellWidth + interGroupSpacing
-        let itemMidX = (CGFloat(ip) * s) + cellWidth/2
-        let distanceFromCenter = abs((itemMidX - xOffset + spacing * 2) - collectionViewWidth / 2.0)
-        let percentageToMidX = 1 - (distanceFromCenter / s)
-        let scale = ((maxScale - minScale) * percentageToMidX) + minScale
-        var clampedScale = max(minScale, scale)
-        clampedScale = round(clampedScale * 1000) / 1000.0
-
+    func performSpacingCalulations(xOffset: CGFloat, itemMidX: CGFloat) -> Spacing {
+        let distanceFromCenter = abs((itemMidX - xOffset) - collectionViewWidth / 2.0)
+        let width = cellWidth + interGroupSpacing
         
-
-        if ip == 1 {
-//            print(distanceFromCenter, itemWidth + interGroupSpacing)
-            
-//            print(distanceFromCenter, XOffset, itemMidX)
-//            print(itemWidth, spacing, collectionViewWidth, clampedScale, scale, itemMidX, XOffset, distanceFromCenter)
-//            print(scale, distanceFromCenter, percentageToMidX)
-//            print(distanceFromCenter, percentageToMidX, scale, clampedScale) //50000 0, 1234, 306
-        }
+        var percentageToMidX = 1 - (distanceFromCenter / width)
+        percentageToMidX = min(1, percentageToMidX)
+        percentageToMidX = max(0, percentageToMidX)
+        
+        let scale = minScale + (1 - minScale) * percentageToMidX
                 
-        return Spacing(percentageToMidX: 0.5, clampedScale: clampedScale)
+        return Spacing(percentageToMidX: percentageToMidX, clampedScale: scale)
     }
 }
