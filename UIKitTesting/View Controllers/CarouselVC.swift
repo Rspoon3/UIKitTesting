@@ -84,7 +84,7 @@ class CarouselVC: UIViewController, UICollectionViewDataSource, UICollectionView
         
     func commonViewSetup() {
         collectionView.translatesAutoresizingMaskIntoConstraints = false
-        collectionView.backgroundColor = .systemBackground
+        collectionView.backgroundColor = .red
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.decelerationRate = .fast

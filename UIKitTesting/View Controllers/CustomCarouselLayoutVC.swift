@@ -12,7 +12,7 @@ class CustomCarouselLayoutVC: CarouselVC {
     //MARK: - Layout
     
     override func configureCollectionView() {
-        collectionView = UICollectionView(frame: view.bounds,
+        collectionView = UICollectionView(frame: .zero,
                                           collectionViewLayout: CarouselLayout())
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.contentInsetAdjustmentBehavior = .always
