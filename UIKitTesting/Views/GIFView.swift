@@ -9,14 +9,13 @@ import SwiftUI
 import FLAnimatedImage
 
 struct GIFView: UIViewRepresentable {
-    let data: Data
+    let image: FLAnimatedImage
     
     func makeUIView(context: Context) -> UIView {
         let view = UIView(frame: .zero)
-        let gif = FLAnimatedImage(gifData: data)!
         let imageView = FLAnimatedImageView()
         
-        imageView.animatedImage = gif
+        imageView.animatedImage = image
         imageView.contentMode = .scaleAspectFill
         imageView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -31,5 +30,6 @@ struct GIFView: UIViewRepresentable {
       }
     
     func updateUIView(_ uiView: UIView, context: Context) {
+        print("Updating")
     }
 }

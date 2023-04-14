@@ -65,7 +65,6 @@ final class CarouselCell: UICollectionViewCell {
         
         indexLabel.translatesAutoresizingMaskIntoConstraints = false
         indexLabel.font = .preferredFont(forTextStyle: .largeTitle)
-        indexLabel.textColor = .red
         
         let aspect = UIView()
         aspect.backgroundColor = .clear

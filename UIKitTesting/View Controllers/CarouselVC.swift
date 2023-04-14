@@ -84,7 +84,6 @@ class CarouselVC: UIViewController, UICollectionViewDataSource, UICollectionView
         
     func commonViewSetup() {
         collectionView.translatesAutoresizingMaskIntoConstraints = false
-        collectionView.backgroundColor = .red
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.decelerationRate = .fast
@@ -304,7 +303,6 @@ class CarouselVC: UIViewController, UICollectionViewDataSource, UICollectionView
         collectionView.deselectItem(at: indexPath, animated: false)
         
         let test = UIViewController()
-        test.view.backgroundColor = .red
         
         navigationController?.pushViewController(test, animated: true)
     }

@@ -9,35 +9,42 @@ import SwiftUI
 import FLAnimatedImage
 
 struct CarouselCellView: View {
+    private let scale = 0.88
     private let cornerRadius: CGFloat = 8
-    let gifData = try! Data(contentsOf: Bundle.main.url(forResource: "slideGif", withExtension: "gif")!)
+//    let gifData = try! Data(contentsOf: Bundle.main.url(forResource: "slideGif", withExtension: "gif")!)
     private let testOpactiy: Double = 1
     let info: CellInfo
+    @State private var image: FLAnimatedImage?
     
     var body: some View {
         GeometryReader { geo in
-            ZStack(alignment: .top) {
-                if info.index.isMultiple(of: 4) && info.showGif {
-                    GIFView(data: gifData)
+            ZStack(alignment: .bottom) {
+                if let image, info.index.isMultiple(of: 4) && info.showGif {
+                    GIFView(image: image)
                         .cornerRadius(cornerRadius)
-                        .padding(.top, 36)
-                        .padding(.horizontal, 40)
-                        .blur(radius: 20)
+                        .padding(.bottom, -4)
+                        .frame(
+                            width: geo.size.width * scale,
+                            height: geo.size.width * scale / 2
+                        )
+                        .blur(radius: 15)
                     
-                    GIFView(data: gifData)
+                    GIFView(image: image)
                         .cornerRadius(cornerRadius)
-                        .padding(.bottom, 4)
                         .opacity(testOpactiy)
+                        .frame(height: geo.size.width  / 2)
                 } else {
                     Image(info.imageTitle)
                         .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .frame(height: (geo.size.width / 2) - 36 + 4)
-                        .clipped()
-                        .padding(.top, 36)
-                        .padding(.horizontal, 40)
                         .cornerRadius(cornerRadius)
-                        .blur(radius: 20)
+                        .aspectRatio(contentMode: .fill)
+                        .frame(
+                            width: geo.size.width * scale,
+                            height: geo.size.width * scale / 2
+                        )
+                        .clipped()
+                        .padding(.bottom, -4)
+                        .blur(radius: 15)
                     
                     Image(info.imageTitle)
                         .resizable()
@@ -48,11 +55,38 @@ struct CarouselCellView: View {
                         .opacity(testOpactiy)
                 }
                 
-                if let text = info.cellType?.rawValue {
-                    Text(text)
-                }
+//                if let text = info.cellType?.rawValue {
+//                    Text(text)
+//                }
             }
         }
+        .task {
+            try? await download()
+        }
+    }
+    
+    private func download() async throws {
+        let url = URL(string: "https://cdn.staging-images.fetchrewards.com/carousels/38376a7ce028e5ba94fb51c85ced5e8f13c47399.gif")!
+        let (data, _) = try await URLSession.shared.data(from: url)
+        image = .init(gifData: data)
     }
 }
 
+
+
+struct CarouselCellView_Previews: PreviewProvider {
+    static var previews: some View {
+        ForEach(["iPhone 14", "iPad Air (5th generation)"], id: \.self) { name in
+            GeometryReader { geo in
+                VStack {
+                    CarouselCellView(info: .init(index: 0, showGif: true, cellType: .swiftui, imageTitle: "test"))
+                        .padding()
+                    
+                    CarouselCellView(info: .init(index: 0, showGif: false, cellType: .swiftui, imageTitle: "Slide-4"))
+                        .padding()
+                }
+            }
+            .previewDevice(.init(stringLiteral: name))
+        }
+    }
+}
