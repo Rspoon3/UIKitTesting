@@ -8,6 +8,8 @@
 import UIKit
 import SwiftUI
 
+let gifData = try! Data(contentsOf: Bundle.main.url(forResource: "slideGif", withExtension: "gif")!)
+
 class CarouselVC: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate {
     var collectionView: UICollectionView! = nil
     var currentIndex = IndexPath(item: 0, section: 0)
@@ -18,7 +20,7 @@ class CarouselVC: UIViewController, UICollectionViewDataSource, UICollectionView
     private var scrollRateInSeconds: TimeInterval?
     private var timer: Timer?
     private let numberOfCarouselItems = 100_000
-    private var cellType: CellType = .uikit
+    private var cellType: CellType = .swiftui
     private let cellTypeButton = UIButton()
     private var showGif = true
     private var showCellType = true
@@ -36,7 +38,7 @@ class CarouselVC: UIViewController, UICollectionViewDataSource, UICollectionView
         registerCell()
         configureCollectionView()
 
-        startTimer(timeInterval: 3)
+//        startTimer(timeInterval: 3)
     }
     
     override func viewDidLayoutSubviews() {
@@ -266,6 +268,7 @@ class CarouselVC: UIViewController, UICollectionViewDataSource, UICollectionView
                 
                 let hostingConfiguration = UIHostingConfiguration {
                     CarouselCellView(info: info)
+//                    GIFView(image: .init(gifData: gifData))
                 }
                     .margins(.all, 0)
                 

@@ -11,7 +11,6 @@ import FLAnimatedImage
 struct CarouselCellView: View {
     private let scale = 0.88
     private let cornerRadius: CGFloat = 8
-//    let gifData = try! Data(contentsOf: Bundle.main.url(forResource: "slideGif", withExtension: "gif")!)
     private let testOpactiy: Double = 1
     let info: CellInfo
     @State private var image: FLAnimatedImage?
@@ -19,14 +18,18 @@ struct CarouselCellView: View {
     var body: some View {
         GeometryReader { geo in
             ZStack(alignment: .bottom) {
-                if let image, info.index.isMultiple(of: 4) && info.showGif {
-                    GIFView(image: image)
+                if let image, let posterImage = image.posterImage, info.index.isMultiple(of: 4) && info.showGif {
+                    Image(uiImage: posterImage)
+                        .resizable()
                         .cornerRadius(cornerRadius)
-                        .padding(.bottom, -4)
+                        .aspectRatio(contentMode: .fill)
                         .frame(
                             width: geo.size.width * scale,
                             height: geo.size.width * scale / 2
                         )
+                        .border(Color.black)
+                        .clipped()
+                        .padding(.bottom, -4)
                         .blur(radius: 15)
                     
                     GIFView(image: image)
@@ -54,10 +57,6 @@ struct CarouselCellView: View {
                         .clipped()
                         .opacity(testOpactiy)
                 }
-                
-//                if let text = info.cellType?.rawValue {
-//                    Text(text)
-//                }
             }
         }
         .task {
