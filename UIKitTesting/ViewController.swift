@@ -7,13 +7,44 @@
 
 import UIKit
 
+@MainActor
 class ViewController: UIViewController {
+    let label = UILabel()
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        
+        label.text = "0"
+        label.font = .preferredFont(forTextStyle: .largeTitle)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        
+        view.addSubview(label)
+        
+        NSLayoutConstraint.activate([
+            label.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            label.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+        ])
     }
-
-
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        let task = Task {
+            await start()
+            print("Finished")
+        }
+        
+//        Task {
+//            try await Task.sleep(for: .seconds(1))
+//            task.cancel()
+//        }
+    }
+    
+    private func start() async {
+        for await value in CADisplayLinkCounter.count(from: 0, to: 10000, duration: 3) {
+            label.text = value.formatted(.number.precision(.fractionLength(0)))
+        }
+        print("Done")
+        label.text = 10_000.formatted(.number.precision(.fractionLength(0)))
+    }
 }
-
