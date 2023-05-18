@@ -10,7 +10,7 @@ import UIKit
 @MainActor
 class ViewController: UIViewController {
     let label = UILabel()
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -31,20 +31,23 @@ class ViewController: UIViewController {
         
         let task = Task {
             await start()
-            print("Finished")
         }
         
-//        Task {
-//            try await Task.sleep(for: .seconds(1))
-//            task.cancel()
-//        }
+        //        Task {
+        //            try await Task.sleep(for: .seconds(1))
+        //            task.cancel()
+        //        }
     }
     
     private func start() async {
-        for await value in CADisplayLinkCounter.count(from: 0, to: 10000, duration: 3) {
+        for await value in CADisplayLinkCounter.count(
+            from: 0,
+            to: 100,
+            duration: 3,
+            method: .easeOutBounce
+        ) {
             label.text = value.formatted(.number.precision(.fractionLength(0)))
+            print(value)
         }
-        print("Done")
-        label.text = 10_000.formatted(.number.precision(.fractionLength(0)))
     }
 }

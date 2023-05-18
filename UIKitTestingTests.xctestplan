@@ -1,0 +1,25 @@
+{
+  "configurations" : [
+    {
+      "id" : "3A14BD68-B0E4-45D3-B920-603A23720857",
+      "name" : "Test Scheme Action",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+
+  },
+  "testTargets" : [
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:UIKitTesting.xcodeproj",
+        "identifier" : "9460C22D2A16D6C600C1349A",
+        "name" : "UIKitTestingTests"
+      }
+    }
+  ],
+  "version" : 1
+}
