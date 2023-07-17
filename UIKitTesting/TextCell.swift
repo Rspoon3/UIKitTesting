@@ -9,7 +9,7 @@ import UIKit
 
 class TextCell: UICollectionViewCell {
     private let label = UILabel()
-    weak private var layout: EqualHeightsUICollectionViewCompositionalLayout?
+//    weak private var layout: EqualHeightsUICollectionViewCompositionalLayout?
 
     
     override init(frame: CGRect) {
@@ -21,17 +21,17 @@ class TextCell: UICollectionViewCell {
     required init?(coder: NSCoder) {
         fatalError("not implemented")
     }
-
-    override func preferredLayoutAttributesFitting(_ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
-        let attribute = super.preferredLayoutAttributesFitting(layoutAttributes)
-        layout?.updateLayoutAttributesHeight(layoutAttributes: attribute)
-        return attribute
-    }
-    
+//
+//    override func preferredLayoutAttributesFitting(_ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
+//        let attribute = super.preferredLayoutAttributesFitting(layoutAttributes)
+//        layout?.updateLayoutAttributesHeight(layoutAttributes: attribute)
+//        return attribute
+//    }
+//    
     
     func configure(text: String, layout: EqualHeightsUICollectionViewCompositionalLayout?) {
         label.text = text
-        self.layout = layout
+//        self.layout = layout
     }
     
     private func configure() {
