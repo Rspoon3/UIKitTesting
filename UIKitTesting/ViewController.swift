@@ -126,8 +126,8 @@ final class ToastManager {
         
         isShowingToast = true
         
-        let viewModel = SnackBarView.ViewModel()
-        let snackBarView = SnackBarView(viewModel: viewModel){ [weak self] in
+        let viewModel = OfferReactionSnackBarView.ViewModel()
+        let snackBarView = OfferReactionSnackBarView(viewModel: viewModel){ [weak self] in
             if viewModel.count == 5 {
                 self?.removeToast()
             }

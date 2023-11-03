@@ -7,13 +7,13 @@
 
 import SwiftUI
 
-extension SnackBarView {
+extension OfferReactionSnackBarView {
     final class ViewModel: ObservableObject {
         @Published var count = 1
     }
 }
 
-struct SnackBarView: View {
+struct OfferReactionSnackBarView: View {
     @ObservedObject var viewModel: ViewModel
     let didTouch: ()-> Void
     
@@ -54,7 +54,7 @@ struct SnackBarView: View {
 }
 
 #Preview {
-    SnackBarView(viewModel: .init()) {
+    OfferReactionSnackBarView(viewModel: .init()) {
         
     }
 }
