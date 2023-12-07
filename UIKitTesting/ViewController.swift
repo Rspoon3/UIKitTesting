@@ -15,10 +15,9 @@ class ViewController: UIViewController {
         //Cannon
 //        CelebrationConfetti.performConfetti(on: view)
         
-        //rain
         Task {
-            let test = CelebrationView(hapticsManager: HapticsManager.shared)
-            try await test.present(on: view)
+            let celebrationRainView = CelebrationRainView(hapticsManager: HapticsManager.shared)
+            try await celebrationRainView.present(on: view)
         }
         
         // desired

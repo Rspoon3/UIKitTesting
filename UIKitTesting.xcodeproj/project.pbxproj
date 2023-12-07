@@ -34,7 +34,7 @@
 		949C71D62B227FB100E9CA98 /* HapticsEngineManaging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 949C71B02B227FB000E9CA98 /* HapticsEngineManaging.swift */; };
 		949C71D72B227FB100E9CA98 /* CelebrationConfettiView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 949C71B22B227FB100E9CA98 /* CelebrationConfettiView.swift */; };
 		949C71D82B227FB100E9CA98 /* CelebrationConfetti.swift in Sources */ = {isa = PBXBuildFile; fileRef = 949C71B32B227FB100E9CA98 /* CelebrationConfetti.swift */; };
-		949C71D92B227FB100E9CA98 /* CelebrationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 949C71B42B227FB100E9CA98 /* CelebrationView.swift */; };
+		949C71D92B227FB100E9CA98 /* CelebrationRainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 949C71B42B227FB100E9CA98 /* CelebrationRainView.swift */; };
 		949C71DA2B227FB100E9CA98 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 949C71B52B227FB100E9CA98 /* Assets.xcassets */; };
 		949C71DB2B227FB100E9CA98 /* Builder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 949C71B62B227FB100E9CA98 /* Builder.swift */; };
 		949C71DC2B227FB100E9CA98 /* ConfettiAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 949C71B72B227FB100E9CA98 /* ConfettiAnimation.swift */; };
@@ -80,7 +80,7 @@
 		949C71B02B227FB000E9CA98 /* HapticsEngineManaging.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HapticsEngineManaging.swift; sourceTree = "<group>"; };
 		949C71B22B227FB100E9CA98 /* CelebrationConfettiView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CelebrationConfettiView.swift; sourceTree = "<group>"; };
 		949C71B32B227FB100E9CA98 /* CelebrationConfetti.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CelebrationConfetti.swift; sourceTree = "<group>"; };
-		949C71B42B227FB100E9CA98 /* CelebrationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CelebrationView.swift; sourceTree = "<group>"; };
+		949C71B42B227FB100E9CA98 /* CelebrationRainView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CelebrationRainView.swift; sourceTree = "<group>"; };
 		949C71B52B227FB100E9CA98 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		949C71B62B227FB100E9CA98 /* Builder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Builder.swift; sourceTree = "<group>"; };
 		949C71B72B227FB100E9CA98 /* ConfettiAnimation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfettiAnimation.swift; sourceTree = "<group>"; };
@@ -250,7 +250,7 @@
 			children = (
 				949C71B22B227FB100E9CA98 /* CelebrationConfettiView.swift */,
 				949C71B32B227FB100E9CA98 /* CelebrationConfetti.swift */,
-				949C71B42B227FB100E9CA98 /* CelebrationView.swift */,
+				949C71B42B227FB100E9CA98 /* CelebrationRainView.swift */,
 				949C71E22B22861B00E9CA98 /* CAEmitterCell+Init.swift */,
 				949C71B52B227FB100E9CA98 /* Assets.xcassets */,
 				949C71B62B227FB100E9CA98 /* Builder.swift */,
@@ -387,7 +387,7 @@
 				949C71E32B22861B00E9CA98 /* CAEmitterCell+Init.swift in Sources */,
 				949C71C72B227FB100E9CA98 /* Date+Additions.swift in Sources */,
 				949C71C22B227FB100E9CA98 /* Result+Additions.swift in Sources */,
-				949C71D92B227FB100E9CA98 /* CelebrationView.swift in Sources */,
+				949C71D92B227FB100E9CA98 /* CelebrationRainView.swift in Sources */,
 				949C71C32B227FB100E9CA98 /* UIColor+Hex.swift in Sources */,
 				949C71E02B227FB100E9CA98 /* HapticsManager.swift in Sources */,
 				949C71DE2B227FB100E9CA98 /* UIView+Celebratable.swift in Sources */,

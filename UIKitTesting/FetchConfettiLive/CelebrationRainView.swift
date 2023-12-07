@@ -1,5 +1,5 @@
 //
-//  CelebrationView.swift
+//  CelebrationRainView.swift
 //
 //
 //  Created by Richard Witherspoon on 11/2/23.
@@ -8,7 +8,7 @@
 import UIKit
 
 @MainActor
-public final class CelebrationView: UIView {
+public final class CelebrationRainView: UIView {
     private let hapticsManager: any HapticsEngineManaging
     
     // MARK: - Initializer
