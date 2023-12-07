@@ -42,7 +42,7 @@ struct CarouselManager {
     
     //MARK: - Public Helpers
     
-    func performSpacingCalulations(xOffset: CGFloat, itemMidX: CGFloat) -> Spacing {
+    func performSpacingCalculations(xOffset: CGFloat, itemMidX: CGFloat) -> Spacing {
         let distanceFromCenter = abs((itemMidX - xOffset) - collectionViewWidth / 2.0)
         let width = cellWidth + interGroupSpacing
         
