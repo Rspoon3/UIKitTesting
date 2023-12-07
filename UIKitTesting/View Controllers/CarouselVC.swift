@@ -71,8 +71,8 @@ class CarouselVC: UIViewController, UICollectionViewDataSource, UICollectionView
     // MARK: - Public Helper
     
     func scrollToMiddle() {
-        currentIndex = IndexPath(row: numberOfCarouselItems / 2, section: 0)
-        collectionView.scrollToItem(at: .init(item: currentIndex.item, section: 0), at: .centeredHorizontally, animated: false)
+//        currentIndex = IndexPath(row: numberOfCarouselItems / 2, section: 0)
+//        collectionView.scrollToItem(at: .init(item: currentIndex.item, section: 0), at: .centeredHorizontally, animated: false)
     }
     
     func stopTimer() {
@@ -92,19 +92,19 @@ class CarouselVC: UIViewController, UICollectionViewDataSource, UICollectionView
         
         print(collectionView.decelerationRate.rawValue)
         
-        let deceleartionLabel = UILabel()
-        deceleartionLabel.text = "Deceleration Rate: normal"
+        let decelerationLabel = UILabel()
+        decelerationLabel.text = "Deceleration Rate: normal"
         
-        let deceleartionSwitch = UISwitch(frame: .zero, primaryAction: .init(handler: { [weak self] action in
+        let decelerationSwitch = UISwitch(frame: .zero, primaryAction: .init(handler: { [weak self] action in
             let mySwitch = action.sender as! UISwitch
             self?.collectionView.decelerationRate = mySwitch.isOn ? .normal : .fast
             
-            deceleartionLabel.text = "Deceleration Rate: \(mySwitch.isOn ? "fast" : "normal")"
+            decelerationLabel.text = "Deceleration Rate: \(mySwitch.isOn ? "fast" : "normal")"
         }))
         
-        deceleartionSwitch.isOn = true
+        decelerationSwitch.isOn = true
         
-        let decelerationStack = UIStackView(arrangedSubviews: [deceleartionLabel, deceleartionSwitch])
+        let decelerationStack = UIStackView(arrangedSubviews: [decelerationLabel, decelerationSwitch])
         decelerationStack.spacing = 10
         
         
