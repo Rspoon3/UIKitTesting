@@ -12,20 +12,10 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        //Cannon
-        Task {
-            let celebrationConfettiView = CelebrationConfettiView()
-            try await celebrationConfettiView.present(on: view)
-        }
 
-        
-//        Task {
-//            let celebrationRainView = CelebrationRainView(hapticsManager: HapticsManager.shared)
-//            try await celebrationRainView.present(on: view)
-//        }
-        
-        // desired
-//        let confettiPresenter = ConfettiPresenter()
-//        confettiPresenter.present(type: .cannonBlast, on: view, using: HapticsManager.shared)
+        Task {
+            let presenter = ConfettiPresenter()
+            try await presenter.present(confettiType: .cannonBlast, on: view)
+        }
     }
 }

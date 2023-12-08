@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		949C71BE2B227FB100E9CA98 /* ConfettiKind.swift in Sources */ = {isa = PBXBuildFile; fileRef = 949C718B2B227FB000E9CA98 /* ConfettiKind.swift */; };
-		949C71BF2B227FB100E9CA98 /* Celebratable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 949C718C2B227FB000E9CA98 /* Celebratable.swift */; };
 		949C71C12B227FB100E9CA98 /* DataError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 949C71902B227FB000E9CA98 /* DataError.swift */; };
 		949C71C22B227FB100E9CA98 /* Result+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 949C71922B227FB000E9CA98 /* Result+Additions.swift */; };
 		949C71C32B227FB100E9CA98 /* UIColor+Hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 949C71942B227FB000E9CA98 /* UIColor+Hex.swift */; };
@@ -39,6 +38,7 @@
 		949C71E02B227FB100E9CA98 /* HapticsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 949C71BC2B227FB100E9CA98 /* HapticsManager.swift */; };
 		949C71E12B227FB100E9CA98 /* HapticsManager+CoreHapticsEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 949C71BD2B227FB100E9CA98 /* HapticsManager+CoreHapticsEngine.swift */; };
 		949C71E32B22861B00E9CA98 /* CAEmitterCell+Init.swift in Sources */ = {isa = PBXBuildFile; fileRef = 949C71E22B22861B00E9CA98 /* CAEmitterCell+Init.swift */; };
+		949C71E72B229E2B00E9CA98 /* ConfettiPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 949C71E62B229E2B00E9CA98 /* ConfettiPresenter.swift */; };
 		A6D826FD27CE8CDD001244D0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D826FC27CE8CDD001244D0 /* AppDelegate.swift */; };
 		A6D826FF27CE8CDD001244D0 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D826FE27CE8CDD001244D0 /* SceneDelegate.swift */; };
 		A6D8270127CE8CDD001244D0 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D8270027CE8CDD001244D0 /* ViewController.swift */; };
@@ -49,7 +49,6 @@
 
 /* Begin PBXFileReference section */
 		949C718B2B227FB000E9CA98 /* ConfettiKind.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfettiKind.swift; sourceTree = "<group>"; };
-		949C718C2B227FB000E9CA98 /* Celebratable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Celebratable.swift; sourceTree = "<group>"; };
 		949C71902B227FB000E9CA98 /* DataError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataError.swift; sourceTree = "<group>"; };
 		949C71922B227FB000E9CA98 /* Result+Additions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Result+Additions.swift"; sourceTree = "<group>"; };
 		949C71942B227FB000E9CA98 /* UIColor+Hex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Hex.swift"; sourceTree = "<group>"; };
@@ -80,6 +79,7 @@
 		949C71BC2B227FB100E9CA98 /* HapticsManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HapticsManager.swift; sourceTree = "<group>"; };
 		949C71BD2B227FB100E9CA98 /* HapticsManager+CoreHapticsEngine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "HapticsManager+CoreHapticsEngine.swift"; sourceTree = "<group>"; };
 		949C71E22B22861B00E9CA98 /* CAEmitterCell+Init.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CAEmitterCell+Init.swift"; sourceTree = "<group>"; };
+		949C71E62B229E2B00E9CA98 /* ConfettiPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfettiPresenter.swift; sourceTree = "<group>"; };
 		A6D826F927CE8CDD001244D0 /* UIKitTesting.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UIKitTesting.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A6D826FC27CE8CDD001244D0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A6D826FE27CE8CDD001244D0 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -105,7 +105,7 @@
 			isa = PBXGroup;
 			children = (
 				949C718B2B227FB000E9CA98 /* ConfettiKind.swift */,
-				949C718C2B227FB000E9CA98 /* Celebratable.swift */,
+				949C71E62B229E2B00E9CA98 /* ConfettiPresenter.swift */,
 			);
 			path = FetchConfetti;
 			sourceTree = "<group>";
@@ -379,6 +379,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				949C71E72B229E2B00E9CA98 /* ConfettiPresenter.swift in Sources */,
 				949C71D22B227FB100E9CA98 /* FloatingPoint+Additions.swift in Sources */,
 				949C71CE2B227FB100E9CA98 /* FileManagerProtocol.swift in Sources */,
 				949C71D32B227FB100E9CA98 /* UISelectionFeedbackGenerating.swift in Sources */,
@@ -399,7 +400,6 @@
 				949C71C12B227FB100E9CA98 /* DataError.swift in Sources */,
 				949C71CB2B227FB100E9CA98 /* ISO8601DateFormatStyleWrapper.swift in Sources */,
 				949C71D72B227FB100E9CA98 /* CelebrationConfettiView.swift in Sources */,
-				949C71BF2B227FB100E9CA98 /* Celebratable.swift in Sources */,
 				949C71CD2B227FB100E9CA98 /* Decodable+Additions.swift in Sources */,
 				949C71D52B227FB100E9CA98 /* HapticsManager_GeneratorName.swift in Sources */,
 				949C71E12B227FB100E9CA98 /* HapticsManager+CoreHapticsEngine.swift in Sources */,

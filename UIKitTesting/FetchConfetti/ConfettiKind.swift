@@ -5,9 +5,10 @@
 //  Created by Richard Witherspoon on 11/2/23.
 //
 
-import Foundation
+import UIKit
 
 /// A type which represents a type of played confetti.
-public enum ConfettiKind: String {
-    case confetti
+public enum ConfettiKind {
+    case rainFall(belowView: UIView? = nil, duration: TimeInterval = 4)
+    case cannonBlast
 }
