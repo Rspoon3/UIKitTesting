@@ -9,13 +9,17 @@ import UIKit
 
 /// An object which creates confetti core animation layers.
 final class Builder {
-    let confettiShapes: [ConfettiType.Shape] = [.rectangle, .circle]
+    let confettiShapes: [Particle.Shape] = [.rectangle, .circle]
 
-    lazy var confettiTypes: [ConfettiType] = {
-        ConfettiType.Position.allCases.flatMap { position in
+    lazy var particles: [Particle] = {
+        Particle.Position.allCases.flatMap { position in
             confettiShapes.flatMap { shape in
                 confettiColors.map { color in
-                    ConfettiType(color: color, shape: shape, position: position)
+                    Particle(
+                        color: color,
+                        shape: shape,
+                        position: position
+                    )
                 }
             }
         }
@@ -39,13 +43,13 @@ final class Builder {
     // MARK: - Public
     
     func createConfettiCells() -> [CAEmitterCell] {
-        return confettiTypes.map { confettiType in
+        return particles.map { particle in
             let cell = CAEmitterCell()
-            cell.name = confettiType.name
+            cell.name = particle.id
 
             cell.beginTime = 0.1
             cell.birthRate = 100
-            cell.contents = confettiType.image?.cgImage
+            cell.contents = particle.image.cgImage
             cell.emissionRange = CGFloat(Double.pi)
             cell.lifetime = 10
             cell.spin = 4

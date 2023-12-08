@@ -8,7 +8,7 @@
 import UIKit
 
 /// A view which displays a confetti celebration.
-public final class CelebrationConfettiView: UIView {
+final class CelebrationConfettiView: UIView {
     private let builder = Builder()
     
     // MARK: - Initializer
@@ -59,7 +59,7 @@ public final class CelebrationConfettiView: UIView {
         addBirthrateAnimation(to: layer)
         addGravityAnimation(
             to: layer,
-            confettiTypes: builder.confettiTypes
+            particles: builder.particles
         )
     }
 
@@ -82,14 +82,14 @@ public final class CelebrationConfettiView: UIView {
         layer.add(animation, forKey: "birthRate")
     }
 
-    private func addGravityAnimation(to layer: CALayer, confettiTypes: [ConfettiType]) {
+    private func addGravityAnimation(to layer: CALayer, particles: [Particle]) {
         let animation = CAKeyframeAnimation()
         animation.duration = 6
         animation.keyTimes = [0.05, 0.1, 0.5, 1]
         animation.values = [0, 100, 2000, 4000]
 
-        for image in confettiTypes {
-            layer.add(animation, forKey: "emitterCells.\(image.name).yAcceleration")
+        for particle in particles {
+            layer.add(animation, forKey: "emitterCells.\(particle.id).yAcceleration")
         }
     }
     

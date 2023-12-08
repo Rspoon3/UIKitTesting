@@ -9,6 +9,5 @@ import UIKit
 
 /// A type which represents a type of played confetti.
 public enum ConfettiKind {
-    case rainFall(belowView: UIView? = nil, duration: TimeInterval = 4)
     case cannonBlast
 }
