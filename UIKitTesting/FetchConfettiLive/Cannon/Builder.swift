@@ -9,6 +9,35 @@ import UIKit
 
 /// An object which creates confetti core animation layers.
 final class Builder {
+    let confettiShapes: [ConfettiType.Shape] = [.rectangle, .circle]
+
+    lazy var confettiTypes: [ConfettiType] = {
+        ConfettiType.Position.allCases.flatMap { position in
+            confettiShapes.flatMap { shape in
+                confettiColors.map { color in
+                    ConfettiType(color: color, shape: shape, position: position)
+                }
+            }
+        }
+    }()
+    
+    var confettiColors: [UIColor] {
+        [
+            (r: 149, g: 58, b: 255), (r: 255, g: 195, b: 41), (r: 255, g: 101, b: 26),
+            (r: 123, g: 92, b: 255), (r: 76, g: 126, b: 255), (r: 71, g: 192, b: 255),
+            (r: 255, g: 47, b: 39), (r: 255, g: 91, b: 134), (r: 233, g: 122, b: 208)
+        ].map {
+            UIColor(
+                red: $0.r / 255.0,
+                green: $0.g / 255.0,
+                blue: $0.b / 255.0,
+                alpha: 1
+            )
+        }
+    }
+    
+    // MARK: - Public
+    
     func createConfettiCells() -> [CAEmitterCell] {
         return confettiTypes.map { confettiType in
             let cell = CAEmitterCell()
@@ -16,7 +45,7 @@ final class Builder {
 
             cell.beginTime = 0.1
             cell.birthRate = 100
-            cell.contents = confettiType.image.cgImage
+            cell.contents = confettiType.image?.cgImage
             cell.emissionRange = CGFloat(Double.pi)
             cell.lifetime = 10
             cell.spin = 4
@@ -46,34 +75,5 @@ final class Builder {
 
         emitterLayer.beginTime = CACurrentMediaTime()
         return emitterLayer
-    }
-
-    lazy var confettiTypes: [ConfettiType] = {
-        ConfettiType.Position.allCases.flatMap { position in
-            confettiShapes.flatMap { shape in
-                confettiColors.map { color in
-                    ConfettiType(color: color, shape: shape, position: position)
-                }
-            }
-        }
-    }()
-    
-    var confettiColors: [UIColor] {
-        [
-            (r: 149, g: 58, b: 255), (r: 255, g: 195, b: 41), (r: 255, g: 101, b: 26),
-            (r: 123, g: 92, b: 255), (r: 76, g: 126, b: 255), (r: 71, g: 192, b: 255),
-            (r: 255, g: 47, b: 39), (r: 255, g: 91, b: 134), (r: 233, g: 122, b: 208)
-        ].map {
-            UIColor(
-                red: $0.r / 255.0,
-                green: $0.g / 255.0,
-                blue: $0.b / 255.0,
-                alpha: 1
-            )
-        }
-    }
-
-    var confettiShapes: [ConfettiType.Shape] {
-        [ConfettiType.Shape.rectangle, ConfettiType.Shape.circle]
     }
 }

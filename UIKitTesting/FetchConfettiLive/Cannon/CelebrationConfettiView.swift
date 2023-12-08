@@ -9,32 +9,11 @@ import UIKit
 
 /// A view which displays a confetti celebration.
 public final class CelebrationConfettiView: UIView {
-    var builder: Builder
-    var type: CelebrationKind
-    var useBackgroundLayer: Bool
+    private let builder = Builder()
     
     // MARK: - Initializer
     
-    convenience init(
-        type: CelebrationKind = .confetti,
-        useBackgroundLayer: Bool = true
-    ) {
-        self.init(
-            type: .confetti,
-            builder: Builder(),
-            useBackgroundLayer: useBackgroundLayer
-        )
-    }
-    
-    required init(
-        type: CelebrationKind,
-        builder: Builder,
-        useBackgroundLayer: Bool
-    ) {
-        self.type = type
-        self.builder = builder
-        self.useBackgroundLayer = useBackgroundLayer
-        
+    required init() {
         super.init(frame: .zero)
         isUserInteractionEnabled = false
     }
@@ -43,19 +22,13 @@ public final class CelebrationConfettiView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - Lifecycle
+    // MARK: - Public
     
-    @MainActor
-    public override func didMoveToSuperview() {
-        super.didMoveToSuperview()
+    func present(on view: UIView) async throws {
+        frame = view.bounds
+        view.addSubview(self)
         
-        guard let superviewFrame = superview?.frame else { return }
-        
-        frame = superviewFrame
-        
-        let confettiLayerArray = useBackgroundLayer ?
-        [foregroundConfettiLayer, backgroundConfettiLayer] :
-        [foregroundConfettiLayer]
+        let confettiLayerArray = [foregroundConfettiLayer(), backgroundConfettiLayer()]
         
         for layer in confettiLayerArray {
             self.layer.addSublayer(layer)
@@ -63,16 +36,14 @@ public final class CelebrationConfettiView: UIView {
             addAnimations(to: layer)
         }
         
-        Task {
-            try await Task.sleep(for: .seconds(5))
+        try await Task.sleep(for: .seconds(5))
             
-            removeFromSuperview()
-        }
+        removeFromSuperview()
     }
     
-    // MARK: - Implementation
+    // MARK: - Private Helpers
     
-    func addBehaviors(to layer: CAEmitterLayer) {
+    private func addBehaviors(to layer: CAEmitterLayer) {
         layer.setValue(
             [
                 horizontalWaveBehavior(),
@@ -83,7 +54,7 @@ public final class CelebrationConfettiView: UIView {
         )
     }
     
-    func addAnimations(to layer: CAEmitterLayer) {
+    private func addAnimations(to layer: CAEmitterLayer) {
         addAttractorAnimation(to: layer)
         addBirthrateAnimation(to: layer)
         addGravityAnimation(
@@ -91,23 +62,6 @@ public final class CelebrationConfettiView: UIView {
             confettiTypes: builder.confettiTypes
         )
     }
-    
-    lazy var foregroundConfettiLayer = {
-        builder.createConfettiLayer(bounds: bounds)
-    }()
-    
-    lazy var backgroundConfettiLayer: CAEmitterLayer = {
-        let emitterLayer = builder.createConfettiLayer(bounds: bounds)
-        
-        for emitterCell in emitterLayer.emitterCells ?? [] {
-            emitterCell.scale = 0.5
-        }
-        
-        emitterLayer.opacity = 0.5
-        emitterLayer.speed = 0.95
-        
-        return emitterLayer
-    }()
 
     private func addAttractorAnimation(to layer: CALayer) {
         let animation = CAKeyframeAnimation()
@@ -139,48 +93,66 @@ public final class CelebrationConfettiView: UIView {
         }
     }
     
-    private func horizontalWaveBehavior() -> Any {
+    private func horizontalWaveBehavior() -> Any? {
         let behavior = createBehavior(type: "wave")
-        behavior.setValue([100, 0, 0], forKeyPath: "force")
-        behavior.setValue(0.5, forKeyPath: "frequency")
+        behavior?.setValue([100, 0, 0], forKeyPath: "force")
+        behavior?.setValue(0.5, forKeyPath: "frequency")
         return behavior
     }
 
-    private func verticalWaveBehavior() -> Any {
+    private func verticalWaveBehavior() -> Any? {
         let behavior = createBehavior(type: "wave")
-        behavior.setValue([0, 500, 0], forKeyPath: "force")
-        behavior.setValue(3, forKeyPath: "frequency")
+        behavior?.setValue([0, 500, 0], forKeyPath: "force")
+        behavior?.setValue(3, forKeyPath: "frequency")
         return behavior
     }
 
-    private func attractorBehavior(for emitterLayer: CAEmitterLayer) -> Any {
+    private func attractorBehavior(for emitterLayer: CAEmitterLayer) -> Any? {
         let behavior = createBehavior(type: "attractor")
-        behavior.setValue("attractor", forKeyPath: "name")
+        behavior?.setValue("attractor", forKeyPath: "name")
 
         // Attractiveness
-        behavior.setValue(-290, forKeyPath: "falloff")
-        behavior.setValue(300, forKeyPath: "radius")
-        behavior.setValue(10, forKeyPath: "stiffness")
+        behavior?.setValue(-290, forKeyPath: "falloff")
+        behavior?.setValue(300, forKeyPath: "radius")
+        behavior?.setValue(10, forKeyPath: "stiffness")
 
         // Position
-        behavior.setValue(
+        behavior?.setValue(
             CGPoint(
                 x: emitterLayer.emitterPosition.x,
                 y: emitterLayer.emitterPosition.y + 20
             ),
             forKeyPath: "position"
         )
-        behavior.setValue(-70, forKeyPath: "zPosition")
+        behavior?.setValue(-70, forKeyPath: "zPosition")
 
         return behavior
     }
 
-    // swiftlint:disable: force_unwrapping
-    private func createBehavior(type: String) -> NSObject {
-        // swiftlint:disable:next force_cast
-        let behaviorClass = NSClassFromString("CAEmitterBehavior") as! NSObject.Type
-        let behaviorWithType = behaviorClass.method(for: NSSelectorFromString("behaviorWithType:"))!
+    private func createBehavior(type: String) -> NSObject? {
+        guard let behaviorClass = NSClassFromString("CAEmitterBehavior") as? NSObject.Type else {
+            return nil
+        }
+        
+        let behaviorWithType = behaviorClass.method(for: NSSelectorFromString("behaviorWithType:"))
         let castedBehaviorWithType = unsafeBitCast(behaviorWithType, to: (@convention(c)(Any?, Selector, Any?) -> NSObject).self)
         return castedBehaviorWithType(behaviorClass, NSSelectorFromString("behaviorWithType:"), type)
+    }
+    
+    private func foregroundConfettiLayer () -> CAEmitterLayer {
+        builder.createConfettiLayer(bounds: bounds)
+    }
+    
+    private func backgroundConfettiLayer() -> CAEmitterLayer {
+        let emitterLayer = builder.createConfettiLayer(bounds: bounds)
+        
+        for emitterCell in emitterLayer.emitterCells ?? [] {
+            emitterCell.scale = 0.5
+        }
+        
+        emitterLayer.opacity = 0.5
+        emitterLayer.speed = 0.95
+        
+        return emitterLayer
     }
 }

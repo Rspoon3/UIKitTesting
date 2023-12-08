@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		949C71BE2B227FB100E9CA98 /* ConfettiKind.swift in Sources */ = {isa = PBXBuildFile; fileRef = 949C718B2B227FB000E9CA98 /* ConfettiKind.swift */; };
 		949C71BF2B227FB100E9CA98 /* Celebratable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 949C718C2B227FB000E9CA98 /* Celebratable.swift */; };
-		949C71C02B227FB100E9CA98 /* CelebrationKind.swift in Sources */ = {isa = PBXBuildFile; fileRef = 949C718D2B227FB000E9CA98 /* CelebrationKind.swift */; };
 		949C71C12B227FB100E9CA98 /* DataError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 949C71902B227FB000E9CA98 /* DataError.swift */; };
 		949C71C22B227FB100E9CA98 /* Result+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 949C71922B227FB000E9CA98 /* Result+Additions.swift */; };
 		949C71C32B227FB100E9CA98 /* UIColor+Hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 949C71942B227FB000E9CA98 /* UIColor+Hex.swift */; };
@@ -33,14 +32,10 @@
 		949C71D52B227FB100E9CA98 /* HapticsManager_GeneratorName.swift in Sources */ = {isa = PBXBuildFile; fileRef = 949C71AF2B227FB000E9CA98 /* HapticsManager_GeneratorName.swift */; };
 		949C71D62B227FB100E9CA98 /* HapticsEngineManaging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 949C71B02B227FB000E9CA98 /* HapticsEngineManaging.swift */; };
 		949C71D72B227FB100E9CA98 /* CelebrationConfettiView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 949C71B22B227FB100E9CA98 /* CelebrationConfettiView.swift */; };
-		949C71D82B227FB100E9CA98 /* CelebrationConfetti.swift in Sources */ = {isa = PBXBuildFile; fileRef = 949C71B32B227FB100E9CA98 /* CelebrationConfetti.swift */; };
 		949C71D92B227FB100E9CA98 /* CelebrationRainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 949C71B42B227FB100E9CA98 /* CelebrationRainView.swift */; };
 		949C71DA2B227FB100E9CA98 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 949C71B52B227FB100E9CA98 /* Assets.xcassets */; };
 		949C71DB2B227FB100E9CA98 /* Builder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 949C71B62B227FB100E9CA98 /* Builder.swift */; };
-		949C71DC2B227FB100E9CA98 /* ConfettiAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 949C71B72B227FB100E9CA98 /* ConfettiAnimation.swift */; };
 		949C71DD2B227FB100E9CA98 /* ConfettiType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 949C71B82B227FB100E9CA98 /* ConfettiType.swift */; };
-		949C71DE2B227FB100E9CA98 /* UIView+Celebratable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 949C71B92B227FB100E9CA98 /* UIView+Celebratable.swift */; };
-		949C71DF2B227FB100E9CA98 /* UIViewController+Celebratable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 949C71BA2B227FB100E9CA98 /* UIViewController+Celebratable.swift */; };
 		949C71E02B227FB100E9CA98 /* HapticsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 949C71BC2B227FB100E9CA98 /* HapticsManager.swift */; };
 		949C71E12B227FB100E9CA98 /* HapticsManager+CoreHapticsEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 949C71BD2B227FB100E9CA98 /* HapticsManager+CoreHapticsEngine.swift */; };
 		949C71E32B22861B00E9CA98 /* CAEmitterCell+Init.swift in Sources */ = {isa = PBXBuildFile; fileRef = 949C71E22B22861B00E9CA98 /* CAEmitterCell+Init.swift */; };
@@ -55,7 +50,6 @@
 /* Begin PBXFileReference section */
 		949C718B2B227FB000E9CA98 /* ConfettiKind.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfettiKind.swift; sourceTree = "<group>"; };
 		949C718C2B227FB000E9CA98 /* Celebratable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Celebratable.swift; sourceTree = "<group>"; };
-		949C718D2B227FB000E9CA98 /* CelebrationKind.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CelebrationKind.swift; sourceTree = "<group>"; };
 		949C71902B227FB000E9CA98 /* DataError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataError.swift; sourceTree = "<group>"; };
 		949C71922B227FB000E9CA98 /* Result+Additions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Result+Additions.swift"; sourceTree = "<group>"; };
 		949C71942B227FB000E9CA98 /* UIColor+Hex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Hex.swift"; sourceTree = "<group>"; };
@@ -79,14 +73,10 @@
 		949C71AF2B227FB000E9CA98 /* HapticsManager_GeneratorName.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HapticsManager_GeneratorName.swift; sourceTree = "<group>"; };
 		949C71B02B227FB000E9CA98 /* HapticsEngineManaging.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HapticsEngineManaging.swift; sourceTree = "<group>"; };
 		949C71B22B227FB100E9CA98 /* CelebrationConfettiView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CelebrationConfettiView.swift; sourceTree = "<group>"; };
-		949C71B32B227FB100E9CA98 /* CelebrationConfetti.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CelebrationConfetti.swift; sourceTree = "<group>"; };
 		949C71B42B227FB100E9CA98 /* CelebrationRainView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CelebrationRainView.swift; sourceTree = "<group>"; };
 		949C71B52B227FB100E9CA98 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		949C71B62B227FB100E9CA98 /* Builder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Builder.swift; sourceTree = "<group>"; };
-		949C71B72B227FB100E9CA98 /* ConfettiAnimation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfettiAnimation.swift; sourceTree = "<group>"; };
 		949C71B82B227FB100E9CA98 /* ConfettiType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfettiType.swift; sourceTree = "<group>"; };
-		949C71B92B227FB100E9CA98 /* UIView+Celebratable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Celebratable.swift"; sourceTree = "<group>"; };
-		949C71BA2B227FB100E9CA98 /* UIViewController+Celebratable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+Celebratable.swift"; sourceTree = "<group>"; };
 		949C71BC2B227FB100E9CA98 /* HapticsManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HapticsManager.swift; sourceTree = "<group>"; };
 		949C71BD2B227FB100E9CA98 /* HapticsManager+CoreHapticsEngine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "HapticsManager+CoreHapticsEngine.swift"; sourceTree = "<group>"; };
 		949C71E22B22861B00E9CA98 /* CAEmitterCell+Init.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CAEmitterCell+Init.swift"; sourceTree = "<group>"; };
@@ -116,7 +106,6 @@
 			children = (
 				949C718B2B227FB000E9CA98 /* ConfettiKind.swift */,
 				949C718C2B227FB000E9CA98 /* Celebratable.swift */,
-				949C718D2B227FB000E9CA98 /* CelebrationKind.swift */,
 			);
 			path = FetchConfetti;
 			sourceTree = "<group>";
@@ -248,16 +237,9 @@
 		949C71B12B227FB100E9CA98 /* FetchConfettiLive */ = {
 			isa = PBXGroup;
 			children = (
-				949C71B22B227FB100E9CA98 /* CelebrationConfettiView.swift */,
-				949C71B32B227FB100E9CA98 /* CelebrationConfetti.swift */,
-				949C71B42B227FB100E9CA98 /* CelebrationRainView.swift */,
-				949C71E22B22861B00E9CA98 /* CAEmitterCell+Init.swift */,
+				949C71E52B2290C900E9CA98 /* Cannon */,
+				949C71E42B2290BA00E9CA98 /* CelebrationRainView */,
 				949C71B52B227FB100E9CA98 /* Assets.xcassets */,
-				949C71B62B227FB100E9CA98 /* Builder.swift */,
-				949C71B72B227FB100E9CA98 /* ConfettiAnimation.swift */,
-				949C71B82B227FB100E9CA98 /* ConfettiType.swift */,
-				949C71B92B227FB100E9CA98 /* UIView+Celebratable.swift */,
-				949C71BA2B227FB100E9CA98 /* UIViewController+Celebratable.swift */,
 			);
 			path = FetchConfettiLive;
 			sourceTree = "<group>";
@@ -269,6 +251,25 @@
 				949C71BD2B227FB100E9CA98 /* HapticsManager+CoreHapticsEngine.swift */,
 			);
 			path = FetchHapticsLive;
+			sourceTree = "<group>";
+		};
+		949C71E42B2290BA00E9CA98 /* CelebrationRainView */ = {
+			isa = PBXGroup;
+			children = (
+				949C71B42B227FB100E9CA98 /* CelebrationRainView.swift */,
+				949C71E22B22861B00E9CA98 /* CAEmitterCell+Init.swift */,
+			);
+			path = CelebrationRainView;
+			sourceTree = "<group>";
+		};
+		949C71E52B2290C900E9CA98 /* Cannon */ = {
+			isa = PBXGroup;
+			children = (
+				949C71B22B227FB100E9CA98 /* CelebrationConfettiView.swift */,
+				949C71B62B227FB100E9CA98 /* Builder.swift */,
+				949C71B82B227FB100E9CA98 /* ConfettiType.swift */,
+			);
+			path = Cannon;
 			sourceTree = "<group>";
 		};
 		A6D826F027CE8CDD001244D0 = {
@@ -379,7 +380,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				949C71D22B227FB100E9CA98 /* FloatingPoint+Additions.swift in Sources */,
-				949C71C02B227FB100E9CA98 /* CelebrationKind.swift in Sources */,
 				949C71CE2B227FB100E9CA98 /* FileManagerProtocol.swift in Sources */,
 				949C71D32B227FB100E9CA98 /* UISelectionFeedbackGenerating.swift in Sources */,
 				949C71C52B227FB100E9CA98 /* UIView+AsyncAnimations.swift in Sources */,
@@ -390,7 +390,6 @@
 				949C71D92B227FB100E9CA98 /* CelebrationRainView.swift in Sources */,
 				949C71C32B227FB100E9CA98 /* UIColor+Hex.swift in Sources */,
 				949C71E02B227FB100E9CA98 /* HapticsManager.swift in Sources */,
-				949C71DE2B227FB100E9CA98 /* UIView+Celebratable.swift in Sources */,
 				949C71C62B227FB100E9CA98 /* Date+Calculations.swift in Sources */,
 				A6D826FD27CE8CDD001244D0 /* AppDelegate.swift in Sources */,
 				949C71D42B227FB100E9CA98 /* HapticsManager_FeedbackType.swift in Sources */,
@@ -398,11 +397,9 @@
 				949C71CF2B227FB100E9CA98 /* FileManager+Mock.swift in Sources */,
 				949C71DB2B227FB100E9CA98 /* Builder.swift in Sources */,
 				949C71C12B227FB100E9CA98 /* DataError.swift in Sources */,
-				949C71DC2B227FB100E9CA98 /* ConfettiAnimation.swift in Sources */,
 				949C71CB2B227FB100E9CA98 /* ISO8601DateFormatStyleWrapper.swift in Sources */,
 				949C71D72B227FB100E9CA98 /* CelebrationConfettiView.swift in Sources */,
 				949C71BF2B227FB100E9CA98 /* Celebratable.swift in Sources */,
-				949C71D82B227FB100E9CA98 /* CelebrationConfetti.swift in Sources */,
 				949C71CD2B227FB100E9CA98 /* Decodable+Additions.swift in Sources */,
 				949C71D52B227FB100E9CA98 /* HapticsManager_GeneratorName.swift in Sources */,
 				949C71E12B227FB100E9CA98 /* HapticsManager+CoreHapticsEngine.swift in Sources */,
@@ -413,7 +410,6 @@
 				949C71D62B227FB100E9CA98 /* HapticsEngineManaging.swift in Sources */,
 				949C71C92B227FB100E9CA98 /* NSDateUtils.swift in Sources */,
 				949C71C82B227FB100E9CA98 /* DateCalculator.swift in Sources */,
-				949C71DF2B227FB100E9CA98 /* UIViewController+Celebratable.swift in Sources */,
 				949C71D12B227FB100E9CA98 /* Comparable+Clamping.swift in Sources */,
 				949C71CA2B227FB100E9CA98 /* FetchDateFormatter.swift in Sources */,
 				949C71CC2B227FB100E9CA98 /* URL+Constants.swift in Sources */,

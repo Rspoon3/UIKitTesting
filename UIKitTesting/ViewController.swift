@@ -9,16 +9,20 @@ import UIKit
 
 @MainActor
 class ViewController: UIViewController {
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         //Cannon
-//        CelebrationConfetti.performConfetti(on: view)
-        
         Task {
-            let celebrationRainView = CelebrationRainView(hapticsManager: HapticsManager.shared)
-            try await celebrationRainView.present(on: view)
+            let celebrationConfettiView = CelebrationConfettiView()
+            try await celebrationConfettiView.present(on: view)
         }
+
+        
+//        Task {
+//            let celebrationRainView = CelebrationRainView(hapticsManager: HapticsManager.shared)
+//            try await celebrationRainView.present(on: view)
+//        }
         
         // desired
 //        let confettiPresenter = ConfettiPresenter()

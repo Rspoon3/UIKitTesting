@@ -26,19 +26,22 @@ final class ConfettiType {
 
     lazy var name = UUID().uuidString
 
-    // swiftlint:disable: force_unwrapping
-    lazy var image: UIImage = {
+    lazy var image: UIImage? = {
         let imageRect: CGRect = shape.rect
 
         UIGraphicsBeginImageContext(imageRect.size)
-        let context = UIGraphicsGetCurrentContext()!
+        
+        guard let context = UIGraphicsGetCurrentContext() else {
+            return nil
+        }
+        
         context.setFillColor(color.cgColor)
 
         shape.fill(context: context)
 
         let image = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
-        return image!
+        return image
     }()
 
     enum Shape {
