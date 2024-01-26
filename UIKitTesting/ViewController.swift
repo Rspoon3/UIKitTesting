@@ -11,7 +11,6 @@ class ViewController: UIViewController, UICollectionViewDelegate {
     var dataSource: UICollectionViewDiffableDataSource<Section, String>! = nil
     var collectionView: UICollectionView! = nil
     var items = Array(1...100).map{"This is item \($0)"}
-    let manager = ToastManager()
     enum Section: String {
         case main
     }
@@ -60,7 +59,7 @@ class ViewController: UIViewController, UICollectionViewDelegate {
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        manager.addToast()
+        navigationController?.pushViewController(ColorVC(color: .systemGreen), animated: true)
         collectionView.deselectItem(at: indexPath, animated: false)
     }
 }
@@ -92,22 +91,28 @@ final class ToastManager {
     private var anchor: NSLayoutConstraint?
     private var swiftuiView: UIView?
     private(set) var isShowingToast = false
+    let window = UIApplication.shared.keyWindow!
+    static let shared = ToastManager()
     
-    var topVC: UIViewController? {
-        UIApplication.shared.topViewController
+    private init() {
+        
     }
+
+//    var topVC: UIViewController? {
+//        UIApplication.shared.topViewController
+//    }
     
     private func removeToast() {
-        guard let topVC else { return }
+//        guard let topVC else { return }
         
         if let swiftuiView {
             anchor?.isActive = false
-            anchor = swiftuiView.bottomAnchor.constraint(equalTo: topVC.view.topAnchor)
+            anchor = swiftuiView.bottomAnchor.constraint(equalTo: window.topAnchor)
             anchor?.isActive = true
         }
         
-        UIView.animate(withDuration: 1) {
-            topVC.view.layoutIfNeeded()
+        UIView.animate(withDuration: 1) { [weak self] in
+            self?.window.layoutIfNeeded()
         } completion: { [weak self] _ in
             self?.swiftuiView?.removeFromSuperview()
             self?.swiftuiView = nil
@@ -118,18 +123,19 @@ final class ToastManager {
     
     func addToast() {
         guard
-            !isShowingToast,
-            let topVC
+            !isShowingToast
         else {
             return
         }
+        
+
         
         isShowingToast = true
         
         let viewModel = OfferReactionSnackBarView.ViewModel()
         let snackBarView = OfferReactionSnackBarView(viewModel: viewModel){ [weak self] in
             if viewModel.count == 5 {
-                self?.removeToast()
+                self!.removeToast()
             }
         }.ignoresSafeArea()
         
@@ -140,24 +146,49 @@ final class ToastManager {
         swiftuiView?.translatesAutoresizingMaskIntoConstraints = false
         swiftuiView?.backgroundColor = .clear
         
-        topVC.addChild(hostingVC)
-        topVC.view.addSubview(swiftuiView!)
-        hostingVC.didMove(toParent: topVC)
+//        window.addChild(hostingVC)
+        window.addSubview(swiftuiView!)
+//        hostingVC.didMove(toParent: topVC)
         
-        swiftuiView?.centerXAnchor.constraint(equalTo: topVC.view.centerXAnchor).isActive = true
+        swiftuiView?.centerXAnchor.constraint(equalTo: window.centerXAnchor).isActive = true
         
-        anchor = swiftuiView!.bottomAnchor.constraint(equalTo: topVC.view.topAnchor)
+        anchor = swiftuiView!.bottomAnchor.constraint(equalTo: window.topAnchor)
         anchor?.isActive = true
         
-        topVC.view.setNeedsLayout()
-        topVC.view.layoutIfNeeded()
+        window.setNeedsLayout()
+        window.layoutIfNeeded()
         
         anchor?.isActive = false
-        anchor = swiftuiView!.topAnchor.constraint(equalTo: topVC.view.safeAreaLayoutGuide.topAnchor, constant: 20)
+        anchor = swiftuiView!.topAnchor.constraint(equalTo: window.safeAreaLayoutGuide.topAnchor, constant: 20)
         anchor?.isActive = true
         
-        UIView.animate(withDuration: 1) {
-            topVC.view.layoutIfNeeded()
+        UIView.animate(withDuration: 1) { [weak self] in
+            self?.window.layoutIfNeeded()
+        }
+    }
+}
+
+
+class ColorVC: UIViewController {
+    let color: UIColor
+    let manager = ToastManager.shared
+
+    init(color: UIColor) {
+        self.color = color
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        view.backgroundColor = color
+        
+        Task {
+            try await Task.sleep(for: .seconds(1))
+            manager.addToast()
         }
     }
 }
