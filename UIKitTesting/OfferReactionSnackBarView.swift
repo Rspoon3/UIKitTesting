@@ -35,6 +35,17 @@ final class OfferReactionSnackBarView: UIView {
     
     @objc func handleTap(_ sender: UITapGestureRecognizer? = nil) {
         likeCount += 1
+        
+        alpha = 0.75
+        UIView.animate(withDuration: 1.1) {
+            self.alpha = 0.75
+            self.transform = .init(scaleX: 0.95, y: 0.95)
+        } completion : { _ in
+            self.alpha = 1
+            UIView.animate(withDuration: 0.1) {
+                self.transform = .init(scaleX: 1, y: 1)
+            }
+        }
     }
     
     
@@ -49,7 +60,7 @@ final class OfferReactionSnackBarView: UIView {
             }
         } else if sender.state == .ended {
             alpha = 1
-            UIView.animate(withDuration: 0.1) {
+            UIView.animate(withDuration: 0.1, delay: 0, options: .curveEaseIn) {
                 self.transform = .init(scaleX: 1, y: 1)
             }
             likeCount += 1
