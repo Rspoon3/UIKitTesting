@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		948C51FE2B9C0F290013491C /* NSString+Levenshtein.m in Sources */ = {isa = PBXBuildFile; fileRef = 948C51FC2B9C0F280013491C /* NSString+Levenshtein.m */; };
+		948C52062B9C145E0013491C /* UIKitTestingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 948C52052B9C145E0013491C /* UIKitTestingTests.swift */; };
+		948C520D2B9C16440013491C /* words.swift in Sources */ = {isa = PBXBuildFile; fileRef = 948C520C2B9C16440013491C /* words.swift */; };
 		A6D826FD27CE8CDD001244D0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D826FC27CE8CDD001244D0 /* AppDelegate.swift */; };
 		A6D826FF27CE8CDD001244D0 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D826FE27CE8CDD001244D0 /* SceneDelegate.swift */; };
 		A6D8270127CE8CDD001244D0 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D8270027CE8CDD001244D0 /* ViewController.swift */; };
@@ -15,7 +18,23 @@
 		A6D8270927CE8CDD001244D0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A6D8270727CE8CDD001244D0 /* LaunchScreen.storyboard */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		948C52072B9C145E0013491C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A6D826F127CE8CDD001244D0 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A6D826F827CE8CDD001244D0;
+			remoteInfo = UIKitTesting;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
+		948C51FB2B9C0F280013491C /* UIKitTesting-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIKitTesting-Bridging-Header.h"; sourceTree = "<group>"; };
+		948C51FC2B9C0F280013491C /* NSString+Levenshtein.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Levenshtein.m"; sourceTree = "<group>"; };
+		948C51FD2B9C0F280013491C /* NSString+Levenshtein.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Levenshtein.h"; sourceTree = "<group>"; };
+		948C52032B9C145E0013491C /* UIKitTestingTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UIKitTestingTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		948C52052B9C145E0013491C /* UIKitTestingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKitTestingTests.swift; sourceTree = "<group>"; };
+		948C520C2B9C16440013491C /* words.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = words.swift; sourceTree = "<group>"; };
 		A6D826F927CE8CDD001244D0 /* UIKitTesting.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UIKitTesting.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A6D826FC27CE8CDD001244D0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A6D826FE27CE8CDD001244D0 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -27,6 +46,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		948C52002B9C145E0013491C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		A6D826F627CE8CDD001244D0 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -37,10 +63,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		948C52042B9C145E0013491C /* UIKitTestingTests */ = {
+			isa = PBXGroup;
+			children = (
+				948C52052B9C145E0013491C /* UIKitTestingTests.swift */,
+			);
+			path = UIKitTestingTests;
+			sourceTree = "<group>";
+		};
 		A6D826F027CE8CDD001244D0 = {
 			isa = PBXGroup;
 			children = (
 				A6D826FB27CE8CDD001244D0 /* UIKitTesting */,
+				948C52042B9C145E0013491C /* UIKitTestingTests */,
 				A6D826FA27CE8CDD001244D0 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -49,6 +84,7 @@
 			isa = PBXGroup;
 			children = (
 				A6D826F927CE8CDD001244D0 /* UIKitTesting.app */,
+				948C52032B9C145E0013491C /* UIKitTestingTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -58,11 +94,15 @@
 			children = (
 				A6D826FC27CE8CDD001244D0 /* AppDelegate.swift */,
 				A6D826FE27CE8CDD001244D0 /* SceneDelegate.swift */,
+				948C51FD2B9C0F280013491C /* NSString+Levenshtein.h */,
+				948C51FC2B9C0F280013491C /* NSString+Levenshtein.m */,
 				A6D8270027CE8CDD001244D0 /* ViewController.swift */,
+				948C520C2B9C16440013491C /* words.swift */,
 				A6D8270227CE8CDD001244D0 /* Main.storyboard */,
 				A6D8270527CE8CDD001244D0 /* Assets.xcassets */,
 				A6D8270727CE8CDD001244D0 /* LaunchScreen.storyboard */,
 				A6D8270A27CE8CDD001244D0 /* Info.plist */,
+				948C51FB2B9C0F280013491C /* UIKitTesting-Bridging-Header.h */,
 			);
 			path = UIKitTesting;
 			sourceTree = "<group>";
@@ -70,6 +110,24 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		948C52022B9C145E0013491C /* UIKitTestingTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 948C52092B9C145E0013491C /* Build configuration list for PBXNativeTarget "UIKitTestingTests" */;
+			buildPhases = (
+				948C51FF2B9C145E0013491C /* Sources */,
+				948C52002B9C145E0013491C /* Frameworks */,
+				948C52012B9C145E0013491C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				948C52082B9C145E0013491C /* PBXTargetDependency */,
+			);
+			name = UIKitTestingTests;
+			productName = UIKitTestingTests;
+			productReference = 948C52032B9C145E0013491C /* UIKitTestingTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		A6D826F827CE8CDD001244D0 /* UIKitTesting */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = A6D8270D27CE8CDD001244D0 /* Build configuration list for PBXNativeTarget "UIKitTesting" */;
@@ -94,11 +152,16 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1320;
+				LastSwiftUpdateCheck = 1530;
 				LastUpgradeCheck = 1500;
 				TargetAttributes = {
+					948C52022B9C145E0013491C = {
+						CreatedOnToolsVersion = 15.3;
+						TestTargetID = A6D826F827CE8CDD001244D0;
+					};
 					A6D826F827CE8CDD001244D0 = {
 						CreatedOnToolsVersion = 13.2.1;
+						LastSwiftMigration = 1530;
 					};
 				};
 			};
@@ -116,11 +179,19 @@
 			projectRoot = "";
 			targets = (
 				A6D826F827CE8CDD001244D0 /* UIKitTesting */,
+				948C52022B9C145E0013491C /* UIKitTestingTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		948C52012B9C145E0013491C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		A6D826F727CE8CDD001244D0 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -134,17 +205,35 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		948C51FF2B9C145E0013491C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				948C52062B9C145E0013491C /* UIKitTestingTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		A6D826F527CE8CDD001244D0 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				A6D8270127CE8CDD001244D0 /* ViewController.swift in Sources */,
+				948C51FE2B9C0F290013491C /* NSString+Levenshtein.m in Sources */,
 				A6D826FD27CE8CDD001244D0 /* AppDelegate.swift in Sources */,
 				A6D826FF27CE8CDD001244D0 /* SceneDelegate.swift in Sources */,
+				948C520D2B9C16440013491C /* words.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		948C52082B9C145E0013491C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A6D826F827CE8CDD001244D0 /* UIKitTesting */;
+			targetProxy = 948C52072B9C145E0013491C /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		A6D8270227CE8CDD001244D0 /* Main.storyboard */ = {
@@ -166,6 +255,51 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		948C520A2B9C145E0013491C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 29BB6CT754;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.rspoon3.UIKitTestingTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/UIKitTesting.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/UIKitTesting";
+			};
+			name = Debug;
+		};
+		948C520B2B9C145E0013491C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 29BB6CT754;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.rspoon3.UIKitTestingTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/UIKitTesting.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/UIKitTesting";
+			};
+			name = Release;
+		};
 		A6D8270B27CE8CDD001244D0 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -291,6 +425,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = X2B564LBX6;
@@ -310,6 +445,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = govenda.UIKitTesting;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "UIKitTesting/UIKitTesting-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -320,6 +457,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = X2B564LBX6;
@@ -339,6 +477,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = govenda.UIKitTesting;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "UIKitTesting/UIKitTesting-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -347,6 +486,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		948C52092B9C145E0013491C /* Build configuration list for PBXNativeTarget "UIKitTestingTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				948C520A2B9C145E0013491C /* Debug */,
+				948C520B2B9C145E0013491C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		A6D826F427CE8CDD001244D0 /* Build configuration list for PBXProject "UIKitTesting" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
