@@ -86,28 +86,7 @@ final class GridVC: UIViewController, UICollectionViewDelegate {
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-//        navigationController?.pushViewController(UIViewController(), animated: true)
-//        show(ColorVC(color: .red), sender: nil)
-//        navigationController?.pushViewController(ColorVC(color: .red), animated: true)
-//        self.presentingViewController?.navigationController?.pushViewController(ColorVC(color: .red), animated:true)
-
-//        navigationController?.presentingViewController?.dismiss(animated: true)
-//        navigationController?.presentedViewController?.dismiss(animated: true)
-//        navigationController?.navigationItem.searchController?.dismiss(animated: true)
-//        navigationController?.navigationItem.searchController?.isActive = false
-//        navigationController?.dismiss(animated: true)
-//        navigationItem.searchController?.dismiss(animated: true)
-//        dismiss(animated: true)
-        
-//        navigationItem.searchController?.isActive = false
-//        navigationItem.searchController?.dismiss(animated: true)
-        
-//        self.navigationItem.searchController!.isActive = false
-//        navigationController!.navigationItem.searchController!.isActive = false
-        
-        
-//        self.parent!.navigationController!.navigationItem.searchController!.isActive = false
-
-        (parent as? UISearchController)?.isActive = false
+        self.presentingViewController?.navigationController?.pushViewController(ColorVC(color: .red), animated:true)
+//        (parent as? UISearchController)?.isActive = false
     }
 }

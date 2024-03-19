@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		943CD3E92BA8E0E600AEF01D /* FakeSearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 943CD3E82BA8E0E600AEF01D /* FakeSearchBar.swift */; };
 		94EBD2672BA3606400A89D83 /* GridVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94EBD2662BA3606400A89D83 /* GridVC.swift */; };
 		94EBD2692BA3607300A89D83 /* TextCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94EBD2682BA3607300A89D83 /* TextCell.swift */; };
 		94EBD26B2BA3607D00A89D83 /* BindableGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94EBD26A2BA3607D00A89D83 /* BindableGestureRecognizer.swift */; };
@@ -20,6 +21,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		943CD3E82BA8E0E600AEF01D /* FakeSearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeSearchBar.swift; sourceTree = "<group>"; };
 		94EBD2662BA3606400A89D83 /* GridVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridVC.swift; sourceTree = "<group>"; };
 		94EBD2682BA3607300A89D83 /* TextCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextCell.swift; sourceTree = "<group>"; };
 		94EBD26A2BA3607D00A89D83 /* BindableGestureRecognizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BindableGestureRecognizer.swift; sourceTree = "<group>"; };
@@ -67,6 +69,7 @@
 				A6D826FC27CE8CDD001244D0 /* AppDelegate.swift */,
 				A6D826FE27CE8CDD001244D0 /* SceneDelegate.swift */,
 				A6D8270027CE8CDD001244D0 /* ViewController.swift */,
+				943CD3E82BA8E0E600AEF01D /* FakeSearchBar.swift */,
 				94EBD26A2BA3607D00A89D83 /* BindableGestureRecognizer.swift */,
 				94EBD26C2BA3608F00A89D83 /* ColorVC.swift */,
 				94EBD2682BA3607300A89D83 /* TextCell.swift */,
@@ -150,6 +153,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				943CD3E92BA8E0E600AEF01D /* FakeSearchBar.swift in Sources */,
 				94EBD2692BA3607300A89D83 /* TextCell.swift in Sources */,
 				A6D8270127CE8CDD001244D0 /* ViewController.swift in Sources */,
 				A6D826FD27CE8CDD001244D0 /* AppDelegate.swift in Sources */,
