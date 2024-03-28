@@ -14,6 +14,8 @@ class ViewController: UIViewController, UISearchResultsUpdating, UISearchControl
     let chevronButton = UIImageView(image: .init(systemName: "chevron.left"))
     private var searchController: UISearchController!
     let fake = FakeSearchBar()
+    
+    var shouldShowWhenAppear = false
 
     enum Section: String {
         case main
@@ -30,6 +32,16 @@ class ViewController: UIViewController, UISearchResultsUpdating, UISearchControl
         configureSearchController()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        guard shouldShowWhenAppear else { return }
+        UIView.performWithoutAnimation {
+            self.searchController.searchBar.text = "asdf"
+            self.searchController.isActive = true
+        }
+    }
+    
     func configureSearchController(){
         searchController = UISearchController(searchResultsController: GridVC())
         searchController.delegate = self
@@ -38,11 +50,16 @@ class ViewController: UIViewController, UISearchResultsUpdating, UISearchControl
         searchController.obscuresBackgroundDuringPresentation = false
         searchController.automaticallyShowsCancelButton = false
         searchController.showsSearchResultsController = true
+        searchController.searchBar.backgroundColor = .systemRed
         
-        DispatchQueue.main.asyncAfter(deadline: .now()) {
-            self.searchController.isActive = true
-        }
-        searchController.searchBar.text = "asdf"
+//        shouldShowWhenAppear = true
+        
+//        DispatchQueue.main.asyncAfter(deadline: .now()) {
+//            self.searchController.isActive = true
+//        }
+//        searchController.searchBar.text = "asdf"
+//        searchController.isActive = true
+//        searchController.searchBar.becomeFirstResponder()
         
 //        searchController.searchBar.searchTextField.removeFromSuperview()
 //        fake.configure(using: searchController)
