@@ -33,6 +33,8 @@ class SnackbarView: UIStackView {
         let titleLabel = UILabel()
         titleLabel.text = config.title
         titleLabel.textColor = .white
+        titleLabel.numberOfLines = 2
+        titleLabel.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
         
         let textButton = UIButton(primaryAction: .init(handler: { [weak self] _ in
             self?.buttonAction?()
@@ -40,6 +42,7 @@ class SnackbarView: UIStackView {
         textButton.setTitle(config.buttonTitle, for: .normal)
         textButton.setTitleColor(.white, for: .normal)
         textButton.isHidden = config.buttonTitle == nil
+        textButton.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
 
         let dismissButton = UIButton(primaryAction: .init(handler: { [weak self] _ in
             self?.dismiss?()
@@ -48,6 +51,7 @@ class SnackbarView: UIStackView {
         dismissButton.setImage(.init(systemName: "xmark"), for: .normal)
         dismissButton.tintColor = .white
         dismissButton.isHidden = !config.showCloseButton
+        dismissButton.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
         
         let leadingStack = UIStackView(arrangedSubviews: [leadingImage, titleLabel])
         leadingStack.spacing = 4
@@ -78,6 +82,16 @@ class SnackbarView: UIStackView {
             config: .init(
                 leadingImage: "location",
                 title: "Show everything!",
+                buttonTitle: "Okay",
+                showCloseButton: true,
+                backgroundColor: .systemMint
+            )
+        ),
+        
+        SnackbarView(
+            config: .init(
+                leadingImage: "location",
+                title: "Show everything! This time with a multi-lined title that will truncate.",
                 buttonTitle: "Okay",
                 showCloseButton: true,
                 backgroundColor: .systemMint
@@ -127,22 +141,4 @@ class SnackbarView: UIStackView {
     stack.axis = .vertical
     stack.spacing = 10
     return stack
-}
-
-struct SnackbarViewConfig {
-    let leadingImage: String?
-    let title: String
-    let buttonTitle: String?
-    let showCloseButton: Bool
-    let backgroundColor: UIColor
-    
-    // MARK: - Preview Data
-    
-    static let previewData = SnackbarViewConfig(
-        leadingImage: "info.circle",
-        title: "Snackbar title",
-        buttonTitle: nil,
-        showCloseButton: true,
-        backgroundColor: .darkGray
-    )
 }

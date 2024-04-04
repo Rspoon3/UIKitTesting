@@ -10,6 +10,7 @@
 		945613982BAD270E00B972CD /* FetchSnackbarManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 945613972BAD270E00B972CD /* FetchSnackbarManager.swift */; };
 		9456139A2BAD28B700B972CD /* UIView+AsyncAnimations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 945613992BAD28B700B972CD /* UIView+AsyncAnimations.swift */; };
 		9456139C2BAD33B100B972CD /* SnackbarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9456139B2BAD33B100B972CD /* SnackbarView.swift */; };
+		94E5922C2BB5D4A300D10860 /* SnackbarViewConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94E5922B2BB5D4A300D10860 /* SnackbarViewConfig.swift */; };
 		A6D826FD27CE8CDD001244D0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D826FC27CE8CDD001244D0 /* AppDelegate.swift */; };
 		A6D826FF27CE8CDD001244D0 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D826FE27CE8CDD001244D0 /* SceneDelegate.swift */; };
 		A6D8270127CE8CDD001244D0 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D8270027CE8CDD001244D0 /* ViewController.swift */; };
@@ -22,6 +23,7 @@
 		945613972BAD270E00B972CD /* FetchSnackbarManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchSnackbarManager.swift; sourceTree = "<group>"; };
 		945613992BAD28B700B972CD /* UIView+AsyncAnimations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+AsyncAnimations.swift"; sourceTree = "<group>"; };
 		9456139B2BAD33B100B972CD /* SnackbarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnackbarView.swift; sourceTree = "<group>"; };
+		94E5922B2BB5D4A300D10860 /* SnackbarViewConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnackbarViewConfig.swift; sourceTree = "<group>"; };
 		A6D826F927CE8CDD001244D0 /* UIKitTesting.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UIKitTesting.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A6D826FC27CE8CDD001244D0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A6D826FE27CE8CDD001244D0 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -66,6 +68,7 @@
 				A6D826FE27CE8CDD001244D0 /* SceneDelegate.swift */,
 				945613972BAD270E00B972CD /* FetchSnackbarManager.swift */,
 				9456139B2BAD33B100B972CD /* SnackbarView.swift */,
+				94E5922B2BB5D4A300D10860 /* SnackbarViewConfig.swift */,
 				945613992BAD28B700B972CD /* UIView+AsyncAnimations.swift */,
 				A6D8270027CE8CDD001244D0 /* ViewController.swift */,
 				A6D8270227CE8CDD001244D0 /* Main.storyboard */,
@@ -149,6 +152,7 @@
 			files = (
 				A6D8270127CE8CDD001244D0 /* ViewController.swift in Sources */,
 				9456139C2BAD33B100B972CD /* SnackbarView.swift in Sources */,
+				94E5922C2BB5D4A300D10860 /* SnackbarViewConfig.swift in Sources */,
 				A6D826FD27CE8CDD001244D0 /* AppDelegate.swift in Sources */,
 				A6D826FF27CE8CDD001244D0 /* SceneDelegate.swift in Sources */,
 				945613982BAD270E00B972CD /* FetchSnackbarManager.swift in Sources */,
