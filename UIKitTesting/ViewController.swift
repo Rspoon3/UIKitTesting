@@ -5,7 +5,7 @@
 //  Created by Richard Witherspoon on 3/1/22.
 //
 
-import UIKit
+import SwiftUI
 
 class ViewController: UIViewController {
 
@@ -14,20 +14,16 @@ class ViewController: UIViewController {
         
         let container = UIView()
         container.translatesAutoresizingMaskIntoConstraints = false
-        container.backgroundColor = .systemBlue.withAlphaComponent(0.3)
-
-        let image = UIImage(systemName: "car.circle")
-//        let image = UIImage(named: "chevronLeft")
-        let test = UIImageView()
-        test.translatesAutoresizingMaskIntoConstraints = false
-        test.contentMode = .scaleAspectFit
-        test.image = image//?.withAlignmentRectInsets(.init(top: 0, left: -8, bottom: 0, right: -8))
+        container.backgroundColor = .systemOrange.withAlphaComponent(0.3)
         
+        let chevronLeft = UIImage(systemName: "car.circle")!
+        let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFit
+        imageView.image = chevronLeft
+        imageView.layer.borderWidth = 1
+        imageView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
 
-
-//        test.backgroundColor = .systemGreen.withAlphaComponent(0.5)
-        
-        container.addSubview(test)
+        container.addSubview(imageView)
         view.addSubview(container)
         
         NSLayoutConstraint.activate([
@@ -36,17 +32,17 @@ class ViewController: UIViewController {
             container.heightAnchor.constraint(equalToConstant: 200),
             container.widthAnchor.constraint(equalToConstant: 200),
         ])
-        
-        NSLayoutConstraint.activate([
-            test.topAnchor.constraint(equalTo: container.topAnchor),
-            test.bottomAnchor.constraint(equalTo: container.bottomAnchor),
-            test.leadingAnchor.constraint(equalTo: container.leadingAnchor),
-            test.trailingAnchor.constraint(equalTo: container.trailingAnchor)
-        ])
-        
     }
 }
 
 #Preview {
     ViewController()
+}
+
+#Preview {
+    Image(systemName: "car.circle")
+        .resizable()
+        .scaledToFit()
+        .frame(width: 200, height: 200)
+        .background(Color.orange.opacity(0.3))
 }
