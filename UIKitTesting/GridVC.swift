@@ -86,7 +86,7 @@ final class GridVC: UIViewController, UICollectionViewDelegate {
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        self.presentingViewController?.navigationController?.pushViewController(ColorVC(color: .red), animated:true)
+//        self.presentingViewController?.navigationController?.pushViewController(ColorVC(color: .red), animated:true)
 //        (parent as? UISearchController)?.isActive = false
     }
 }

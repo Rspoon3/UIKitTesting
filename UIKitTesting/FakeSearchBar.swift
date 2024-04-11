@@ -6,57 +6,128 @@
 //
 
 import UIKit
+import Combine
 
 final class FakeSearchBar: UIView {
-    private var leadingImageView: UIImageView!
-    private var leadingButton: UIButton!
+    private var subscriptions = Set<AnyCancellable>()
+    let searchController: UISearchController
+    private var magnifyingglassImageView: UIImageView!
+    private var chevronButton: UIButton!
     private var retailerLocationsFeatureEntryPointButton: UIButton!
+    private var clearButton: UIButton!
     private var myLeadingAnchor: NSLayoutConstraint?
-    private var searchController: UISearchController?
+    private let textField = UITextField()
+    @Published private var state: State = .inactive {
+        didSet {
+            updateUIForState()
+        }
+    }
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    enum State: Equatable {
+        case inactive
+        case active(text: String?)
+    }
+    
+    init(searchController: UISearchController) {
+        self.searchController = searchController
+        super.init(frame: .zero)
+        
+        searchController.searchBar.placeholder = "Search for a username"
+        searchController.obscuresBackgroundDuringPresentation = false
+        searchController.automaticallyShowsCancelButton = false
+        searchController.showsSearchResultsController = true
+        searchController.searchBar.backgroundColor = .systemRed
+        searchController.searchBar.searchTextField.isHidden = true
+        searchController.delegate = self
+        searchController.searchResultsUpdater = self
+        
+        configureInitialViews()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configure(
-        using searchController: UISearchController
-    ) {
-        self.searchController = searchController
+    private func updateUIForState() {
+        print(state)
+        switch state {
+        case .inactive:
+            configureInactiveState()
+        case .active(let text):
+            configureActiveState(text: text)
+        }
+    }
+    
+    private func configureInactiveState() {
+                
+        UIView.performWithoutAnimation {
+            textField.text = ""
+            clearButton.alpha = 0
+        }
         
+        textField.endEditing(true)
+        
+        guard searchController.isActive else { return }
+        searchController.isActive = false
+
+        myLeadingAnchor?.constant = -34
+
+        UIView.animate(withDuration: 0.25) {
+            self.chevronButton.alpha = 0
+            self.magnifyingglassImageView.alpha = 1
+            self.searchController.searchBar.layoutIfNeeded()
+        }
+    }
+    
+    private func configureActiveState(text: String?) {
+        UIView.performWithoutAnimation {
+            clearButton.alpha = (text?.isEmpty ?? true) ? 0 : 1
+            
+            if text == nil || text?.isEmpty ?? true {
+                textField.text?.removeAll()
+            }
+        }
+        
+        guard !searchController.isActive else { return }
+        
+        searchController.isActive = true
+        
+        myLeadingAnchor?.constant = 0
+
+        UIView.animate(withDuration: 0.25) {
+            self.chevronButton.alpha = 1
+            self.magnifyingglassImageView.alpha = 0
+            self.searchController.searchBar.layoutIfNeeded()
+        }
+    }
+    
+    func configureInitialViews() {
         let searchBar = searchController.searchBar
-        let textField = UITextField()
         textField.placeholder = "Search for something"
         textField.delegate = self
         
-        leadingButton = UIButton(primaryAction: .init(handler: { _ in
-            textField.text?.removeAll()
-            textField.endEditing(true)
-            searchController.isActive = false
+        chevronButton = UIButton(primaryAction: .init(handler: { [weak self] _ in
+            self?.state = .inactive
         }))
         
-        leadingButton.setImage(.init(systemName: "chevron.left"), for: .normal)
-        leadingButton.imageView?.contentMode = .scaleAspectFit
-        leadingButton.translatesAutoresizingMaskIntoConstraints = false
-        leadingButton.alpha = 0
+        chevronButton.setImage(.init(systemName: "chevron.left"), for: .normal)
+        chevronButton.imageView?.contentMode = .scaleAspectFit
+        chevronButton.translatesAutoresizingMaskIntoConstraints = false
+        chevronButton.alpha = 0
         
-        leadingImageView = UIImageView(image: .init(systemName: "magnifyingglass"))
-        leadingImageView.translatesAutoresizingMaskIntoConstraints = false
-        leadingImageView.alpha = 1
+        magnifyingglassImageView = UIImageView(image: .init(systemName: "magnifyingglass"))
+        magnifyingglassImageView.translatesAutoresizingMaskIntoConstraints = false
+        magnifyingglassImageView.alpha = 1
         
-        
-        let closeButton = UIButton(primaryAction: .init(handler: { _ in
-            textField.text?.removeAll()
-            textField.endEditing(true)
+        clearButton = UIButton(primaryAction: .init(handler: { [weak self] _ in
+            self?.state = .active(text: nil)
         }))
         
-        closeButton.setImage(.init(systemName: "xmark"), for: .normal)
-        closeButton.translatesAutoresizingMaskIntoConstraints = false
-        
-        let stackView = UIStackView(arrangedSubviews: [leadingImageView, textField, closeButton])
+        clearButton.setImage(.init(systemName: "xmark"), for: .normal)
+        clearButton.translatesAutoresizingMaskIntoConstraints = false
+        clearButton.alpha = 0
+
+        let stackView = UIStackView(arrangedSubviews: [magnifyingglassImageView, textField, clearButton])
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.distribution = .fillProportionally
         stackView.alignment = .center
@@ -79,7 +150,7 @@ final class FakeSearchBar: UIView {
         )
         
         searchBar.addSubview(stackView)
-        searchBar.addSubview(leadingButton)
+        searchBar.addSubview(chevronButton)
         searchBar.addSubview(retailerLocationsFeatureEntryPointButton)
         
         let searchBarButtonSize: CGFloat = 24
@@ -90,17 +161,16 @@ final class FakeSearchBar: UIView {
             retailerLocationsFeatureEntryPointButton.centerYAnchor.constraint(equalTo: searchBar.centerYAnchor),
             myLeadingAnchor!,
             
+            clearButton.heightAnchor.constraint(equalToConstant: 20),
+            clearButton.widthAnchor.constraint(equalToConstant: 20),
             
-            closeButton.heightAnchor.constraint(equalToConstant: 20),
-            closeButton.widthAnchor.constraint(equalToConstant: 20),
+            chevronButton.heightAnchor.constraint(equalToConstant: 24),
+            chevronButton.widthAnchor.constraint(equalToConstant: 24),
             
-            leadingButton.heightAnchor.constraint(equalToConstant: 24),
-            leadingButton.widthAnchor.constraint(equalToConstant: 24),
-            
-            leadingImageView.topAnchor.constraint(equalTo: leadingButton.topAnchor),
-            leadingImageView.bottomAnchor.constraint(equalTo: leadingButton.bottomAnchor),
-            leadingImageView.leadingAnchor.constraint(equalTo: leadingButton.leadingAnchor),
-            leadingImageView.trailingAnchor.constraint(equalTo: leadingButton.trailingAnchor),
+            magnifyingglassImageView.topAnchor.constraint(equalTo: chevronButton.topAnchor),
+            magnifyingglassImageView.bottomAnchor.constraint(equalTo: chevronButton.bottomAnchor),
+            magnifyingglassImageView.leadingAnchor.constraint(equalTo: chevronButton.leadingAnchor),
+            magnifyingglassImageView.trailingAnchor.constraint(equalTo: chevronButton.trailingAnchor),
             
             stackView.centerYAnchor.constraint(equalTo: searchBar.centerYAnchor),
             stackView.heightAnchor.constraint(equalToConstant: 44),
@@ -110,37 +180,36 @@ final class FakeSearchBar: UIView {
     }
 }
 
-
 extension FakeSearchBar: UITextFieldDelegate {
     func textFieldDidBeginEditing(_ textField: UITextField) {
-        myLeadingAnchor?.constant = -34
-        print("THERa;sdlkfj;las")
-        
-        UIView.animate(withDuration: 0.25) {
-            self.leadingButton.alpha = 1
-            self.leadingImageView.alpha = 0
-            self.searchController?.searchBar.layoutIfNeeded()
-        }
-        
-        
-        searchController?.isActive = true
-        print("HERE")
+        print("textFieldDidBeginEditing")
+        state = .active(text: textField.text)
     }
     
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        
-        myLeadingAnchor?.constant = 0
-        
-        UIView.animate(withDuration: 0.25) {
-            self.leadingButton.alpha = 0
-            self.leadingImageView.alpha = 1
-            self.searchController?.searchBar.layoutIfNeeded()
-        }
-    }
+//    func textFieldDidEndEditing(_ textField: UITextField) {
+//        state = .inactive
+//    }
     
     func textFieldDidChangeSelection(_ textField: UITextField) {
-       
+        print("textFieldDidChangeSelection")
+        state = .active(text: textField.text)
+    }
+}
+
+
+extension FakeSearchBar: UISearchResultsUpdating, UISearchControllerDelegate {
+    func updateSearchResults(for searchController: UISearchController) {
         
-        searchController?.searchBar.searchTextField.text = textField.text
+    }
+    
+    func willPresentSearchController(_ searchController: UISearchController) {
+        print(#function)
+        guard state == .inactive else { return }
+        textField.becomeFirstResponder()
+        state = .active(text: textField.text)
+    }
+    
+    func willDismissSearchController(_ searchController: UISearchController) {
+        print(#function)
     }
 }

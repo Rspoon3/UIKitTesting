@@ -7,13 +7,12 @@
 
 import SwiftUI
 
-class ViewController: UIViewController, UISearchResultsUpdating, UISearchControllerDelegate  {
+class ViewController: UIViewController  {
     private var dataSource: UICollectionViewDiffableDataSource<Section, String>! = nil
     private var collectionView: UICollectionView! = nil
     private let items = Array(1...100).map{"This is item \($0)"}
     let chevronButton = UIImageView(image: .init(systemName: "chevron.left"))
     private var searchController: UISearchController!
-    let fake = FakeSearchBar()
     
     var shouldShowWhenAppear = false
 
@@ -41,38 +40,17 @@ class ViewController: UIViewController, UISearchResultsUpdating, UISearchControl
             self.searchController.isActive = true
         }
     }
+    private var fake: FakeSearchBar!
     
     func configureSearchController(){
         searchController = UISearchController(searchResultsController: GridVC())
-        searchController.delegate = self
-        searchController.searchResultsUpdater = self
-        searchController.searchBar.placeholder = "Search for a username"
-        searchController.obscuresBackgroundDuringPresentation = false
-        searchController.automaticallyShowsCancelButton = false
-        searchController.showsSearchResultsController = true
-        searchController.searchBar.backgroundColor = .systemRed
         
-//        shouldShowWhenAppear = true
-        
-//        DispatchQueue.main.asyncAfter(deadline: .now()) {
-//            self.searchController.isActive = true
-//        }
-//        searchController.searchBar.text = "asdf"
-//        searchController.isActive = true
-//        searchController.searchBar.becomeFirstResponder()
-        
-//        searchController.searchBar.searchTextField.removeFromSuperview()
+        fake = FakeSearchBar(searchController: searchController)
 //        fake.configure(using: searchController)
-        
-        
         
         navigationItem.searchController = searchController
         navigationItem.hidesSearchBarWhenScrolling = false
     }
-    
-    func updateSearchResults(for searchController: UISearchController) {
-    }
-    
     
     private func createLayout() -> UICollectionViewLayout {
         let config = UICollectionLayoutListConfiguration(appearance: .insetGrouped)
