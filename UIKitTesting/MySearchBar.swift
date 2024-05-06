@@ -44,8 +44,8 @@ final class MySearchBar: UIView {
         searchController.obscuresBackgroundDuringPresentation = false
         searchController.automaticallyShowsCancelButton = false
         searchController.showsSearchResultsController = true
-        searchController.searchBar.backgroundColor = .systemRed.withAlphaComponent(0.3)
-        searchController.searchBar.searchTextField.isHidden = true
+//        searchController.searchBar.backgroundColor = .systemRed.withAlphaComponent(0.3)
+        searchController.searchBar.searchTextField.removeFromSuperview()
         searchController.searchBar.gestureRecognizers = nil
         
 //        configureInitialViews()
@@ -70,7 +70,7 @@ final class MySearchBar: UIView {
     
     private func updateToInactiveState() {
         UIView.performWithoutAnimation {
-            textField.text = ""
+            textField.text?.removeAll()
             clearButton?.alpha = 0
         }
         
@@ -93,7 +93,7 @@ final class MySearchBar: UIView {
             clearButton?.alpha = (text?.isEmpty ?? true) ? 0 : 1
             
             if text == nil || text?.isEmpty ?? true {
-                textField.text?.removeAll()
+                textField.text = "" //?.removeAll()
             }
         }
         
@@ -134,8 +134,9 @@ final class MySearchBar: UIView {
         
         textField.placeholder = "Search for something"
         textField.delegate = self
-        textField.backgroundColor = .systemPurple.withAlphaComponent(0.3)
+//        textField.backgroundColor = .systemPurple.withAlphaComponent(0.3)
         textField.translatesAutoresizingMaskIntoConstraints = false
+        textField.returnKeyType = .search
 
         chevronButton = UIButton(primaryAction: .init(handler: { [weak self] _ in
             self?.state = .inactive
@@ -182,7 +183,7 @@ final class MySearchBar: UIView {
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.layoutMargins = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
         stackView.isLayoutMarginsRelativeArrangement = true
-        stackView.backgroundColor = .systemGreen.withAlphaComponent(0.3)
+//        stackView.backgroundColor = .systemGreen.withAlphaComponent(0.3)
         stackView.addGestureRecognizer(tap)
         
         retailerLocationsFeatureEntryPointButton = UIButton(primaryAction: nil)
@@ -237,11 +238,21 @@ final class MySearchBar: UIView {
 
 extension MySearchBar: UITextFieldDelegate {
     func textFieldDidBeginEditing(_ textField: UITextField) {
-        state = .active(text: textField.text)
+        print(#function)
+        DispatchQueue.main.async {
+            self.state = .active(text: textField.text)
+        }
     }
     
-    func textFieldDidChangeSelection(_ textField: UITextField) {
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        print(#function, textField.text)
         state = .active(text: textField.text)
         textChangePublisher.send(textField.text)
+        return true
+    }
+    
+    public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.endEditing(true)
+        return false
     }
 }

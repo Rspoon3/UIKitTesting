@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		943CD3E92BA8E0E600AEF01D /* MySearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 943CD3E82BA8E0E600AEF01D /* MySearchBar.swift */; };
+		94D577012BCD5DC600F65E55 /* SwiftUISearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94D577002BCD5DC600F65E55 /* SwiftUISearchBar.swift */; };
 		94EBD2672BA3606400A89D83 /* GridVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94EBD2662BA3606400A89D83 /* GridVC.swift */; };
 		94EBD2692BA3607300A89D83 /* TextCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94EBD2682BA3607300A89D83 /* TextCell.swift */; };
 		94EBD26B2BA3607D00A89D83 /* BindableGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94EBD26A2BA3607D00A89D83 /* BindableGestureRecognizer.swift */; };
@@ -22,6 +23,7 @@
 
 /* Begin PBXFileReference section */
 		943CD3E82BA8E0E600AEF01D /* MySearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MySearchBar.swift; sourceTree = "<group>"; };
+		94D577002BCD5DC600F65E55 /* SwiftUISearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUISearchBar.swift; sourceTree = "<group>"; };
 		94EBD2662BA3606400A89D83 /* GridVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridVC.swift; sourceTree = "<group>"; };
 		94EBD2682BA3607300A89D83 /* TextCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextCell.swift; sourceTree = "<group>"; };
 		94EBD26A2BA3607D00A89D83 /* BindableGestureRecognizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BindableGestureRecognizer.swift; sourceTree = "<group>"; };
@@ -69,6 +71,7 @@
 				A6D826FC27CE8CDD001244D0 /* AppDelegate.swift */,
 				A6D826FE27CE8CDD001244D0 /* SceneDelegate.swift */,
 				A6D8270027CE8CDD001244D0 /* ViewController.swift */,
+				94D577002BCD5DC600F65E55 /* SwiftUISearchBar.swift */,
 				943CD3E82BA8E0E600AEF01D /* MySearchBar.swift */,
 				94EBD26A2BA3607D00A89D83 /* BindableGestureRecognizer.swift */,
 				94EBD26C2BA3608F00A89D83 /* ColorVC.swift */,
@@ -161,6 +164,7 @@
 				94EBD26B2BA3607D00A89D83 /* BindableGestureRecognizer.swift in Sources */,
 				A6D826FF27CE8CDD001244D0 /* SceneDelegate.swift in Sources */,
 				94EBD26D2BA3608F00A89D83 /* ColorVC.swift in Sources */,
+				94D577012BCD5DC600F65E55 /* SwiftUISearchBar.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
