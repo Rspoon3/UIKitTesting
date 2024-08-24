@@ -111,6 +111,8 @@
 				Base,
 			);
 			mainGroup = A6D826F027CE8CDD001244D0;
+			packageReferences = (
+			);
 			productRefGroup = A6D826FA27CE8CDD001244D0 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -293,7 +295,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = X2B564LBX6;
+				DEVELOPMENT_TEAM = 29BB6CT754;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = UIKitTesting/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -322,7 +324,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = X2B564LBX6;
+				DEVELOPMENT_TEAM = 29BB6CT754;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = UIKitTesting/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
