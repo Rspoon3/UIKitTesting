@@ -14,7 +14,7 @@ class ViewController: UIViewController {
     @MainActor
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        let size = CGSize(width: 300, height: 300)
         let imageView = UIImageView(image: nil)
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFit
@@ -33,7 +33,6 @@ class ViewController: UIViewController {
                 return
             }
             
-            let size = CGSize(width: 300, height: 300)
             
             guard let image = await firstItem.getArtwork(for: size) else {
                 print("Error 2")
@@ -49,8 +48,8 @@ class ViewController: UIViewController {
         NSLayoutConstraint.activate([
             imageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             imageView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            imageView.widthAnchor.constraint(equalToConstant: 300),
-            imageView.heightAnchor.constraint(equalToConstant: 300),
+            imageView.widthAnchor.constraint(equalToConstant: size.width),
+            imageView.heightAnchor.constraint(equalToConstant: size.height),
         ])
     }
 }
