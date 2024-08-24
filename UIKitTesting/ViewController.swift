@@ -33,14 +33,13 @@ class ViewController: UIViewController {
                 return
             }
             
-            
-            guard let image = await firstItem.getArtwork(for: size) else {
+            guard let image = firstItem.artwork?.image(at: size) else {
                 print("Error 2")
                 return
             }
             
             imageView.image = image
-            print("Image size: ", image.size)
+            print("Image size: ", image.size) // printing 1425
         }
         
         view.addSubview(imageView)
