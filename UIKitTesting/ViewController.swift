@@ -12,12 +12,7 @@ class ViewController: UIViewController  {
     private var dataSource: UICollectionViewDiffableDataSource<Section, String>! = nil
     private var collectionView: UICollectionView! = nil
     private let items = Array(1...100).map{"This is item \($0)"}
-    let chevronButton = UIImageView(image: .init(systemName: "chevron.left"))
     private var searchController: UISearchController!
-    private var subscriptions = Set<AnyCancellable>()
-    private var mySearchBar: MySearchBar?
-
-    var shouldShowWhenAppear = false
 
     enum Section: String {
         case main
@@ -30,75 +25,17 @@ class ViewController: UIViewController  {
         configureCollectionView()
         configureDataSource()
         applyInitialSnapshot()
-//        configureSearchController()
-        configureSwiftUISearchBar()
-        
-//        searchController.searchBar.translatesAutoresizingMaskIntoConstraints = false
-//        for c in searchController.searchBar.subviews {
-//            print(c.constraints)
-//        }
-//        
-//        let anchor = searchController.searchBar.heightAnchor.constraint(equalToConstant: 300)
-//        anchor.priority = .required
-//        
-//        anchor.isActive = true
-////        searchController.searchBar.layer.borderWidth = 1
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        
-        guard shouldShowWhenAppear else { return }
-        UIView.performWithoutAnimation {
-            self.searchController.searchBar.text = "asdf"
-            self.searchController.isActive = true
-        }
+        configureSearchController()
     }
     
     func configureSearchController(){
-        searchController = UISearchController(searchResultsController: UIViewController())
-        
-        mySearchBar = MySearchBar(searchController: searchController)
-
-        mySearchBar?.textChangePublisher
-            .sink(receiveValue: { text in
-//                print(text, 2)
-            }).store(in: &subscriptions)
-        
-        navigationItem.searchController = searchController
-        navigationItem.hidesSearchBarWhenScrolling = false
-        
-//        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            self.mySearchBar?.removePlaceholder()
-//        }
-    }
-    
-    private func configureSwiftUISearchBar() {
-        searchController = UISearchController(searchResultsController: UIViewController())
-        searchController.obscuresBackgroundDuringPresentation = false
-        searchController.automaticallyShowsCancelButton = false
-        searchController.showsSearchResultsController = true
-        searchController.searchBar.searchTextField.removeFromSuperview()
-        searchController.searchBar.gestureRecognizers = nil
-        
-        let vc = UIHostingController(rootView: SwiftUISearchBar(searchController: searchController))
-        
-        let swiftuiView = vc.view!
-        swiftuiView.translatesAutoresizingMaskIntoConstraints = false
-        
-        searchController.searchBar.addSubview(vc.view)
-        
-        NSLayoutConstraint.activate([
-            swiftuiView.topAnchor.constraint(equalTo: searchController.searchBar.topAnchor),
-            swiftuiView.bottomAnchor.constraint(equalTo: searchController.searchBar.bottomAnchor),
-            swiftuiView.leadingAnchor.constraint(equalTo: searchController.searchBar.leadingAnchor),
-            swiftuiView.trailingAnchor.constraint(equalTo: searchController.searchBar.trailingAnchor)
-        ])
+        searchController = UISearchController(searchResultsController: GridVC())
+        searchController.delegate = self
         
         navigationItem.searchController = searchController
         navigationItem.hidesSearchBarWhenScrolling = false
     }
-    
+        
     private func createLayout() -> UICollectionViewLayout {
         let config = UICollectionLayoutListConfiguration(appearance: .insetGrouped)
         return UICollectionViewCompositionalLayout.list(using: config)
@@ -131,5 +68,21 @@ class ViewController: UIViewController  {
         snapshot.appendItems(items)
         
         dataSource.apply(snapshot, animatingDifferences: false)
+    }
+}
+
+extension ViewController: UISearchControllerDelegate {
+    func willDismissSearchController(_ searchController: UISearchController) {
+        print(searchController.isActive, #function)
+        
+      
+    }
+    
+    func willPresentSearchController(_ searchController: UISearchController) {
+        print(searchController.isActive, #function)
+    }
+    
+    func didPresentSearchController(_ searchController: UISearchController) {
+        print(searchController.isActive, #function)
     }
 }
