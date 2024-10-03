@@ -12,7 +12,7 @@ class ViewController: UIViewController  {
     private var dataSource: UICollectionViewDiffableDataSource<Section, String>! = nil
     private var collectionView: UICollectionView! = nil
     private let items = Array(1...100).map{"This is item \($0)"}
-    private var searchController: UISearchController!
+    private var customSearchController: CustomSearchController!
 
     enum Section: String {
         case main
@@ -29,10 +29,10 @@ class ViewController: UIViewController  {
     }
     
     func configureSearchController(){
-        searchController = UISearchController(searchResultsController: GridVC())
-        searchController.delegate = self
+        customSearchController = CustomSearchController(searchResultsController: GridVC())
+        customSearchController.delegate = self
         
-        navigationItem.searchController = searchController
+        navigationItem.searchController = customSearchController
         navigationItem.hidesSearchBarWhenScrolling = false
     }
         
@@ -86,3 +86,6 @@ extension ViewController: UISearchControllerDelegate {
         print(searchController.isActive, #function)
     }
 }
+
+
+

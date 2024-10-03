@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		94C1A9172CAB29C900AC6D8D /* CustomSearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94C1A9162CAB29C900AC6D8D /* CustomSearchController.swift */; };
 		94EBD2672BA3606400A89D83 /* GridVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94EBD2662BA3606400A89D83 /* GridVC.swift */; };
 		94EBD2692BA3607300A89D83 /* TextCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94EBD2682BA3607300A89D83 /* TextCell.swift */; };
 		A6D826FD27CE8CDD001244D0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D826FC27CE8CDD001244D0 /* AppDelegate.swift */; };
@@ -18,6 +19,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		94C1A9162CAB29C900AC6D8D /* CustomSearchController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSearchController.swift; sourceTree = "<group>"; };
 		94EBD2662BA3606400A89D83 /* GridVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridVC.swift; sourceTree = "<group>"; };
 		94EBD2682BA3607300A89D83 /* TextCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextCell.swift; sourceTree = "<group>"; };
 		A6D826F927CE8CDD001244D0 /* UIKitTesting.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UIKitTesting.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -63,6 +65,7 @@
 				A6D826FC27CE8CDD001244D0 /* AppDelegate.swift */,
 				A6D826FE27CE8CDD001244D0 /* SceneDelegate.swift */,
 				A6D8270027CE8CDD001244D0 /* ViewController.swift */,
+				94C1A9162CAB29C900AC6D8D /* CustomSearchController.swift */,
 				94EBD2682BA3607300A89D83 /* TextCell.swift */,
 				94EBD2662BA3606400A89D83 /* GridVC.swift */,
 				A6D8270227CE8CDD001244D0 /* Main.storyboard */,
@@ -144,6 +147,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				94C1A9172CAB29C900AC6D8D /* CustomSearchController.swift in Sources */,
 				94EBD2692BA3607300A89D83 /* TextCell.swift in Sources */,
 				A6D8270127CE8CDD001244D0 /* ViewController.swift in Sources */,
 				A6D826FD27CE8CDD001244D0 /* AppDelegate.swift in Sources */,
