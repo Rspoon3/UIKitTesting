@@ -39,19 +39,19 @@ class SearchableViewController: UIViewController, UISearchResultsUpdating {
         configureDataSource()
         applyInitialSnapshot()
         
-//        Task {
-//            try? await Task.sleep(for: .seconds(2))
-//            let overlayVC = OverlayViewController()
-//            overlayVC.present(over: self)
-//        }
-        
-        // In your SearchableViewController, replace the Task block with:
         Task {
             try? await Task.sleep(for: .seconds(2))
-            
-            let animatedCircle = AnimatedCircleView()
-            animatedCircle.show()
+            let overlayVC = OverlayViewController()
+            overlayVC.present(over: self)
         }
+        
+        // In your SearchableViewController, replace the Task block with:
+//        Task {
+//            try? await Task.sleep(for: .seconds(2))
+//            
+//            let animatedCircle = AnimatedCircleView()
+//            animatedCircle.show()
+//        }
     }
         
     private func embedSwiftUIView() {

@@ -7,8 +7,20 @@
 
 import SwiftUI
 
-final class OverlayViewController: UIViewController {
-    private let hostingController = UIHostingController(rootView: SearchableContentView())
+import UIKit
+import SwiftUI
+
+final class OverlayViewController<Content: View>: UIViewController {
+    private let hostingController: UIHostingController<Content>
+
+    init(rootView: Content) {
+        self.hostingController = UIHostingController(rootView: rootView)
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -20,18 +32,20 @@ final class OverlayViewController: UIViewController {
         modalPresentationStyle = .overFullScreen
         presenter.present(self, animated: false, completion: nil)
     }
-    
+
     private func embedSwiftUIView() {
         hostingController.view.backgroundColor = .clear
         addChild(hostingController)
         view.addSubview(hostingController.view)
         hostingController.view.translatesAutoresizingMaskIntoConstraints = false
+
         NSLayoutConstraint.activate([
             hostingController.view.topAnchor.constraint(equalTo: view.topAnchor),
             hostingController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             hostingController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             hostingController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
         ])
+
         hostingController.didMove(toParent: self)
     }
 }
