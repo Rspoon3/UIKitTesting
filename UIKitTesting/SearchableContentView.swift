@@ -13,12 +13,10 @@ struct SearchableContentView: View {
     var body: some View {
         VStack {
             if show {
-                FullscreenOverlayWrapper {
-                    ExpandingCircleView()
-                        .onTapGesture {
-                            show = false
-                        }
-                }
+                ExpandingCircleView()
+                    .onTapGesture {
+                        show = false
+                    }
             } else {
                 Circle()
                     .foregroundStyle(.blue)
