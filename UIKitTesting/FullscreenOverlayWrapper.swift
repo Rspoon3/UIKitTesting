@@ -18,7 +18,7 @@ struct FullscreenOverlayWrapper<Overlay: View>: View {
         Color.clear
             .onAppear {
                 print("Hello")
-                FullscreenOverlay.shared.show() {
+                FullscreenOverlay.shared.show {
                     overlay()
                 }
             }
