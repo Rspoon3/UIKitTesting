@@ -40,9 +40,23 @@ class SearchableViewController: UIViewController, UISearchResultsUpdating {
         applyInitialSnapshot()
         
         Task {
-            try? await Task.sleep(for: .seconds(2))
-            let overlayVC = OverlayViewController()
-            overlayVC.present(over: self)
+            try? await Task.sleep(for: .seconds(1))
+            let nav = UINavigationController()
+            nav.modalPresentationStyle = .overFullScreen
+//            nav.setNavigationBarHidden(true, animated: false)
+//            nav.view.backgroundColor = .green
+            
+            let red = OverlayViewController(rootView: Text("This is text").font(.largeTitle))
+            nav.setViewControllers([red], animated: false)
+
+            present(nav, animated: false)
+            
+            try? await Task.sleep(for: .seconds(3))
+            let blue = OverlayViewController(rootView: Text("This is more text").font(.largeTitle))
+            nav.pushViewController(blue, animated: false)
+            
+            try? await Task.sleep(for: .seconds(3))
+            nav.dismiss(animated: true)
         }
         
         // In your SearchableViewController, replace the Task block with:
